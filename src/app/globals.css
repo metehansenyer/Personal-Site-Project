@@ -1,0 +1,112 @@
+/**
+ * Global CSS Styles
+ * 
+ * This file contains global styles and CSS variables used throughout the application.
+ * It provides consistent theming and base styles for all components.
+ * 
+ * Features:
+ * - Dark theme color scheme
+ * - Global CSS variables for colors and spacing
+ * - Reset default browser styles
+ * - Responsive design adjustments
+ * - Animation definitions
+ */
+
+/* Tailwind CSS imports */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Global CSS Variables
+   Defines the color scheme and common measurements used across the site */
+:root {
+  /* Color Variables */
+  --background-color: #1F2937;
+  --nav-background-color: #374151;
+  --table-background-color: #1F2937;
+  --table-background-color-muted: #374151;
+  --table-border-color: #808080;
+  --table-border-color-muted: #3d444d;
+  --text-color: #D1D5DB;
+  --text-color-white: #ffffff;
+  --text-color-red: #ff0000;
+  --text-color-blue: #4493f8;
+  --important-color: #8957e5;
+  --warning-color: #d29922;
+  --note-color: #4493f8;
+
+  /* Layout Variables */
+  --border-radius-large: 150px;
+  --border-radius-medium: 35px;
+  --border-radius-small: 15px;
+  --container-width: 80%;
+  --padding-standard: 2rem;
+}
+
+/* Reset default styles and apply base styles */
+* {
+  margin: 0;
+  padding: 0;
+  border: none;
+  box-sizing: border-box;
+  text-decoration: none;
+  color: var(--text-color);
+}
+
+/* Remove focus outlines for better visual consistency */
+*:focus {
+  outline: none;
+}
+
+*:focus-visible {
+  outline: none;
+}
+
+/* Base HTML and body styles */
+html, body {
+  width: 100%;
+  height: 100%;
+  background-color: var(--background-color);
+  font-size: 100%;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+/* Animation Definitions */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* Apply fade-in animation to main content */
+main {
+  animation: fadeIn 1s ease-in;
+}
+
+/* Responsive Design Adjustments
+   Modifies styles for mobile devices (max-width: 768px) */
+@media (max-width: 768px) {
+  .w-\[80\%\] {
+    width: 95%;
+  }
+  
+  .py-\[10\%\] {
+    padding: 5% 0;
+  }
+  
+  .text-\[7\.5rem\] {
+    font-size: 5rem;
+    line-height: 5rem;
+  }
+  
+  .w-\[27rem\] {
+    width: 20rem;
+  }
+}

@@ -1,0 +1,157 @@
+<!--
+  Template HTML for Project Markdown Rendering
+  
+  This template is used to render project markdown content with consistent styling.
+  It includes GitHub-style markdown CSS and custom styling overrides.
+  
+  Features:
+  - GitHub markdown styling
+  - Custom color scheme support using CSS variables
+  - Responsive table layouts
+  - Custom icon styling for technology badges
+  - Improved list styling
+-->
+<!DOCTYPE html>
+<html>
+<head>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/github-markdown-css/5.5.0/github-markdown.min.css">
+  <style>
+    .markdown-body {
+      box-sizing: border-box;
+      min-width: 200px;
+      max-width: 980px;
+      color: var(--text-color);
+      background-color: transparent;
+    }
+
+    .markdown-body h1,
+    .markdown-body h2,
+    .markdown-body h3,
+    .markdown-body h4,
+    .markdown-body h5,
+    .markdown-body h6 {
+      font-weight: bold;
+      padding-bottom: 1rem;
+      border-bottom: 1px solid;
+    }
+
+    .markdown-body ul {
+        list-style: initial;
+    }
+
+    .markdown-body ol {
+        list-style: decimal;
+    }
+
+    .markdown-body ol ol, .markdown-body ul ol {
+        list-style-type: circle;
+    }
+
+    .markdown-body table {
+      display: block;
+      width: max-content;
+      max-width: 100%;
+      overflow: auto;
+    }
+
+    .markdown-body table td:nth-child(1) {
+      text-align: left;
+    }
+
+    .markdown-body table td, .markdown-body table th {
+      border: 1px solid var(--table-border-color);
+    }
+
+    .markdown-body table tr {
+      background-color: var(--table-background-color);
+      border-top: 1px solid var(--table-border-color-muted);
+    }
+
+    .markdown-body table tr:nth-child(2n) {
+      background-color: var(--table-background-color-muted);
+    }
+    
+    .markdown-body a {
+      color: var(--text-color-blue);
+      text-decoration-line: underline;
+    }
+
+    .markdown-body pre {
+      background-color: var(--nav-background-color);
+    }
+    
+    .markdown-body code {
+      background-color: var(--nav-background-color);
+    }
+
+    .markdown-body pre:has(code.language-IMPORTANT) {
+      background-color: transparent;
+      border-left: 6px solid var(--important-color);
+    }
+
+    .markdown-body pre:has(code.language-IMPORTANT)::before {
+      content: "ⓘ ÖNEMLİ";
+      display: block;
+      padding-bottom: 5px;
+      color: var(--important-color);
+      font-weight: bold;
+    }
+
+    .markdown-body pre:has(code.language-WARNING) {
+      background-color: transparent;
+      border-left: 6px solid var(--warning-color);
+    }
+
+    .markdown-body pre:has(code.language-WARNING)::before {
+      content: "⚠️ UYARI";
+      display: block;
+      padding-bottom: 5px;
+      color: var(--warning-color);
+      font-weight: bold;
+    }
+
+    .markdown-body pre:has(code.language-NOTE) {
+      background-color: transparent;
+      border-left: 6px solid var(--note-color);
+    }
+
+    .markdown-body pre:has(code.language-NOTE)::before {
+      content: "ⓘ NOT";
+      display: block;
+      padding-bottom: 5px;
+      color: var(--note-color);
+      font-weight: bold;
+    }
+
+    .markdown-body div.icon {
+      display: flex;
+      justify-content: center; 
+      align-items: center; 
+      gap: 10px; 
+      width: 100%; 
+      margin: 20px 0; 
+      background: transparent;
+    }
+
+    .markdown-body div.icon a.icon-link {
+      background: transparent;
+    }
+
+    .markdown-body div.icon a.icon-link img.icon-img {
+      background: transparent;
+      width: 40px;
+      height: 40px;
+    }
+
+    .markdown-body div.icon a.icon-link img.icon-img:hover {
+      scale: 110%;
+      transition: all;
+    }
+  </style>
+</head>
+<body>
+  <article class="markdown-body">
+    <!-- CONTENT -->
+  </article>
+</body>
+</html> 
