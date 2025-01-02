@@ -27,7 +27,7 @@ export interface Project {
 export const projects: Project[] = [
   {
     userName: "metehansenyer",
-    repoName: "metehansenyer.github.io",
+    repoName: "Personal-Site-Project",
     title: "Website Project: Portfolio",
     description: "Next.js ve TypeScript ile geliştirilmiş, modern web teknolojilerini kullanan kişisel portfolio websitesi.",
     banner: "/img/home_page.png",
