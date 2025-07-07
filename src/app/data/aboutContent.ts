@@ -28,9 +28,9 @@ export const aboutContent: AboutContent = {
     name: "Metehan Şenyer",
     location: "Kocaeli, Türkiye",
     email: "mthansnyr@gmail.com",
-    education: "KOÜ YZM (2. Sınıf)"
+    education: "KOÜ YZM (3. Sınıf)"
   },
-  aboutMe: "Selam, ben Mete! 19 yaşında bir Yazılım Mühendisliği öğrencisiyim. Şu anda Kocaeli'de yaşıyorum ve sektörün kalbinde kendimi harmanlamak için elimden geleni yapıp kendimi geliştiriyorum. Size bir sır: Şarkı söylemeyi ve yemek yemeyi çok severim.",
+  aboutMe: "Selam, ben Mete! 20 yaşında bir Yazılım Mühendisliği öğrencisiyim. Şu anda Kocaeli'de yaşıyorum ve sektörün kalbinde kendimi harmanlamak için elimden geleni yapıp kendimi geliştiriyorum. Size bir sır: Şarkı söylemeyi ve yemek yemeyi çok severim.",
   sectionTitles: {
     about: "Hakkımda",
     technologies: "Kullandığım Teknolojiler"

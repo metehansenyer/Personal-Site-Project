@@ -24,8 +24,8 @@ export default function About() {
         <Image 
           src="/img/profil_fotografim.jpeg"
           alt="İŞTE BEN"
-          width={200} 
-          height={200}
+          width={250} 
+          height={250}
           className="rounded-[35px] hover:scale-105 transition-transform duration-300"
           priority
         />

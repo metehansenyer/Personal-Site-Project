@@ -14,6 +14,7 @@
 
 import fs from 'fs'
 import path from 'path'
+// @ts-ignore - gray-matter doesn't have TypeScript types
 import matter from 'gray-matter'
 import { unified } from 'unified'
 import remarkParse from 'remark-parse'
@@ -61,8 +62,8 @@ export async function getMarkdownContent(fileName: string) {
 
     // Process technology icons in the content
     const regex = /\{icons:\s*\[(.*?)\]\}/g;
-    const matches = Array.from(content.matchAll(regex));
-    const iconsArray = matches.map(match => match[1].split(',').map(icon => icon.trim())).flat();
+    const matches = Array.from(content.matchAll(regex)) as RegExpMatchArray[];
+    const iconsArray = matches.map((match) => match[1].split(',').map((icon: string) => icon.trim())).flat();
     const willBeReplaced = generateIconsHtml(iconsArray);
     const willBeProcessed = content.replace(regex, willBeReplaced)
 

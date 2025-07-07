@@ -205,6 +205,24 @@ const icons: { [key: string]: IconDefinition } = {
     imgSrc: 'https://upload.wikimedia.org/wikipedia/commons/3/37/WinForms_Logo.png',
     alt: 'winforms'
   },
+  django: {
+    name: 'Django',
+    url: 'https://www.djangoproject.com/',
+    imgSrc: 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/django/django-plain.svg',
+    alt: 'django'
+  },
+  selenium: {
+    name: 'Selenium',
+    url: 'https://www.selenium.dev/',
+    imgSrc: 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/selenium/selenium-original.svg',
+    alt: 'selenium'
+  },
+  ffmpeg: {
+    name: 'ffmpeg',
+    url: 'https://ffmpeg.org/',
+    imgSrc: 'https://www.movieconverter-studio.com/_PUBLIC/ffmpeg/logo-new/ffmpeg-logo-src/ffmpeg-logo.svg',
+    alt: 'ffmpeg'
+  },
   template: {
     name: 'template',
     url: 'url',

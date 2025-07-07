@@ -13,6 +13,7 @@ import { projects } from '@/app/data/projects'
  * - Responsive grid layout (1 column on mobile, 2 on tablet, 3 on desktop)
  * - Displays a message when no projects are available
  * - Each project is rendered using the ProjectCard component
+ * - Projects are sorted by release date (newest first)
  */
 export default function Portfolio() {
   // Show message if no projects are available
@@ -24,11 +25,14 @@ export default function Portfolio() {
     )
   }
 
+  // Sort projects by release date (newest first)
+  const sortedProjects = [...projects].sort((a, b) => b.releaseDate.getTime() - a.releaseDate.getTime())
+
   return (
     <main className="w-[80%] mx-auto py-8">
       {/* Project Grid - Responsive layout with different columns based on screen size */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-        {projects.map((project) => (
+        {sortedProjects.map((project) => (
           <ProjectCard key={project.repoName} project={project} />
         ))}
       </div>
