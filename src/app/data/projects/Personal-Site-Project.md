@@ -1,80 +1,98 @@
-# 🚀 Modern Portfolio: Next.js & TypeScript ile Geliştirilmiş Kişisel Websitesi
+# Personal Site Project: Modern Portfolio Websitesi
 
-Merhaba! Ben **Metehan Şenyer**, ve bu proje benim dijital kartvizitim. Modern web teknolojilerini kullanarak geliştirdiğim bu portfolio sitesi, kod kalitesi ve kullanıcı deneyimini ön planda tutuyor.
+Merhaba, ben **Metehan Şenyer**, Kocaeli Üniversitesi Yazılım Mühendisliği öğrencisiyim. Bu proje, projelerimi ve yeteneklerimi sergilemek amacıyla modern web teknolojileri kullanılarak oluşturduğum **Personal Site Project** adlı kişisel portfolio web sitesidir. Proje, Next.js ve TypeScript kullanımı konusundaki becerilerimi sergilemek ve modern web geliştirme pratiklerini uygulama fırsatı sunmuştur.
 
-## 💡 Neden Bu Teknolojiler?
+## 🚀 Proje Hakkında
 
-{icons: [nextjs, typescript, react, tailwindcss, markdown]}
+**Personal Site Project**, Next.js 15 ve TypeScript kullanılarak geliştirilmiş, modern web teknolojilerini temel alan bir portfolio web sitesidir. Amacım, yalnızca teknik gereklilikleri yerine getirmek değil, aynı zamanda kullanıcı dostu ve performanslı bir web deneyimi sunmaktı. Site, Vercel platformu üzerinde yayınlanmakta ve SEO optimizasyonu ile birlikte gelişmiş özellikler sunmaktadır.
 
-- **Next.js 15**: SSR ve optimizasyon özellikleriyle ultra-hızlı sayfa yüklemeleri
-- **TypeScript**: Tip güvenliği ve gelişmiş IDE desteğiyle hatasız kod
-- **React**: Bileşen tabanlı geliştirme ve veri akışı
-- **Tailwind CSS**: Özelleştirilebilir ve performanslı stil yönetimi
-- **Markdown Integration**: Dinamik içerik yönetimi için modern yaklaşım
+## 🎯 Projenin Temel Amaçları
 
-## 🛠️ Teknik Özellikler
+- **Next.js 15** kullanarak modern web uygulaması geliştirme
+- **TypeScript** ile tip güvenliği sağlama
+- **Responsive Design** ile her cihaza uyumlu tasarım (Mobil geliştirmesi sürmekte)
+- **SEO Optimizasyonu** ile arama motoru görünürlüğünü artırma
+- **Markdown Integration** ile dinamik içerik yönetimi
 
-- **Akıllı Cihaz Tespiti**: User-Agent analizi ile otomatik mobil yönlendirme
-- **SEO Optimizasyonu**: Meta tag'ler ve Open Graph protokolü desteği
-- **Dinamik Routing**: Next.js'in güçlü routing sistemiyle sorunsuz navigasyon
-- **Performans Odaklı**: Lighthouse skorları ve Core Web Vitals metrikleri optimize edildi
+## 🛠️ Kullanılan Araçlar
 
-## 🎯 Mimari Yaklaşım
+Proje boyunca aşağıdaki araçlar ve kaynaklardan faydalandım:
 
-```typescript
-// Örnek: Middleware ile Akıllı Yönlendirme
-export function middleware(request: NextRequest) {
-  const userAgent = request.headers.get('user-agent') || ''
-  const isMobile = MOBILE_PATTERNS.some(pattern => pattern.test(userAgent))
-  
-  if (isMobile) {
-    return NextResponse.redirect(new URL('/mobile', request.url))
-  }
-}
-```
+{icons: [nextjs, react, typescript, tailwindcss, fontawesome, markdown, vercel]}
 
-## 🌟 Öne Çıkan Özellikler
+- **Next.js**: Sunucu tarafı oluşturma ve statik site oluşturma için React çerçevesi
+- **React**: Kullanıcı arayüzleri oluşturmak için JavaScript kütüphanesi
+- **TypeScript**: Düz JavaScript'e derlenen yazılı bir JavaScript üst kümesi
+- **Tailwind CSS**: Hızlı UI geliştirme için bir yardımcı program öncelikli CSS çerçevesi
+- **Font Awesome**: İkonlar için.
+- **Markdown**: Dinamik içerik yönetimi için
+- **Vercel**: Barındırma ve dağıtım için
 
-- **Dark Theme**: Göz yorgunluğunu azaltan şık tasarım
-- **Responsive Layout**: Her ekran boyutuna uyumlu UI
-- **Icon Entegrasyonu**: Teknoloji stack'ini görsel olarak sergileyen sistem
-- **Markdown Parser**: Proje dokümantasyonları için özel render sistemi
+## 🌟 Site Özellikleri
 
-## 🔍 Clean Code Prensipleri
+| Özellik | Açıklama |
+|:---:|:---:|
+| **Modern Tasarım** | Okunabilirlik ve kullanıcı deneyimine odaklanan temiz ve minimalist bir tasarım |
+| **Duyarlı Tasarım** | Masaüstü bilgisayarlarda farklı ekran boyutlarına uyum sağlayan tamamen duyarlı tasarım |
+| **Proje Vitrini** | Projelerimi açıklamaları, kullanılan teknolojileri ve depo bağlantılarıyla birlikte sergilemek için ayrılmış bir portfolio bölümü |
+| **Hakkımda Sayfası** | Kendimi, yeteneklerimi ve geçmişimi tanıttığım bir bölüm |
+| **İletişim Sayfası** | Bana ulaşabileceğiniz yollar |
+| **Teknoloji Entegrasyonu** | Her proje için dinamik olarak oluşturulan Markdown Parser sağlanarak render edilen teknoloji ikonları |
+| **SEO Optimize Edilmiş** | Arama motoru görünürlüğünü artırmak için uygulanan SEO en iyi uygulamaları |
+| **Karanlık Mod** | Düşük ışıklı ortamlarda rahat gezinme için görsel olarak çekici bir karanlık tema |
 
-- **SOLID** prensiplerine uygun component yapısı
-- **DRY** yaklaşımıyla tekrar kullanılabilir komponentler
-- **Modüler** yapı ile kolay bakım ve güncelleme
-- **TypeScript** ile güçlü tip kontrolü
+## 💾 İndirme ve Çalıştırma
 
-## 📈 Performans Metrikleri
+Projeyi yerel ortamınızda çalıştırmak için aşağıdaki adımları izleyebilirsiniz:
 
-- First Contentful Paint: < 1s
-- Time to Interactive: < 2s
-- Lighthouse Performance Score: 90+
-- %100 TypeScript coverage
+### Ön koşullar
+- Node.js (v18 veya üstü)
+- npm veya yarn
 
-## 🎨 UI/UX Özellikleri
+### Kurulum
 
-- Minimalist ve modern tasarım
-- Sayfa geçişlerinde smooth animasyonlar
-- Kullanıcı dostu navigasyon
-- Profesyonel tipografi ve renk paleti
+1. **Depoyu klonlayın:**
+   ```bash
+   git clone https://github.com/metehansenyer/Personal-Site-Project.git
+   ```
 
-## 🔒 Güvenlik
+2. **Proje dizinine gidin:**
+   ```bash
+   cd Personal-Site-Project
+   ```
 
-- Güvenli external link yönetimi
-- Rate limiting ve request validasyonu
-- Modern güvenlik başlıkları
-- XSS ve CSRF koruması
+3. **Bağımlılıkları yükleyin:**
+   ```bash
+   npm install
+   ```
 
-Bu proje, modern web geliştirme pratiklerini ve en iyi teknolojileri bir araya getirerek, performans ve kullanıcı deneyimini optimize eden bir yaklaşım sunuyor. 
+### Uygulamayı Çalıştırma
 
-## 🌟 Benimle İletişime Geçin
+- **Geliştirme modu:**
+  ```bash
+  npm run dev
+  ```
+  Tarayıcıda görüntülemek için [http://localhost:3000](http://localhost:3000) adresini açın.
 
-Eğer bu proje ilginizi çektiyse ve benimle iletişime geçmek isterseniz, aşağıdaki bağlantıları kullanabilirsiniz:
+- **Production build:**
+  ```bash
+  npm run build
+  ```
+
+- **Production sunucusunu başlatın:**
+  ```bash
+  npm run start
+  ```
+
+## 🌐 Canlı Demo
+
+Web sitesi şu adreste yayında: [who.metehansenyer.tech](https://who.metehansenyer.tech)
+
+## 🌟 İletişim
+
+Eğer bu proje ilginizi çektiyse ve benimle iletişime geçmek isterseniz:
 
 - **Email:** [mthansnyr@gmail.com](mailto:mthansnyr@gmail.com)
 - **LinkedIn:** [@metehansenyer](https://www.linkedin.com/in/metehansenyer/)
 
-Yeni projeler hakkında her zaman sohbet etmeye açığım!
+Web geliştirme ve yazılım projeleri hakkında her zaman sohbet etmeye açığım!

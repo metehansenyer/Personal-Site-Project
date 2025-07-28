@@ -223,6 +223,12 @@ const icons: { [key: string]: IconDefinition } = {
     imgSrc: 'https://www.movieconverter-studio.com/_PUBLIC/ffmpeg/logo-new/ffmpeg-logo-src/ffmpeg-logo.svg',
     alt: 'ffmpeg'
   },
+  vercel: {
+    name: 'Vercel',
+    url: 'https://vercel.com/',
+    imgSrc: 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/vercel/vercel-original.svg',
+    alt: 'vercel'
+  },
   template: {
     name: 'template',
     url: 'url',
