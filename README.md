@@ -49,7 +49,7 @@ Proje artık sadece içerik güncellemeleri alacaktır. İçerik güncellemeleri
 
 ## 🌐 Canlı Demo
 
-Site şu adreste yayındadır: [metehansenyer.me](https://who.metehansenyer.tech)
+Site şu adreste yayındadır: [who.metehansenyer.tech](https://who.metehansenyer.tech)
 
 ## 📄 Lisans
 

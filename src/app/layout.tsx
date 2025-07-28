@@ -5,7 +5,7 @@
  * It provides the base structure and common elements present on all pages.
  * 
  * Features:
- * - Custom font integration (TT Firs Neue)
+ * - Google Fonts integration (Inter)
  * - SEO metadata configuration
  * - Common layout elements (Header, Navbar, Footer)
  * - Font Awesome integration
@@ -18,29 +18,16 @@ import Header from "./components/Header";
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
 import Script from "next/script";
-import localFont from 'next/font/local'
+import { Inter } from 'next/font/google'
 import { Analytics } from "@vercel/analytics/react"
 import { SpeedInsights } from "@vercel/speed-insights/next"
 
-// Configure custom font (TT Firs Neue)
-// Includes regular and bold weights with fallback options
-const ttFirs = localFont({
-  src: [
-    {
-      path: '../fonts/TTFirsNeueTrialRegular.ttf',
-      weight: '400',
-      style: 'normal',
-    },
-    {
-      path: '../fonts/TTFirsNeueTrialBold.ttf',
-      weight: '700',
-      style: 'normal',
-    },
-  ],
+// Configure Google Font (Inter)
+const inter = Inter({
+  subsets: ['latin'],
   display: 'swap',
-  variable: '--font-tt-firs',
+  variable: '--font-inter',
   preload: true,
-  fallback: ['system-ui', 'arial'],
 })
 
 // Metadata configuration for SEO and social sharing
@@ -53,21 +40,21 @@ export const metadata: Metadata = {
   openGraph: {
     title: 'Metehan Şenyer',
     description: 'Yazılım Mühendisliği öğrencisi ve tutkulu bir yazılım geliştiricisi.',
-    url: 'https://metehansenyer.me/',
+    url: 'https://who.metehansenyer.tech/',
     siteName: 'Metehan Şenyer',
     locale: 'tr_TR',
     type: 'website',
   },
 };
 
-// Root layout component that wraps all pages
-export default function RootLayout({
-  children,
+  // Root layout component that wraps all pages
+  export default function RootLayout({
+    children,
 }: {
   children: React.ReactNode
 }) {
   return (
-    <html lang="tr" className={ttFirs.variable}>
+    <html lang="tr" className={inter.variable}>
       <head>
         {/* Load Font Awesome icons before page renders */}
         <Script src="https://kit.fontawesome.com/76c7501aeb.js" strategy="beforeInteractive" crossOrigin="anonymous" />
@@ -80,7 +67,7 @@ export default function RootLayout({
               "@context": "https://schema.org",
               "@type": "Person",
               "name": "Metehan Şenyer",
-              "url": "https://metehansenyer.me",
+              "url": "https://who.metehansenyer.tech",
               "jobTitle": "Yazılım Mühendisliği Öğrencisi",
               "alumniOf": "Kocaeli Üniversitesi",
               "sameAs": [
@@ -91,7 +78,7 @@ export default function RootLayout({
           }}
         />
       </head>
-      <body className={`min-h-screen flex flex-col ${ttFirs.className}`}>
+      <body className={`min-h-screen flex flex-col ${inter.className}`}>
         {/* Common layout elements */}
         <Header />
         <Navbar />

@@ -1,7 +1,6 @@
 {
-  "name": "site",
-  "version": "0.1.0",
-  "private": true,
+  "name": "who.metehansenyer.tech",
+  "version": "1.2.0",
   "scripts": {
     "dev": "next dev",
     "build": "next build",
@@ -9,33 +8,33 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@vercel/analytics": "^1.4.1",
-    "@vercel/speed-insights": "^1.1.0",
+    "@vercel/analytics": "^1.5.0",
+    "@vercel/speed-insights": "^1.2.0",
+    "next": "^15.4.4",
+    "react": "^19.1.1",
+    "react-dom": "^19.1.1"
+  },
+  "devDependencies": {
+    "@eslint/eslintrc": "^3.3.1",
+    "@types/mdast": "^4.0.4",
+    "@types/node": "^24.1.0",
+    "@types/react": "^19.1.8",
+    "@types/react-dom": "^19.1.6",
+    "autoprefixer": "^10.4.21",
+    "eslint": "^9.32.0",
+    "eslint-config-next": "^15.4.4",
     "gray-matter": "^4.0.3",
-    "next": "^15.3.5",
-    "react": "^19.0.0",
-    "react-dom": "^19.0.0",
+    "postcss": "^8.5.6",
+    "raw-loader": "^4.0.2",
     "rehype-external-links": "^3.0.0",
     "rehype-raw": "^7.0.0",
     "rehype-stringify": "^10.0.1",
     "remark": "^15.0.1",
-    "remark-gfm": "^4.0.0",
+    "remark-gfm": "^4.0.1",
     "remark-parse": "^11.0.0",
-    "remark-rehype": "^11.1.1",
-    "unified": "^11.0.5"
-  },
-  "devDependencies": {
-    "@eslint/eslintrc": "^3",
-    "@types/mdast": "^4.0.4",
-    "@types/node": "^20",
-    "@types/react": "^19.0.2",
-    "@types/react-dom": "^19",
-    "autoprefixer": "^10.4.20",
-    "eslint": "^9",
-    "eslint-config-next": "15.1.3",
-    "postcss": "^8",
-    "raw-loader": "^4.0.2",
+    "remark-rehype": "^11.1.2",
     "tailwindcss": "^3.4.17",
-    "typescript": "^5.7.2"
+    "typescript": "^5.8.3",
+    "unified": "^11.0.5"
   }
 }

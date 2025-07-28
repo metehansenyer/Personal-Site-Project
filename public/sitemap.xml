@@ -2,40 +2,40 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <!-- Ana Sayfa -->
   <url>
-    <loc>https://metehansenyer.me</loc>
-    <lastmod>2024-01-01</lastmod>
+    <loc>https://who.metehansenyer.tech</loc>
+    <lastmod>2025-07-28</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
   </url>
 
   <!-- Hakkımda Sayfası -->
   <url>
-    <loc>https://metehansenyer.me/about</loc>
-    <lastmod>2024-01-01</lastmod>
+    <loc>https://who.metehansenyer.tech/about</loc>
+    <lastmod>2025-07-28</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
 
   <!-- Portfolyo Sayfası -->
   <url>
-    <loc>https://metehansenyer.me/portfolio</loc>
-    <lastmod>2024-01-01</lastmod>
+    <loc>https://who.metehansenyer.tech/portfolio</loc>
+    <lastmod>2025-07-28</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
 
   <!-- İletişim Sayfası -->
   <url>
-    <loc>https://metehansenyer.me/contact</loc>
-    <lastmod>2024-01-01</lastmod>
+    <loc>https://who.metehansenyer.tech/contact</loc>
+    <lastmod>2025-07-28</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
 
   <!-- Mobil Sayfası -->
   <url>
-    <loc>https://metehansenyer.me/mobile</loc>
-    <lastmod>2024-01-01</lastmod>
+    <loc>https://who.metehansenyer.tech/mobile</loc>
+    <lastmod>2025-07-28</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
