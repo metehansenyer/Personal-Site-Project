@@ -35,7 +35,7 @@ function isMobileDevice(userAgent: string): boolean {
 
 // Main middleware function
 // Processes each request before it reaches the page components
-export function middleware(request: NextRequest) {
+export function proxy(request: NextRequest) {
   const response = NextResponse.next()
   
   // Handle mobile device redirection

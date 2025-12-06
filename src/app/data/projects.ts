@@ -109,11 +109,20 @@ export const projects: Project[] = [
   },
   {
     userName: "metehansenyer",
-    repoName: "YouTube-Downloader",
-    title: "YouTube Downloader",
-    description: "`yt-dlp` ve `FFmpeg` üzerine kurulmuş, gelişmiş bir komut satırı arayüzü (CLI) ile YouTube'dan video ve ses indirme aracı. Kullanıcı dostu arayüzü ile belirli format ve kalitelerde indirme yapmayı kolaylaştırır.",
-    banner: "/img/youtube_downloader.png",
-    technologies: ["Python", "yt-dlp", "FFmpeg"],
-    releaseDate: new Date(2025, 6, 16)
+    repoName: "vlrgg-api",
+    title: "VLR.GG Unofficial API",
+    description: "VLR.GG'den Valorant espor verilerini kazıyıp sunan modern bir RESTful API.",
+    banner: "/img/vlrgg-api.png",
+    technologies: ["Python", "FastAPI", "selectolax", "Web Scraping"],
+    releaseDate: new Date(2025, 8, 24)
+  },
+  {
+    userName: "KOU-Software-Community",
+    repoName: "kou-seng-website",
+    title: "KOU SENG Website",
+    description: "Kocaeli Üniversitesi Yazılım Kulübü'nün resmi web sitesi.",
+    banner: "/img/kou-seng-website.png",
+    technologies: ["NextJS", "TypeScript", "TailwindCSS", "Express", "MongoDB"],
+    releaseDate: new Date(2025, 9, 21)
   }
 ]

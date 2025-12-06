@@ -147,6 +147,55 @@
       scale: 110%;
       transition: all;
     }
+
+    /* Center aligned content support */
+    .markdown-body p[align="center"] {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+    }
+
+    .markdown-body .center-content {
+      text-align: center;
+      margin: 16px 0;
+    }
+
+    /* Badge container styling */
+    .markdown-body .badges {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      align-items: center;
+      gap: 8px;
+      margin: 16px 0;
+    }
+
+    .markdown-body .badges a {
+      display: inline-block;
+      text-decoration: none;
+    }
+
+    .markdown-body .badges img {
+      display: block;
+      height: auto;
+    }
+
+    /* Logo container styling */
+    .markdown-body .project-logo {
+      display: flex;
+      justify-content: center;
+      margin: 24px 0;
+    }
+
+    .markdown-body .project-logo img {
+      max-width: 200px;
+      height: auto;
+      border-radius: 12px;
+      background: transparent;
+    }
+
   </style>
 </head>
 <body>
