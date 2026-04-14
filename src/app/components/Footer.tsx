@@ -23,12 +23,12 @@ export default function Footer() {
 
   return (
     <footer className="w-full text-center py-4">
-      <p className="text-[var(--text-color)] opacity-70 text-base">
+      <p className="text-(--text-color) opacity-70 text-base">
         <a 
           href="https://github.com/metehansenyer" 
           target="_blank" 
           rel="noopener noreferrer"
-          className="hover:text-[var(--text-color-white)] transition-colors"
+          className="hover:text-(--text-color-white) transition-colors"
         >
           Metehan Şenyer
         </a>

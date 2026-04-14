@@ -13,9 +13,12 @@
  */
 
 /* Tailwind CSS imports */
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
+
+@theme inline {
+  --color-background: var(--background-color);
+  --color-foreground: var(--text-color);
+}
 
 /* Global CSS Variables
    Defines the color scheme and common measurements used across the site */
@@ -43,36 +46,37 @@
   --padding-standard: 2rem;
 }
 
-/* Reset default styles and apply base styles */
-* {
-  margin: 0;
-  padding: 0;
-  border: none;
-  box-sizing: border-box;
-  text-decoration: none;
-  color: var(--text-color);
-}
+@layer base {
+  /* Reset default styles and apply base styles */
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    text-decoration: none;
+    color: var(--text-color);
+  }
 
-/* Remove focus outlines for better visual consistency */
-*:focus {
-  outline: none;
-}
+  /* Remove focus outlines for better visual consistency */
+  *:focus {
+    outline: none;
+  }
 
-*:focus-visible {
-  outline: none;
-}
+  *:focus-visible {
+    outline: none;
+  }
 
-/* Base HTML and body styles */
-html, body {
-  width: 100%;
-  height: 100%;
-  background-color: var(--background-color);
-  font-size: 100%;
-  -webkit-touch-callout: none;
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
+  /* Base HTML and body styles */
+  html, body {
+    width: 100%;
+    height: 100%;
+    background-color: var(--background-color);
+    font-size: 100%;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+  }
 }
 
 /* Animation Definitions */

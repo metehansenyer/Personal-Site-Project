@@ -30,10 +30,10 @@ export default function Home() {
     <main className="w-[80%] h-full mx-auto flex flex-col justify-center overflow-hidden">
       {/* Main Title Section */}
       <div className="text-center">
-        <div className="text-[1.5rem] leading-[3.5rem] text-[var(--text-color)]">
+        <div className="text-[1.5rem] leading-[3.5rem] text-(--text-color)">
           METE
         </div>
-        <div className="text-[7.5rem] leading-[7.5rem] text-[var(--text-color)]">
+        <div className="text-[7.5rem] leading-[7.5rem] text-(--text-color)">
           BUYRUN
           <br />
           BENİM

@@ -32,6 +32,7 @@ export default function ProjectBanner({ project }: Props) {
         width={1920}
         height={1080}
         priority
+        sizes="(max-width: 1024px) 100vw, 980px"
         className="object-contain w-full h-auto"
         onError={() => setImageSrc('/img/placeholder_img.png')}
       />

@@ -55,7 +55,7 @@ export default function About() {
               <td>
                 <a 
                   href={`mailto:${aboutContent.profile.email}`} target="_blank"
-                  className="hover:text-[var(--text-color-white)] transition-colors cursor-pointer"
+                  className="hover:text-(--text-color-white) transition-colors cursor-pointer"
                 >
                   {aboutContent.profile.email}
                 </a>
@@ -78,7 +78,7 @@ export default function About() {
                     <a 
                       key={link.name}
                       href={link.url}
-                      className="hover:text-[var(--nav-background-color)] hover:scale-110 transition-all"
+                      className="hover:text-(--nav-background-color) hover:scale-110 transition-all"
                       target="_blank"
                       rel="noopener noreferrer"
                       aria-label={link.name}
@@ -99,7 +99,7 @@ export default function About() {
         <div className="space-y-2">
           <h2 className="text-[1.8rem] font-bold">{aboutContent.sectionTitles.about}</h2>
           <div className="flex">
-            <div className="w-1 bg-[var(--text-color)] rounded-l-[15px]"></div>
+            <div className="w-1 bg-(--text-color) rounded-l-[15px]"></div>
             <div className="flex-1 text-justify px-4 py-2">
               <p className="text-[1.2rem] leading-relaxed">
                 {aboutContent.aboutMe}
@@ -112,10 +112,10 @@ export default function About() {
         <div className="space-y-2">
           <h2 className="text-[1.8rem] font-bold">{aboutContent.sectionTitles.technologies}</h2>
           <div className="flex">
-            <div className="w-1 bg-[var(--text-color)] rounded-l-[15px]"></div>
+            <div className="w-1 bg-(--text-color) rounded-l-[15px]"></div>
             <div className="flex-1 px-4 py-2">
               {aboutContent.technologies.length === 0 ? (
-                <p className="text-[var(--text-color)] opacity-70">{aboutContent.noTechText}</p>
+                <p className="text-(--text-color) opacity-70">{aboutContent.noTechText}</p>
               ) : (
                 <div className="flex flex-wrap gap-6">
                   {generateAboutTechnologies(aboutContent.technologies).map((tech) => (

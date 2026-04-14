@@ -25,7 +25,7 @@ export default function Button({ href, width, height, fontSize, newTab, children
   return (
     <Link href={href} target={newTab ? "_blank" : undefined}>
       <div 
-        className={`${width} ${height} ${fontSize} bg-[var(--nav-background-color)] text-center border-2 border-solid border-[var(--text-color)] rounded-[var(--border-radius-large)] py-4 leading-8 text-[var(--text-color)] hover:bg-[var(--text-color)] hover:text-[var(--nav-background-color)] transition-all duration-300`}
+        className={`${width} ${height} ${fontSize} bg-(--nav-background-color) text-center border-2 border-solid border-(--text-color) rounded-(--border-radius-large) py-4 leading-8 text-(--text-color) hover:bg-(--text-color) hover:text-(--nav-background-color) transition-all duration-300`}
       >
         {children}
       </div>

@@ -18,9 +18,10 @@ import { useState } from 'react'
 
 type Props = {
   project: Project
+  priority?: boolean
 }
 
-export default function ProjectCard({ project }: Props) {
+export default function ProjectCard({ project, priority = false }: Props) {
   const [src, setSrc] = useState(project.banner)
   const [isHovered, setIsHovered] = useState(false)
   
@@ -63,25 +64,28 @@ export default function ProjectCard({ project }: Props) {
     >
       <Link href={`/portfolio/${project.repoName}`}>
         <article 
-          className="bg-[var(--nav-background-color)] rounded-lg overflow-hidden shadow-lg hover:scale-[1.02] transition-transform cursor-pointer h-full flex flex-col"
+          className="bg-(--nav-background-color) rounded-lg overflow-hidden shadow-lg hover:scale-[1.02] transition-transform cursor-pointer h-full flex flex-col"
         >
-          <div className="relative h-48 flex-shrink-0">
+          <div className="relative h-48 shrink-0">
             <Image
               src={src}
               alt={`${project.title} banner`}
               fill
+              sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
               className="object-cover"
+              priority={priority}
+              loading={priority ? 'eager' : 'lazy'}
               onError={() => setSrc('/img/placeholder_img.png')}
             />
           </div>
           
           <div className="flex flex-col h-[calc(450px-12rem)] p-6">
             <div className="flex-1 min-h-0">
-              <h2 className="text-2xl font-bold text-[var(--text-color)] mb-4 h-[3.5rem] line-clamp-2 overflow-hidden text-ellipsis">
+              <h2 className="text-2xl font-bold text-(--text-color) mb-4 h-14 line-clamp-2 overflow-hidden text-ellipsis">
                 {project.title}
               </h2>
               
-              <p className="text-[var(--text-color)] opacity-90 line-clamp-4 mb-4">
+              <p className="text-(--text-color) opacity-90 line-clamp-4 mb-4">
                 {project.description}
               </p>
             </div>
@@ -96,7 +100,7 @@ export default function ProjectCard({ project }: Props) {
                   {visibleTechs.map((tech) => (
                     <span 
                       key={tech}
-                      className="px-3 py-1 bg-[var(--background-color)] rounded-full text-sm inline-block"
+                      className="px-3 py-1 bg-background rounded-full text-sm inline-block"
                     >
                       {tech}
                     </span>
@@ -111,7 +115,7 @@ export default function ProjectCard({ project }: Props) {
                     {remainingTechs.map((tech) => (
                       <span 
                         key={tech}
-                        className="px-3 py-1 bg-[var(--background-color)] rounded-full text-sm inline-block"
+                        className="px-3 py-1 bg-background rounded-full text-sm inline-block"
                       >
                         {tech}
                       </span>

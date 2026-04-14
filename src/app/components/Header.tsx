@@ -44,10 +44,10 @@ export default function Header() {
   }
 
   return (
-    <header className="w-full bg-[var(--background-color)] py-4">
+    <header className="w-full bg-(--background-color) py-4">
       <div className="flex justify-between items-center px-8">
-        <h1 className="text-[var(--text-color)] text-[2rem]">Metehan Şenyer</h1>
-        <h2 className="text-[var(--text-color)] text-[2rem]">{getPageTitle()}</h2>
+        <h1 className="text-(--text-color) text-[2rem]">Metehan Şenyer</h1>
+        <h2 className="text-(--text-color) text-[2rem]">{getPageTitle()}</h2>
       </div>
     </header>
   )

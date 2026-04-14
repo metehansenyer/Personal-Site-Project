@@ -20,7 +20,7 @@ export default function Portfolio() {
   if (projects.length === 0) {
     return (
       <div className="w-[80%] mx-auto text-center py-8">
-        <p className="text-[var(--text-color)] opacity-70">Henüz proje bulunmuyor.</p>
+        <p className="text-(--text-color) opacity-70">Henüz proje bulunmuyor.</p>
       </div>
     )
   }
@@ -32,8 +32,8 @@ export default function Portfolio() {
     <main className="w-[80%] mx-auto py-8">
       {/* Project Grid - Responsive layout with different columns based on screen size */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-        {sortedProjects.map((project) => (
-          <ProjectCard key={project.repoName} project={project} />
+        {sortedProjects.map((project, index) => (
+          <ProjectCard key={project.repoName} project={project} priority={index < 3} />
         ))}
       </div>
     </main>

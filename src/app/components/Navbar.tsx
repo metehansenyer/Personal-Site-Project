@@ -33,7 +33,7 @@ export default function Navbar() {
   const navigation = allNavigation.filter(item => item.href !== pathname)
 
   return (
-    <nav className="w-full z-50 bg-[var(--background-color)] pt-1">
+    <nav className="w-full z-50 bg-background pt-1">
       <div className="container mx-auto px-4">
         <div className="flex justify-center gap-8">
           {navigation.map((item) => (
