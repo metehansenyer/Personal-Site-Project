@@ -18,12 +18,32 @@ interface ButtonProps {
   height: string
   fontSize: string
   newTab?: boolean
+  umamiEvent?: string
+  umamiEventData?: Record<string, string>
   children: React.ReactNode
 }
 
-export default function Button({ href, width, height, fontSize, newTab, children }: ButtonProps) {
+export default function Button({
+  href,
+  width,
+  height,
+  fontSize,
+  newTab,
+  umamiEvent,
+  umamiEventData,
+  children,
+}: ButtonProps) {
+  const umamiProps = umamiEvent
+    ? {
+        'data-umami-event': umamiEvent,
+        ...Object.fromEntries(
+          Object.entries(umamiEventData ?? {}).map(([k, v]) => [`data-umami-event-${k}`, v]),
+        ),
+      }
+    : {}
+
   return (
-    <Link href={href} target={newTab ? '_blank' : undefined}>
+    <Link href={href} target={newTab ? '_blank' : undefined} {...umamiProps}>
       <div
         className={`${width} ${height} ${fontSize} rounded-(--border-radius-large) border-2 border-solid border-(--text-color) bg-(--nav-background-color) py-4 text-center leading-8 text-(--text-color) transition-all duration-300 hover:bg-(--text-color) hover:text-(--nav-background-color)`}
       >

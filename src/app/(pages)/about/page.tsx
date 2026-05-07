@@ -57,6 +57,7 @@ export default function About() {
                   href={`mailto:${aboutContent.profile.email}`}
                   target="_blank"
                   className="cursor-pointer transition-colors hover:text-(--text-color-white)"
+                  data-umami-event="email-click"
                 >
                   {aboutContent.profile.email}
                 </a>
@@ -83,6 +84,8 @@ export default function About() {
                       target="_blank"
                       rel="noopener noreferrer"
                       aria-label={link.name}
+                      data-umami-event="social-link-click"
+                      data-umami-event-platform={link.name}
                     >
                       <i className={link.icon} aria-hidden="true"></i>
                     </a>

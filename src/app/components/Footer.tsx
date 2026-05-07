@@ -36,6 +36,18 @@ export default function Footer() {
         <i className="fa-solid fa-heart mx-1 animate-pulse text-red-500" aria-hidden="true"></i> ile
         kodlandı
       </p>
+      <p className="mt-1 text-xs text-(--text-color) opacity-40">
+        Bu site çerez kullanmayan ve kişisel veri toplamayan{' '}
+        <a
+          href="https://umami.is"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="underline underline-offset-2 transition-opacity hover:opacity-70"
+        >
+          Umami Analytics
+        </a>{' '}
+        kullanmaktadır. Veriler AB (Almanya) sunucularında barındırılmaktadır.
+      </p>
     </footer>
   )
 }

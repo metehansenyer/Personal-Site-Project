@@ -58,6 +58,8 @@ export default async function ProjectPage({ params }: Props) {
             height="h-full"
             fontSize="text-[1.3rem]"
             newTab={true}
+            umamiEvent="github-view-click"
+            umamiEventData={{ project: project.repoName }}
           >
             GitHub&apos;da Görüntüle
           </Button>

@@ -34,6 +34,7 @@ export default function Contact() {
               href={`mailto:${contactContent.email}`}
               target="_blank"
               className="text-(--text-color) transition-colors duration-300 hover:text-(--text-color-white)"
+              data-umami-event="email-click"
             >
               {contactContent.email}
             </a>
@@ -47,6 +48,8 @@ export default function Contact() {
                   rel="noopener noreferrer"
                   className="inline-flex items-center gap-2 text-(--text-color) transition-all duration-300 hover:scale-110 hover:text-(--text-color-white)"
                   title={linkedIn.name}
+                  data-umami-event="social-link-click"
+                  data-umami-event-platform="LinkedIn"
                 >
                   <i className={`${linkedIn.icon} text-xl`} aria-hidden="true"></i>
                   <span>LinkedIn</span>
