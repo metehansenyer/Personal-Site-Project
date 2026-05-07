@@ -79,11 +79,13 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <Navbar />
         <main className="flex-1">{children}</main>
         <Footer />
-        <Script
-          src="https://umami.metehansenyer.tech/script.js"
-          data-website-id="41d22223-daff-461c-bec6-d56ddd7208f6"
-          strategy="afterInteractive"
-        />
+        {process.env.NODE_ENV === 'production' && (
+          <Script
+            src="https://umami.metehansenyer.tech/script.js"
+            data-website-id="41d22223-daff-461c-bec6-d56ddd7208f6"
+            strategy="afterInteractive"
+          />
+        )}
       </body>
     </html>
   )

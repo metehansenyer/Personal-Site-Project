@@ -5,48 +5,46 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 ## Commands
 
 ```bash
-pnpm dev        # Start development server at localhost:3000
-pnpm build      # Production build
-pnpm start      # Start production server
-pnpm lint       # Run ESLint
+pnpm dev          # Start dev server (Next.js with Turbopack)
+pnpm build        # Production build
+pnpm lint         # ESLint check
+pnpm lint:fix     # ESLint auto-fix
+pnpm format       # Prettier format (writes)
+pnpm format:check # Prettier check (read-only)
+pnpm check        # lint + format:check combined
 ```
 
-Package manager is **pnpm** (v10.33.0). Do not use npm or yarn.
+Package manager: **pnpm** (v10.33.4). Do not use npm or yarn.
 
 ## Architecture
 
-This is a Next.js 16 personal portfolio site (App Router, TypeScript, Tailwind CSS v4).
-
 ### Routing
+Next.js App Router under `src/app/`. Pages live in `src/app/(pages)/` using a route group that avoids URL segments. The middleware (`src/proxy.ts`) redirects mobile User-Agents to `/mobile` before any page renders.
 
-- `src/app/page.tsx` — home page
-- `src/app/(pages)/` — all other pages (about, contact, portfolio, mobile, 404)
-- `src/app/(pages)/portfolio/[projectRepoName]/` — dynamic project detail pages
-- `src/proxy.ts` — Next.js middleware (note: named export `proxy`, not default `middleware`) that redirects mobile User-Agents to `/mobile` and sets `x-project-repo-name` header for portfolio routes
+### Data layer
+All content is static TypeScript — no database, no API routes:
+- `src/app/data/projects.ts` — the canonical list of portfolio projects (`Project[]`). Adding a new project here is all that's needed to make it appear on the portfolio page.
+- `src/app/data/icons.ts` — tech icon registry keyed by slug (e.g. `typescript`, `nextjs`). `generateIconsHtml()` turns a list of slugs into inline HTML; `generateAboutTechnologies()` returns typed objects for the About page.
+- `src/app/data/aboutContent.ts`, `contactContent.ts`, `socialLinks.ts`, etc. — page-specific static copy.
 
-### Data Layer
+### Project detail pages
+`/portfolio/[projectRepoName]` is a dynamic route. It:
+1. Looks up the project in `projects.ts` by `repoName`.
+2. Reads the corresponding Markdown file from `src/app/data/projects/<repoName>.md`.
+3. Processes it through `src/app/lib/markdown.ts` (remark → rehype pipeline with GFM support).
+4. Injects the HTML into `src/app/data/projects/template.html` at the `<!-- CONTENT -->` placeholder.
 
-All content is managed via TypeScript files in `src/app/data/`:
+Icon syntax in Markdown files: `{icons: [typescript, nextjs, tailwindcss]}` — the markdown processor replaces this with rendered icon links before HTML conversion.
 
-- `projects.ts` — `Project[]` array with `repoName` used as the URL slug and the markdown filename key
-- `icons.ts` — maps technology name strings to HTML icon markup (used in markdown via `{icons: [Tech1, Tech2]}` syntax)
-- `aboutContent.ts`, `contactContent.ts`, `mobileContent.ts`, `notFoundContent.ts`, `socialLinks.ts` — static page content
-
-### Project Pages (Markdown Pipeline)
-
-Each project has a corresponding `.md` file in `src/app/data/projects/`. The `getMarkdownContent()` function in `src/app/lib/markdown.ts` reads the markdown, replaces `{icons: [...]}` placeholders with generated HTML, runs it through the unified/remark/rehype pipeline (GFM + raw HTML support), then injects the result into `src/app/data/projects/template.html`.
-
-To add a new project:
-1. Add entry to `projects` array in `src/app/data/projects.ts` (the `repoName` field becomes the URL path and must match the `.md` filename)
-2. Create `src/app/data/projects/<repoName>.md`
-3. Add banner image to `public/img/`
+Custom callout blocks in Markdown use fenced code blocks with language tags `IMPORTANT`, `WARNING`, or `NOTE`; the template CSS styles these with colored left borders.
 
 ### Styling
+Tailwind CSS v4 (PostCSS plugin). Prettier is configured with `prettier-plugin-tailwindcss` for class sorting. No separate `tailwind.config.*` file — v4 uses `postcss.config.mjs`.
 
-- Tailwind CSS v4 imported via `@import "tailwindcss"` in `globals.css` (no `tailwind.config.js`)
-- CSS custom properties defined in `:root` in `globals.css` drive the dark theme — use `var(--text-color)`, `var(--background-color)`, etc. rather than hardcoded colors
-- Font Awesome icons loaded via CDN `<Script>` with `strategy="beforeInteractive"` in the root layout
+### Adding a project
+1. Add an entry to `projects` array in `src/app/data/projects.ts`.
+2. Create `src/app/data/projects/<repoName>.md` (use existing `.md` files as reference).
+3. Add a banner image to `public/img/`.
 
-### Layout Shell
-
-`src/app/layout.tsx` wraps all pages with `Header`, `Navbar`, `Footer`, `Analytics` (Vercel), and `SpeedInsights` (Vercel). The `<main>` tag in the layout is the flex-grow container; page components render their own inner `<main>` for content-specific layout.
+### Adding a technology icon
+Add an entry to the `icons` object in `src/app/data/icons.ts` with `name`, `url`, `imgSrc`, and `alt`. The key becomes the slug used in Markdown files and About page data.
