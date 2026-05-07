@@ -3,6 +3,7 @@ services:
     build: .
     environment:
       - NODE_ENV=production
+      - NEXT_TELEMETRY_DISABLED=1
     restart: always
     labels:
       - "traefik.enable=true"
