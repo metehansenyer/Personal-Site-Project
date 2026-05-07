@@ -19,8 +19,6 @@ import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
 import Script from "next/script";
 import { Inter } from 'next/font/google'
-import { Analytics } from "@vercel/analytics/react"
-import { SpeedInsights } from "@vercel/speed-insights/next"
 
 // Configure Google Font (Inter)
 const inter = Inter({
@@ -86,8 +84,11 @@ export const metadata: Metadata = {
           {children}
         </main>
         <Footer />
-        <Analytics />
-        <SpeedInsights />
+        <Script
+          src="https://umami.metehansenyer.tech/script.js"
+          data-website-id="41d22223-daff-461c-bec6-d56ddd7208f6"
+          strategy="afterInteractive"
+        />
       </body>
     </html>
   );
