@@ -24,48 +24,50 @@ Proje boyunca aşağıdaki araçlar ve kaynaklardan faydalandım:
 - **CMake**: Proje yönetimi ve bağımlılık yönetimi.
 - **Photoshop**: Görsel tasarım ve düzenleme.
 
-| Teknoloji | Kaynak |
-|:---:|:---:|
-| C++ Compiler | [MinGW-64](https://www.mingw-w64.org/) |
-| Raylib | [Get Started in raylib in 20 minutes!](https://youtu.be/RGzj-PF7D74) |
-| Raylib | [Sprite Animation in Raylib](https://youtu.be/vfNn450TVxs) |
-| Raylib | [ReSize Screen Problem Solution](https://stackoverflow.com/a/75513030) |
-| Raylib | [Circle and Rotated Rectangle Collision Detection](https://www.migapro.com/circle-and-rotated-rectangle-collision-detection/) |
+|  Teknoloji   |                                                            Kaynak                                                             |
+| :----------: | :---------------------------------------------------------------------------------------------------------------------------: |
+| C++ Compiler |                                            [MinGW-64](https://www.mingw-w64.org/)                                             |
+|    Raylib    |                             [Get Started in raylib in 20 minutes!](https://youtu.be/RGzj-PF7D74)                              |
+|    Raylib    |                                  [Sprite Animation in Raylib](https://youtu.be/vfNn450TVxs)                                   |
+|    Raylib    |                            [ReSize Screen Problem Solution](https://stackoverflow.com/a/75513030)                             |
+|    Raylib    | [Circle and Rotated Rectangle Collision Detection](https://www.migapro.com/circle-and-rotated-rectangle-collision-detection/) |
 
 ## 🎮 Oyun Özellikleri
 
-| Özellik | Açıklama |
-|:---:|:---:|
+|      Özellik      |                 Açıklama                  |
+| :---------------: | :---------------------------------------: |
 | Karakter Kontrolü | Fare ile karakter yönlendirme ve rotasyon |
-| Çarpışma Sistemi | Gelişmiş çarpışma algılama mekanizması |
-| Seviye Sistemi | Karakter büyüme ve gelişme mekanikleri |
-| Ses Efektleri | Oyun içi ses ve müzik sistemi |
+| Çarpışma Sistemi  |  Gelişmiş çarpışma algılama mekanizması   |
+|  Seviye Sistemi   |  Karakter büyüme ve gelişme mekanikleri   |
+|   Ses Efektleri   |       Oyun içi ses ve müzik sistemi       |
 
 ## 📊 Teknik Zorluklar ve Çözümler
 
-| Zorluk | Çözüm Yaklaşımı |
-|:---:|:---:|
-| Hareket Sistemi | Fare takibi ve açısal rotasyon hesaplamaları |
-| Çarpışma Algılama | Daire tabanlı çarpışma sistemi ve orijin noktası optimizasyonu |
-| Ses Sistemi | Raylib ses sistemi entegrasyonu |
-| Karakter Boyutlandırma | Seviye bazlı karakter ölçeklendirme |
+|         Zorluk         |                        Çözüm Yaklaşımı                         |
+| :--------------------: | :------------------------------------------------------------: |
+|    Hareket Sistemi     |          Fare takibi ve açısal rotasyon hesaplamaları          |
+|   Çarpışma Algılama    | Daire tabanlı çarpışma sistemi ve orijin noktası optimizasyonu |
+|      Ses Sistemi       |                Raylib ses sistemi entegrasyonu                 |
+| Karakter Boyutlandırma |              Seviye bazlı karakter ölçeklendirme               |
 
 ## 💾 İndirme ve Çalıştırma
 
 Proje dosyalarını [buradan](https://github.com/metehansenyer/KOU-YZM104-CppGameProject-AngrySharks/archive/refs/heads/main.zip) indirip kendi bilgisayarınızda çalıştırabilirsiniz.
 
 ### Geliştiriciler için
+
 ```bash
 git clone https://github.com/metehansenyer/KOU-YZM104-CppGameProject-AngrySharks.git
 ```
 
 ### Gereksinimler
+
 - CMake
 - CLion veya Visual Studio Code (CMake eklentisi ile)
 
-| IDE | Kurulum Kılavuzu |
-|:---:|:---:|
-| CLion | [Create/open CMake projects](https://www.jetbrains.com/help/clion/creating-new-project-from-scratch.html) |
+|   IDE   |                                                 Kurulum Kılavuzu                                                 |
+| :-----: | :--------------------------------------------------------------------------------------------------------------: |
+|  CLion  |    [Create/open CMake projects](https://www.jetbrains.com/help/clion/creating-new-project-from-scratch.html)     |
 | VS Code | [Import a CMake project](https://www.pragmaticlinux.com/2021/07/import-a-cmake-project-into-visual-studio-code/) |
 
 ## 🔄 Gelecek Geliştirmeler

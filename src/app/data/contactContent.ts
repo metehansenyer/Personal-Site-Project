@@ -12,7 +12,8 @@ interface ContactContent {
 // Including title, description, contact email, and footer message
 export const contactContent: ContactContent = {
   title: 'İletişime Geçin',
-  description: 'Projeleriniz, işbirliği fırsatları veya herhangi bir soru için benimle iletişime geçebilirsiniz.',
+  description:
+    'Projeleriniz, işbirliği fırsatları veya herhangi bir soru için benimle iletişime geçebilirsiniz.',
   email: 'mthansnyr@gmail.com',
-  footerText: 'En kısa sürede size dönüş yapacağım.'
-} 
+  footerText: 'En kısa sürede size dönüş yapacağım.',
+}

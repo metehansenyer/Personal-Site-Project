@@ -1,12 +1,12 @@
 /**
  * Project Detail Page Component
- * 
+ *
  * This component renders the detailed view of a specific project.
  * It displays:
  * - Project banner image
  * - Project README content (rendered from markdown)
  * - GitHub repository link
- * 
+ *
  * Features:
  * - Dynamic routing based on project repository name
  * - Markdown content rendering
@@ -27,9 +27,9 @@ type Props = {
 export default async function ProjectPage({ params }: Props) {
   // Extract project repository name from URL parameters
   const { projectRepoName } = await params
-  
+
   // Find the project in the projects list
-  const project = projects.find(p => p.repoName === projectRepoName)
+  const project = projects.find((p) => p.repoName === projectRepoName)
 
   // Redirect to 404 if project not found
   if (!project) {
@@ -40,7 +40,7 @@ export default async function ProjectPage({ params }: Props) {
   const content = await getMarkdownContent(project.repoName)
 
   return (
-    <main className="w-full max-w-[980px] mx-auto px-4 py-8">
+    <main className="mx-auto w-full max-w-[980px] px-4 py-8">
       <div className="space-y-8">
         {/* Project Banner Image */}
         <ProjectBanner project={project} />

@@ -1,9 +1,9 @@
 /**
  * Middleware Module
- * 
+ *
  * This module handles request processing before they reach the page components.
  * It provides mobile device detection and routing functionality.
- * 
+ *
  * Features:
  * - Mobile device detection using User-Agent
  * - Automatic redirection to mobile page for mobile devices
@@ -37,12 +37,12 @@ function isMobileDevice(userAgent: string): boolean {
 // Processes each request before it reaches the page components
 export function proxy(request: NextRequest) {
   const response = NextResponse.next()
-  
+
   // Handle mobile device redirection
   if (!request.nextUrl.pathname.startsWith('/mobile')) {
     const userAgent = request.headers.get('user-agent') || ''
     const isMobile = isMobileDevice(userAgent)
-  
+
     // Redirect mobile users to the mobile page
     if (isMobile) {
       return NextResponse.redirect(new URL('/mobile', request.url))
@@ -67,4 +67,4 @@ export const config = {
     // Match all pages except specific paths
     '/((?!mobile|_next/static|_next/image|favicon.ico).*)',
   ],
-} 
+}

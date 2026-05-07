@@ -8,14 +8,14 @@ Merhaba, ben **Metehan Şenyer**. Bu proje, Kocaeli Üniversitesi öğrenci bilg
 
 ## 🌟 Proje Özellikleri
 
-| Özellik | Açıklama |
-|:---:|:---:|
-| **Otomatik Veri Toplama** | Tüm dönemlerin not verilerini toplar ve çevrimdışı kullanım için JSON formatında saklar. |
-| **Güvenli Oturum Yönetimi** | Cookie tabanlı oturum yönetimi ile şifreleri saklamadan güvenli bir şekilde yeniden giriş yapar. |
-| **Ultra Hızlı Erişim** | Veriler yerel olarak saklandığı için sonraki kullanımlarda 1 saniyeden daha kısa sürede erişim sağlar. |
-| **Veri Güncelleme** | Menüden tek bir komutla sunucudan en güncel verileri çekerek yerel verileri günceller. |
-| **Zengin Konsol Arayüzü** | Python'un `rich` kütüphanesi kullanılarak oluşturulmuş kullanıcı dostu ve renkli bir arayüz sunar. |
-| **Çapraz Platform Desteği** | Windows, macOS ve Linux üzerinde sorunsuz çalışır. |
+|           Özellik           |                                                Açıklama                                                |
+| :-------------------------: | :----------------------------------------------------------------------------------------------------: |
+|  **Otomatik Veri Toplama**  |        Tüm dönemlerin not verilerini toplar ve çevrimdışı kullanım için JSON formatında saklar.        |
+| **Güvenli Oturum Yönetimi** |    Cookie tabanlı oturum yönetimi ile şifreleri saklamadan güvenli bir şekilde yeniden giriş yapar.    |
+|   **Ultra Hızlı Erişim**    | Veriler yerel olarak saklandığı için sonraki kullanımlarda 1 saniyeden daha kısa sürede erişim sağlar. |
+|     **Veri Güncelleme**     |         Menüden tek bir komutla sunucudan en güncel verileri çekerek yerel verileri günceller.         |
+|  **Zengin Konsol Arayüzü**  |   Python'un `rich` kütüphanesi kullanılarak oluşturulmuş kullanıcı dostu ve renkli bir arayüz sunar.   |
+| **Çapraz Platform Desteği** |                           Windows, macOS ve Linux üzerinde sorunsuz çalışır.                           |
 
 ## 🛠️ Kullanılan Araçlar
 
@@ -32,12 +32,14 @@ Merhaba, ben **Metehan Şenyer**. Bu proje, Kocaeli Üniversitesi öğrenci bilg
 Projeyi yerel ortamınızda çalıştırmak için aşağıdaki adımları izleyebilirsiniz:
 
 1.  **Repoyu klonlayın:**
+
     ```bash
     git clone https://github.com/metehansenyer/KOU-Not-Bilgi-Sistemi-CLI.git
     cd KOU-Not-Bilgi-Sistemi-CLI
     ```
 
 2.  **Sanal ortam oluşturun ve aktifleştirin:**
+
     ```bash
     python -m venv venv
     # Windows
@@ -47,6 +49,7 @@ Projeyi yerel ortamınızda çalıştırmak için aşağıdaki adımları izleye
     ```
 
 3.  **Gerekli paketleri yükleyin:**
+
     ```bash
     pip install -r requirements.txt
     ```
@@ -58,13 +61,13 @@ Projeyi yerel ortamınızda çalıştırmak için aşağıdaki adımları izleye
 
 ## 🖥️ Kullanım
 
--   **İlk Kullanım**: Programı başlattıktan sonra öğrenci numaranızı ve şifrenizi girerek reCAPTCHA'yı çözmeniz istenir. Bu işlemden sonra tüm verileriniz toplanır (~2-5 dk).
--   **Sonraki Kullanımlar**: Sadece öğrenci numaranızı girmeniz yeterlidir. Verileriniz 1 saniyeden kısa sürede yüklenir.
--   **Menü Seçenekleri**:
-    1.  Güncel dönem notlarını görüntüle
-    2.  Geçmiş dönemleri seçerek notları görüntüle
-    3.  Verileri sunucudan güncelle
-    4.  Çıkış
+- **İlk Kullanım**: Programı başlattıktan sonra öğrenci numaranızı ve şifrenizi girerek reCAPTCHA'yı çözmeniz istenir. Bu işlemden sonra tüm verileriniz toplanır (~2-5 dk).
+- **Sonraki Kullanımlar**: Sadece öğrenci numaranızı girmeniz yeterlidir. Verileriniz 1 saniyeden kısa sürede yüklenir.
+- **Menü Seçenekleri**:
+  1.  Güncel dönem notlarını görüntüle
+  2.  Geçmiş dönemleri seçerek notları görüntüle
+  3.  Verileri sunucudan güncelle
+  4.  Çıkış
 
 ```IMPORTANT
 Bu araç eğitim amaçlıdır ve Kocaeli Üniversitesi'nin resmi bir uygulaması değildir. Kullanım sorumluluğu tamamen kullanıcıya aittir.

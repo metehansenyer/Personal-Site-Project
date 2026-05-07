@@ -11,196 +11,200 @@
   - Custom icon styling for technology badges
   - Improved list styling
 -->
-<!DOCTYPE html>
+<!doctype html>
 <html>
-<head>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/github-markdown-css/5.5.0/github-markdown.min.css">
-  <style>
-    .markdown-body {
-      box-sizing: border-box;
-      min-width: 200px;
-      max-width: 980px;
-      color: var(--text-color);
-      background-color: transparent;
-    }
+  <head>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/github-markdown-css/5.5.0/github-markdown.min.css"
+    />
+    <style>
+      .markdown-body {
+        box-sizing: border-box;
+        min-width: 200px;
+        max-width: 980px;
+        color: var(--text-color);
+        background-color: transparent;
+      }
 
-    .markdown-body h1,
-    .markdown-body h2,
-    .markdown-body h3,
-    .markdown-body h4,
-    .markdown-body h5,
-    .markdown-body h6 {
-      font-weight: bold;
-      padding-bottom: 1rem;
-      border-bottom: 1px solid;
-    }
+      .markdown-body h1,
+      .markdown-body h2,
+      .markdown-body h3,
+      .markdown-body h4,
+      .markdown-body h5,
+      .markdown-body h6 {
+        font-weight: bold;
+        padding-bottom: 1rem;
+        border-bottom: 1px solid;
+      }
 
-    .markdown-body ul {
+      .markdown-body ul {
         list-style: initial;
-    }
+      }
 
-    .markdown-body ol {
+      .markdown-body ol {
         list-style: decimal;
-    }
+      }
 
-    .markdown-body ol ol, .markdown-body ul ol {
+      .markdown-body ol ol,
+      .markdown-body ul ol {
         list-style-type: circle;
-    }
+      }
 
-    .markdown-body table {
-      display: block;
-      width: max-content;
-      max-width: 100%;
-      overflow: auto;
-    }
+      .markdown-body table {
+        display: block;
+        width: max-content;
+        max-width: 100%;
+        overflow: auto;
+      }
 
-    .markdown-body table td:nth-child(1) {
-      text-align: left;
-    }
+      .markdown-body table td:nth-child(1) {
+        text-align: left;
+      }
 
-    .markdown-body table td, .markdown-body table th {
-      border: 1px solid var(--table-border-color);
-    }
+      .markdown-body table td,
+      .markdown-body table th {
+        border: 1px solid var(--table-border-color);
+      }
 
-    .markdown-body table tr {
-      background-color: var(--table-background-color);
-      border-top: 1px solid var(--table-border-color-muted);
-    }
+      .markdown-body table tr {
+        background-color: var(--table-background-color);
+        border-top: 1px solid var(--table-border-color-muted);
+      }
 
-    .markdown-body table tr:nth-child(2n) {
-      background-color: var(--table-background-color-muted);
-    }
-    
-    .markdown-body a {
-      color: var(--text-color-blue);
-      text-decoration-line: underline;
-    }
+      .markdown-body table tr:nth-child(2n) {
+        background-color: var(--table-background-color-muted);
+      }
 
-    .markdown-body pre {
-      background-color: var(--nav-background-color);
-    }
-    
-    .markdown-body code {
-      background-color: var(--nav-background-color);
-    }
+      .markdown-body a {
+        color: var(--text-color-blue);
+        text-decoration-line: underline;
+      }
 
-    .markdown-body pre:has(code.language-IMPORTANT) {
-      background-color: transparent;
-      border-left: 6px solid var(--important-color);
-    }
+      .markdown-body pre {
+        background-color: var(--nav-background-color);
+      }
 
-    .markdown-body pre:has(code.language-IMPORTANT)::before {
-      content: "ⓘ ÖNEMLİ";
-      display: block;
-      padding-bottom: 5px;
-      color: var(--important-color);
-      font-weight: bold;
-    }
+      .markdown-body code {
+        background-color: var(--nav-background-color);
+      }
 
-    .markdown-body pre:has(code.language-WARNING) {
-      background-color: transparent;
-      border-left: 6px solid var(--warning-color);
-    }
+      .markdown-body pre:has(code.language-IMPORTANT) {
+        background-color: transparent;
+        border-left: 6px solid var(--important-color);
+      }
 
-    .markdown-body pre:has(code.language-WARNING)::before {
-      content: "⚠️ UYARI";
-      display: block;
-      padding-bottom: 5px;
-      color: var(--warning-color);
-      font-weight: bold;
-    }
+      .markdown-body pre:has(code.language-IMPORTANT)::before {
+        content: 'ⓘ ÖNEMLİ';
+        display: block;
+        padding-bottom: 5px;
+        color: var(--important-color);
+        font-weight: bold;
+      }
 
-    .markdown-body pre:has(code.language-NOTE) {
-      background-color: transparent;
-      border-left: 6px solid var(--note-color);
-    }
+      .markdown-body pre:has(code.language-WARNING) {
+        background-color: transparent;
+        border-left: 6px solid var(--warning-color);
+      }
 
-    .markdown-body pre:has(code.language-NOTE)::before {
-      content: "ⓘ NOT";
-      display: block;
-      padding-bottom: 5px;
-      color: var(--note-color);
-      font-weight: bold;
-    }
+      .markdown-body pre:has(code.language-WARNING)::before {
+        content: '⚠️ UYARI';
+        display: block;
+        padding-bottom: 5px;
+        color: var(--warning-color);
+        font-weight: bold;
+      }
 
-    .markdown-body div.icon {
-      display: flex;
-      justify-content: center; 
-      align-items: center; 
-      gap: 10px; 
-      width: 100%; 
-      margin: 20px 0; 
-      background: transparent;
-    }
+      .markdown-body pre:has(code.language-NOTE) {
+        background-color: transparent;
+        border-left: 6px solid var(--note-color);
+      }
 
-    .markdown-body div.icon a.icon-link {
-      background: transparent;
-    }
+      .markdown-body pre:has(code.language-NOTE)::before {
+        content: 'ⓘ NOT';
+        display: block;
+        padding-bottom: 5px;
+        color: var(--note-color);
+        font-weight: bold;
+      }
 
-    .markdown-body div.icon a.icon-link img.icon-img {
-      background: transparent;
-      width: 40px;
-      height: 40px;
-    }
+      .markdown-body div.icon {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 10px;
+        width: 100%;
+        margin: 20px 0;
+        background: transparent;
+      }
 
-    .markdown-body div.icon a.icon-link img.icon-img:hover {
-      scale: 110%;
-      transition: all;
-    }
+      .markdown-body div.icon a.icon-link {
+        background: transparent;
+      }
 
-    /* Center aligned content support */
-    .markdown-body p[align="center"] {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      text-align: center;
-    }
+      .markdown-body div.icon a.icon-link img.icon-img {
+        background: transparent;
+        width: 40px;
+        height: 40px;
+      }
 
-    .markdown-body .center-content {
-      text-align: center;
-      margin: 16px 0;
-    }
+      .markdown-body div.icon a.icon-link img.icon-img:hover {
+        scale: 110%;
+        transition: all;
+      }
 
-    /* Badge container styling */
-    .markdown-body .badges {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      align-items: center;
-      gap: 8px;
-      margin: 16px 0;
-    }
+      /* Center aligned content support */
+      .markdown-body p[align='center'] {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+      }
 
-    .markdown-body .badges a {
-      display: inline-block;
-      text-decoration: none;
-    }
+      .markdown-body .center-content {
+        text-align: center;
+        margin: 16px 0;
+      }
 
-    .markdown-body .badges img {
-      display: block;
-      height: auto;
-    }
+      /* Badge container styling */
+      .markdown-body .badges {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        align-items: center;
+        gap: 8px;
+        margin: 16px 0;
+      }
 
-    /* Logo container styling */
-    .markdown-body .project-logo {
-      display: flex;
-      justify-content: center;
-      margin: 24px 0;
-    }
+      .markdown-body .badges a {
+        display: inline-block;
+        text-decoration: none;
+      }
 
-    .markdown-body .project-logo img {
-      max-width: 200px;
-      height: auto;
-      border-radius: 12px;
-      background: transparent;
-    }
+      .markdown-body .badges img {
+        display: block;
+        height: auto;
+      }
 
-  </style>
-</head>
-<body>
-  <article class="markdown-body">
-    <!-- CONTENT -->
-  </article>
-</body>
-</html> 
+      /* Logo container styling */
+      .markdown-body .project-logo {
+        display: flex;
+        justify-content: center;
+        margin: 24px 0;
+      }
+
+      .markdown-body .project-logo img {
+        max-width: 200px;
+        height: auto;
+        border-radius: 12px;
+        background: transparent;
+      }
+    </style>
+  </head>
+  <body>
+    <article class="markdown-body">
+      <!-- CONTENT -->
+    </article>
+  </body>
+</html>

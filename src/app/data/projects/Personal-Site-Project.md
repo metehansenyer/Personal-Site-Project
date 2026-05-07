@@ -30,33 +30,36 @@ Proje boyunca aşağıdaki araçlar ve kaynaklardan faydalandım:
 
 ## 🌟 Site Özellikleri
 
-| Özellik | Açıklama |
-|:---:|:---:|
-| **Modern Tasarım** | Okunabilirlik ve kullanıcı deneyimine odaklanan temiz ve minimalist bir tasarım |
-| **Duyarlı Tasarım** | Masaüstü bilgisayarlarda farklı ekran boyutlarına uyum sağlayan tamamen duyarlı tasarım |
-| **Proje Vitrini** | Projelerimi açıklamaları, kullanılan teknolojileri ve depo bağlantılarıyla birlikte sergilemek için ayrılmış bir portfolio bölümü |
-| **Hakkımda Sayfası** | Kendimi, yeteneklerimi ve geçmişimi tanıttığım bir bölüm |
-| **İletişim Sayfası** | Bana ulaşabileceğiniz yollar |
-| **Teknoloji Entegrasyonu** | Her proje için dinamik olarak oluşturulan Markdown Parser sağlanarak render edilen teknoloji ikonları |
-| **SEO Optimize Edilmiş** | Arama motoru görünürlüğünü artırmak için uygulanan SEO en iyi uygulamaları |
-| **Karanlık Mod** | Düşük ışıklı ortamlarda rahat gezinme için görsel olarak çekici bir karanlık tema |
+|          Özellik           |                                                             Açıklama                                                              |
+| :------------------------: | :-------------------------------------------------------------------------------------------------------------------------------: |
+|     **Modern Tasarım**     |                          Okunabilirlik ve kullanıcı deneyimine odaklanan temiz ve minimalist bir tasarım                          |
+|    **Duyarlı Tasarım**     |                      Masaüstü bilgisayarlarda farklı ekran boyutlarına uyum sağlayan tamamen duyarlı tasarım                      |
+|     **Proje Vitrini**      | Projelerimi açıklamaları, kullanılan teknolojileri ve depo bağlantılarıyla birlikte sergilemek için ayrılmış bir portfolio bölümü |
+|    **Hakkımda Sayfası**    |                                     Kendimi, yeteneklerimi ve geçmişimi tanıttığım bir bölüm                                      |
+|    **İletişim Sayfası**    |                                                   Bana ulaşabileceğiniz yollar                                                    |
+| **Teknoloji Entegrasyonu** |               Her proje için dinamik olarak oluşturulan Markdown Parser sağlanarak render edilen teknoloji ikonları               |
+|  **SEO Optimize Edilmiş**  |                            Arama motoru görünürlüğünü artırmak için uygulanan SEO en iyi uygulamaları                             |
+|      **Karanlık Mod**      |                         Düşük ışıklı ortamlarda rahat gezinme için görsel olarak çekici bir karanlık tema                         |
 
 ## 💾 İndirme ve Çalıştırma
 
 Projeyi yerel ortamınızda çalıştırmak için aşağıdaki adımları izleyebilirsiniz:
 
 ### Ön koşullar
+
 - Node.js (v18 veya üstü)
 - npm veya yarn
 
 ### Kurulum
 
 1. **Depoyu klonlayın:**
+
    ```bash
    git clone https://github.com/metehansenyer/Personal-Site-Project.git
    ```
 
 2. **Proje dizinine gidin:**
+
    ```bash
    cd Personal-Site-Project
    ```
@@ -69,12 +72,15 @@ Projeyi yerel ortamınızda çalıştırmak için aşağıdaki adımları izleye
 ### Uygulamayı Çalıştırma
 
 - **Geliştirme modu:**
+
   ```bash
   npm run dev
   ```
+
   Tarayıcıda görüntülemek için [http://localhost:3000](http://localhost:3000) adresini açın.
 
 - **Production build:**
+
   ```bash
   npm run build
   ```

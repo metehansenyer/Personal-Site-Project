@@ -2,39 +2,39 @@
 import Image from 'next/image'
 import { socialLinks } from '@/app/data/socialLinks'
 import { aboutContent } from '@/app/data/aboutContent'
-import { generateAboutTechnologies } from '@/app/data/icons';
+import { generateAboutTechnologies } from '@/app/data/icons'
 
 /**
  * About Page Component
- * 
+ *
  * This component renders the about page of the portfolio website.
  * It displays personal information, a brief biography, and a list of technologies.
  * The page is divided into two main sections:
  * 1. Profile section with photo, name, and contact information
  * 2. Details section with about me text and technology icons
- * 
+ *
  * The content is managed through the aboutContent configuration
  * to support easy updates and potential internationalization.
  */
 export default function About() {
   return (
-    <main className="w-[80%] h-full mx-auto flex flex-col md:flex-row gap-4 animate-fadeIn items-center">
+    <main className="animate-fadeIn mx-auto flex h-full w-[80%] flex-col items-center gap-4 md:flex-row">
       {/* Profile Section - Contains photo, name, and contact information */}
-      <section className="md:w-1/3 space-y-4 md:pl-[5%]">
-        <Image 
+      <section className="space-y-4 md:w-1/3 md:pl-[5%]">
+        <Image
           src="/img/profil_fotografim.jpeg"
           alt="İŞTE BEN"
-          width={250} 
+          width={250}
           height={250}
-          className="rounded-[35px] hover:scale-105 transition-transform duration-300"
+          className="rounded-[35px] transition-transform duration-300 hover:scale-105"
           priority
         />
-        
+
         {/* Profile Information Table */}
         <table className="w-full text-[1.3rem]">
           <thead>
             <tr>
-              <th colSpan={2} className="text-[1.7rem] font-bold text-left pb-2">
+              <th colSpan={2} className="pb-2 text-left text-[1.7rem] font-bold">
                 {aboutContent.profile.name}
               </th>
             </tr>
@@ -53,9 +53,10 @@ export default function About() {
                 <i className="fa-solid fa-envelope" aria-hidden="true"></i>
               </td>
               <td>
-                <a 
-                  href={`mailto:${aboutContent.profile.email}`} target="_blank"
-                  className="hover:text-(--text-color-white) transition-colors cursor-pointer"
+                <a
+                  href={`mailto:${aboutContent.profile.email}`}
+                  target="_blank"
+                  className="cursor-pointer transition-colors hover:text-(--text-color-white)"
                 >
                   {aboutContent.profile.email}
                 </a>
@@ -75,10 +76,10 @@ export default function About() {
               <th colSpan={2} className="pt-4">
                 <div className="flex gap-2 text-[2.2rem]">
                   {socialLinks.map((link) => (
-                    <a 
+                    <a
                       key={link.name}
                       href={link.url}
-                      className="hover:text-(--nav-background-color) hover:scale-110 transition-all"
+                      className="transition-all hover:scale-110 hover:text-(--nav-background-color)"
                       target="_blank"
                       rel="noopener noreferrer"
                       aria-label={link.name}
@@ -94,16 +95,14 @@ export default function About() {
       </section>
 
       {/* Details Section - Contains about me text and technologies */}
-      <section className="md:w-2/3 space-y-6">
+      <section className="space-y-6 md:w-2/3">
         {/* About Me Section */}
         <div className="space-y-2">
           <h2 className="text-[1.8rem] font-bold">{aboutContent.sectionTitles.about}</h2>
           <div className="flex">
-            <div className="w-1 bg-(--text-color) rounded-l-[15px]"></div>
-            <div className="flex-1 text-justify px-4 py-2">
-              <p className="text-[1.2rem] leading-relaxed">
-                {aboutContent.aboutMe}
-              </p>
+            <div className="w-1 rounded-l-[15px] bg-(--text-color)"></div>
+            <div className="flex-1 px-4 py-2 text-justify">
+              <p className="text-[1.2rem] leading-relaxed">{aboutContent.aboutMe}</p>
             </div>
           </div>
         </div>
@@ -112,7 +111,7 @@ export default function About() {
         <div className="space-y-2">
           <h2 className="text-[1.8rem] font-bold">{aboutContent.sectionTitles.technologies}</h2>
           <div className="flex">
-            <div className="w-1 bg-(--text-color) rounded-l-[15px]"></div>
+            <div className="w-1 rounded-l-[15px] bg-(--text-color)"></div>
             <div className="flex-1 px-4 py-2">
               {aboutContent.technologies.length === 0 ? (
                 <p className="text-(--text-color) opacity-70">{aboutContent.noTechText}</p>
@@ -127,7 +126,7 @@ export default function About() {
                       className="group/tech"
                       aria-label={tech.name}
                     >
-                      <Image 
+                      <Image
                         src={tech.imgSrc}
                         alt={tech.alt}
                         width={60}
@@ -145,4 +144,4 @@ export default function About() {
       </section>
     </main>
   )
-} 
+}

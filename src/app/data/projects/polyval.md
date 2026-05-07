@@ -27,7 +27,7 @@ npm install polyval
 ## 🚀 Temel Kullanım
 
 ```typescript
-import { validate } from 'polyval';
+import { validate } from 'polyval'
 
 // Basit şema tanımı
 const userSchema = {
@@ -35,29 +35,29 @@ const userSchema = {
     type: 'string',
     required: true,
     min: 3,
-    max: 20
+    max: 20,
   },
   email: {
     type: 'string',
     required: true,
-    email: true
+    email: true,
   },
   age: {
     type: 'number',
-    min: 18
-  }
-};
+    min: 18,
+  },
+}
 
 // Doğrulanacak veri
 const userData = {
   username: 'jo',
   email: 'invalid-email',
-  age: 16
-};
+  age: 16,
+}
 
 // Doğrulama (Türkçe dilinde)
-const errors = validate(userSchema, userData, { lang: 'tr' });
-console.log(errors);
+const errors = validate(userSchema, userData, { lang: 'tr' })
+console.log(errors)
 // [
 //   "Username: En az 3 karakter uzunluğunda olmalıdır",
 //   "Email: Geçersiz e-posta adresi",
@@ -72,11 +72,11 @@ PolyVal şemaları, basit JavaScript nesneleri kullanılarak tanımlanır. Her a
 ```typescript
 const schema = {
   fieldName: {
-    type: 'string' | 'number' | 'boolean' | 'date',  // Alan türü (zorunlu)
-    required: boolean,                               // Alan zorunlu mu? (varsayılan: false)
+    type: 'string' | 'number' | 'boolean' | 'date', // Alan türü (zorunlu)
+    required: boolean, // Alan zorunlu mu? (varsayılan: false)
     // Diğer doğrulama kuralları...
-  }
-};
+  },
+}
 ```
 
 ### Desteklenen Doğrulama Kuralları
@@ -199,35 +199,35 @@ const errors = validate(schema, data, {
     // 1. Genel hata mesajları
     required: 'Bu alan boş bırakılamaz',
     invalid_type: 'Geçersiz değer türü',
-    
+
     // 2. Türe dayalı hata mesajları
     string: {
       min: (min) => `Lütfen en az ${min} karakter girin`,
-      email: 'Lütfen geçerli bir e-posta adresi girin'
+      email: 'Lütfen geçerli bir e-posta adresi girin',
     },
     number: {
-      min: (min) => `Değer en az ${min} olmalıdır`
+      min: (min) => `Değer en az ${min} olmalıdır`,
     },
-    
+
     // 3. Özel karşılaştırma kuralı mesajları
     equals: (field) => `Bu alan, ${field} alanı ile eşleşmelidir`,
-    
+
     // 4. Alana dayalı özel mesajlar (en yüksek öncelik)
     fields: {
       username: {
         min: (min) => `Kullanıcı adı en az ${min} karakter olmalıdır`,
         required: 'Kullanıcı adı zorunludur',
         // Özel doğrulama kuralı için mesaj
-        noAdminUsername: 'Admin kullanıcı adı rezerve edilmiştir'
-      }
+        noAdminUsername: 'Admin kullanıcı adı rezerve edilmiştir',
+      },
     },
-    
+
     // 5. Genel özel doğrulayıcı mesajları
     custom: {
-      noAdminUsername: 'Admin kullanıcı adı kullanılamaz'
-    }
-  }
-});
+      noAdminUsername: 'Admin kullanıcı adı kullanılamaz',
+    },
+  },
+})
 ```
 
 ### Mesaj Öncelik Sırası
@@ -246,7 +246,7 @@ Hata mesajları aşağıdaki öncelik sırasına göre belirlenir (en yüksekten
 ### Kullanıcı Kayıt Doğrulama Örneği
 
 ```typescript
-import { validate } from 'polyval';
+import { validate } from 'polyval'
 
 // Kullanıcı kayıt şeması
 const userRegistrationSchema = {
@@ -255,55 +255,61 @@ const userRegistrationSchema = {
     required: true,
     min: 3,
     max: 20,
-    customValidators: [{
-      validator: (value) => value.toLowerCase() !== 'admin' ? undefined : 'Admin kullanıcı adı kullanılamaz',
-      messageKey: 'noAdminUsername'
-    }]
+    customValidators: [
+      {
+        validator: (value) =>
+          value.toLowerCase() !== 'admin' ? undefined : 'Admin kullanıcı adı kullanılamaz',
+        messageKey: 'noAdminUsername',
+      },
+    ],
   },
   email: {
     type: 'string',
     required: true,
-    email: true
+    email: true,
   },
   age: {
     type: 'number',
     min: 18,
-    required: false
+    required: false,
   },
   password: {
     type: 'string',
     required: true,
     min: 8,
-    max: 100 // Güçlü şifre için minimum/maksimum uzunluk kontrolü
+    max: 100, // Güçlü şifre için minimum/maksimum uzunluk kontrolü
   },
   confirmPassword: {
     type: 'string',
     required: true,
     equals: 'password', // 'password' alanı ile eşleşmeli
-    customValidators: [{
-      validator: (value, data) => value !== data.password + '123' ? undefined : 'Tahmin edilebilir bir şifre kullandınız',
-      messageKey: 'predictablePassword'
-    }]
+    customValidators: [
+      {
+        validator: (value, data) =>
+          value !== data.password + '123' ? undefined : 'Tahmin edilebilir bir şifre kullandınız',
+        messageKey: 'predictablePassword',
+      },
+    ],
   },
   acceptTerms: {
     type: 'boolean',
     required: true,
-    equals: true // Kullanıcı şartları kabul etmeli
-  }
-};
+    equals: true, // Kullanıcı şartları kabul etmeli
+  },
+}
 
 // Geçersiz veri
 const userData = {
-  username: "al",
-  email: "invalid-email",
-  password: "123",
-  confirmPassword: "456",
-  acceptTerms: false
-};
+  username: 'al',
+  email: 'invalid-email',
+  password: '123',
+  confirmPassword: '456',
+  acceptTerms: false,
+}
 
 // Türkçe hata mesajları ile doğrulama
-const errorsTR = validate(userRegistrationSchema, userData, { lang: 'tr' });
-console.log(errorsTR);
+const errorsTR = validate(userRegistrationSchema, userData, { lang: 'tr' })
+console.log(errorsTR)
 
 // İngilizce ve özelleştirilmiş mesajlarla doğrulama
 const errorsEN = validate(userRegistrationSchema, userData, {
@@ -311,20 +317,20 @@ const errorsEN = validate(userRegistrationSchema, userData, {
   customMessages: {
     string: {
       min: (min) => `Please ensure this field has at least ${min} characters.`,
-      email: "That doesn't look like a valid email address."
+      email: "That doesn't look like a valid email address.",
     },
     fields: {
       username: {
-        noAdminUsername: "Sorry, 'admin' is a reserved username."
+        noAdminUsername: "Sorry, 'admin' is a reserved username.",
       },
       confirmPassword: {
-        equals: "Passwords must match exactly."
-      }
-    }
-  }
-});
+        equals: 'Passwords must match exactly.',
+      },
+    },
+  },
+})
 
-console.log(errorsEN);
+console.log(errorsEN)
 ```
 
 ## 💻 Geliştirme
@@ -354,6 +360,7 @@ npm run build
 `example` dizininde kütüphanenin nasıl kullanılacağını gösteren bir örnek proje bulunmaktadır. Bu örneği incelemek ve çalıştırmak için:
 
 1.  Ana PolyVal projesini kurun ve build edin:
+
     ```bash
     npm install
     npm run build

@@ -6,10 +6,10 @@ import { Project } from '@/app/data/projects'
 
 /**
  * Project Banner Component
- * 
+ *
  * A client component that handles the project banner image display
  * with fallback to placeholder image on error.
- * 
+ *
  * Features:
  * - Error handling for failed image loads
  * - Automatic fallback to placeholder image
@@ -25,7 +25,7 @@ export default function ProjectBanner({ project }: Props) {
   const [imageSrc, setImageSrc] = useState(project.banner)
 
   return (
-    <div className="relative rounded-lg overflow-hidden shadow-lg">
+    <div className="relative overflow-hidden rounded-lg shadow-lg">
       <Image
         src={imageSrc}
         alt={`${project.title} banner`}
@@ -33,9 +33,9 @@ export default function ProjectBanner({ project }: Props) {
         height={1080}
         priority
         sizes="(max-width: 1024px) 100vw, 980px"
-        className="object-contain w-full h-auto"
+        className="h-auto w-full object-contain"
         onError={() => setImageSrc('/img/placeholder_img.png')}
       />
     </div>
   )
-} 
+}

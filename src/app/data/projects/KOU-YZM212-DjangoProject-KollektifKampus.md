@@ -18,36 +18,38 @@ Merhaba, ben **Metehan Şenyer**. Bu proje, Kocaeli Üniversitesi Yazılım Müh
 
 {icons: [python, django, sqlite, html, css, vscode, github]}
 
-| Teknoloji | Açıklama |
-|:---:|:---:|
-| Python & Django | Projenin ana geliştirme dili ve web çatısı. |
-| SQLite | Geliştirme aşamasında kullanılan hafif veritabanı. |
-| HTML/CSS | Kullanıcı arayüzünün yapılandırılması ve stilendirilmesi. |
-| Visual Studio Code | Kod geliştirme ortamı. |
-| GitHub | Versiyon kontrol sistemi. |
+|     Teknoloji      |                         Açıklama                          |
+| :----------------: | :-------------------------------------------------------: |
+|  Python & Django   |        Projenin ana geliştirme dili ve web çatısı.        |
+|       SQLite       |    Geliştirme aşamasında kullanılan hafif veritabanı.     |
+|      HTML/CSS      | Kullanıcı arayüzünün yapılandırılması ve stilendirilmesi. |
+| Visual Studio Code |                  Kod geliştirme ortamı.                   |
+|       GitHub       |                 Versiyon kontrol sistemi.                 |
 
 ## 🌟 Site Özellikleri
 
-| Özellik | Açıklama |
-|:---:|:---:|
-| **Kullanıcı Rolleri** | Öğrenci, Eğitmen, Moderatör ve Admin olmak üzere dört farklı kullanıcı rolü ve yetkileri. |
+|        Özellik         |                                                    Açıklama                                                    |
+| :--------------------: | :------------------------------------------------------------------------------------------------------------: |
+| **Kullanıcı Rolleri**  |           Öğrenci, Eğitmen, Moderatör ve Admin olmak üzere dört farklı kullanıcı rolü ve yetkileri.            |
 | **Ders Talep Sistemi** | Öğrenciler, ihtiyaç duydukları dersler için talepler oluşturabilir ve bu taleplere eğitmenler yanıt verebilir. |
-| **CRUD İşlemleri** | Ders talepleri, kullanıcı profilleri ve diğer veriler için tam kontrol sağlayan arayüzler. |
-| **Kimlik Doğrulama** | Güvenli kullanıcı kaydı, giriş, çıkış ve şifre sıfırlama işlemleri. |
-| **Gelişmiş Arama** | Ders taleplerini başlık, açıklama, kategori gibi birden çok kritere göre arama. |
-| **Veri Yönetimi** | Temel verilerin toplu olarak içeri ve dışarı aktarılabilmesi. |
+|   **CRUD İşlemleri**   |           Ders talepleri, kullanıcı profilleri ve diğer veriler için tam kontrol sağlayan arayüzler.           |
+|  **Kimlik Doğrulama**  |                      Güvenli kullanıcı kaydı, giriş, çıkış ve şifre sıfırlama işlemleri.                       |
+|   **Gelişmiş Arama**   |                Ders taleplerini başlık, açıklama, kategori gibi birden çok kritere göre arama.                 |
+|   **Veri Yönetimi**    |                         Temel verilerin toplu olarak içeri ve dışarı aktarılabilmesi.                          |
 
 ## 💾 İndirme ve Çalıştırma
 
 Projeyi yerel ortamınızda çalıştırmak için aşağıdaki adımları izleyebilirsiniz:
 
 1.  Repoyu klonlayın:
+
     ```bash
     git clone https://github.com/metehansenyer/KOU-YZM212-DjangoProject-KollektifKampus.git
     cd KollektifKampus
     ```
 
 2.  Sanal ortam oluşturun ve aktifleştirin:
+
     ```bash
     python -m venv venv
     # Windows
@@ -57,16 +59,19 @@ Projeyi yerel ortamınızda çalıştırmak için aşağıdaki adımları izleye
     ```
 
 3.  Gerekli paketleri yükleyin:
+
     ```bash
     pip install -r requirements.txt
     ```
 
 4.  Veritabanı migrasyonlarını uygulayın:
+
     ```bash
     python manage.py migrate
     ```
 
 5.  Geliştirme sunucusunu başlatın:
+
     ```bash
     python manage.py runserver
     ```

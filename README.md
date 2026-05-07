@@ -77,12 +77,15 @@ Yerel bir kopyayı kurmak ve çalıştırmak için bu basit adımları izleyin.
 ### Uygulamayı Çalıştırma
 
 - **Geliştirme modu:**
+
   ```bash
   npm run dev
   ```
+
   Tarayıcıda görüntülemek için [http://localhost:3000](http://localhost:3000) adresini açın.
 
 - **Production build:**
+
   ```bash
   npm run build
   ```

@@ -5,10 +5,10 @@ import { useState } from 'react'
 
 /**
  * ProjectCard Component
- * 
+ *
  * A card component that displays project information in the portfolio grid.
  * Each card is a clickable link that leads to the project's detail page.
- * 
+ *
  * Features:
  * - Displays project banner image
  * - Shows project title and description
@@ -24,21 +24,21 @@ type Props = {
 export default function ProjectCard({ project, priority = false }: Props) {
   const [src, setSrc] = useState(project.banner)
   const [isHovered, setIsHovered] = useState(false)
-  
+
   // Sabit genişlik değerleri (padding dahil)
   const TAG_PADDING = 24 // px-3 (sol ve sağ padding)
   const TAG_GAP = 8 // gap-2
   const CONTAINER_WIDTH = 320 // Container genişliği
-  
+
   // Tag'lerin toplam genişliğini hesapla ve sığanları belirle
   const calculateVisibleTags = () => {
     let currentWidth = 0
     let visibleCount = 0
-    
+
     for (const tech of project.technologies) {
       // Her karakteri yaklaşık 8px olarak hesapla
-      const tagWidth = (tech.length * 8) + TAG_PADDING
-      
+      const tagWidth = tech.length * 8 + TAG_PADDING
+
       // Gap'i de ekleyerek toplam genişliği hesapla
       if (currentWidth + tagWidth + (visibleCount > 0 ? TAG_GAP : 0) <= CONTAINER_WIDTH) {
         currentWidth += tagWidth + (visibleCount > 0 ? TAG_GAP : 0)
@@ -47,7 +47,7 @@ export default function ProjectCard({ project, priority = false }: Props) {
         break
       }
     }
-    
+
     return visibleCount
   }
 
@@ -57,15 +57,13 @@ export default function ProjectCard({ project, priority = false }: Props) {
   const hasRemainingTechs = remainingTechs.length > 0
 
   return (
-    <div 
+    <div
       className="block h-[450px]"
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
       <Link href={`/portfolio/${project.repoName}`}>
-        <article 
-          className="bg-(--nav-background-color) rounded-lg overflow-hidden shadow-lg hover:scale-[1.02] transition-transform cursor-pointer h-full flex flex-col"
-        >
+        <article className="flex h-full cursor-pointer flex-col overflow-hidden rounded-lg bg-(--nav-background-color) shadow-lg transition-transform hover:scale-[1.02]">
           <div className="relative h-48 shrink-0">
             <Image
               src={src}
@@ -78,44 +76,46 @@ export default function ProjectCard({ project, priority = false }: Props) {
               onError={() => setSrc('/img/placeholder_img.png')}
             />
           </div>
-          
-          <div className="flex flex-col h-[calc(450px-12rem)] p-6">
-            <div className="flex-1 min-h-0">
-              <h2 className="text-2xl font-bold text-(--text-color) mb-4 h-14 line-clamp-2 overflow-hidden text-ellipsis">
+
+          <div className="flex h-[calc(450px-12rem)] flex-col p-6">
+            <div className="min-h-0 flex-1">
+              <h2 className="mb-4 line-clamp-2 h-14 overflow-hidden text-2xl font-bold text-ellipsis text-(--text-color)">
                 {project.title}
               </h2>
-              
-              <p className="text-(--text-color) opacity-90 line-clamp-4 mb-4">
+
+              <p className="mb-4 line-clamp-4 text-(--text-color) opacity-90">
                 {project.description}
               </p>
             </div>
-            
+
             <div className="relative overflow-hidden">
               <div className="flex gap-2 whitespace-nowrap">
-                <div 
+                <div
                   className={`flex gap-2 transition-all duration-700 ease-in-out ${
-                    hasRemainingTechs && isHovered ? 'opacity-0 -translate-x-full' : 'opacity-100 translate-x-0'
+                    hasRemainingTechs && isHovered
+                      ? '-translate-x-full opacity-0'
+                      : 'translate-x-0 opacity-100'
                   }`}
                 >
                   {visibleTechs.map((tech) => (
-                    <span 
+                    <span
                       key={tech}
-                      className="px-3 py-1 bg-background rounded-full text-sm inline-block"
+                      className="bg-background inline-block rounded-full px-3 py-1 text-sm"
                     >
                       {tech}
                     </span>
                   ))}
                 </div>
                 {hasRemainingTechs && (
-                  <div 
-                    className={`flex gap-2 transition-all duration-700 ease-in-out absolute left-0 ${
-                      isHovered ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-full'
+                  <div
+                    className={`absolute left-0 flex gap-2 transition-all duration-700 ease-in-out ${
+                      isHovered ? 'translate-x-0 opacity-100' : 'translate-x-full opacity-0'
                     }`}
                   >
                     {remainingTechs.map((tech) => (
-                      <span 
+                      <span
                         key={tech}
-                        className="px-3 py-1 bg-background rounded-full text-sm inline-block"
+                        className="bg-background inline-block rounded-full px-3 py-1 text-sm"
                       >
                         {tech}
                       </span>

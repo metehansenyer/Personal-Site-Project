@@ -23,12 +23,14 @@ Merhaba, ben **Mete**, Kocaeli Üniversitesi Yazılım Mühendisliği öğrencis
 Bu proje iki ana bölümden oluşmaktadır:
 
 ### Backend
+
 - **Teknoloji**: Node.js, Express.js
 - **Veritabanı**: MongoDB
 - **Kimlik Doğrulama**: JWT Token
 - **API Endpoints**: RESTful API
 
 ### Frontend
+
 - **Teknoloji**: Next.js, React, TypeScript
 - **Styling**: Tailwind CSS
 - **UI Components**: Shadcn/ui, FontAwesome
@@ -73,24 +75,26 @@ npm run dev
 ## Sayfa Yapısı
 
 ### Admin Paneli
-| Sayfa | Açıklama |
-|:---:|:---:|
-| `/admin/login` | Admin giriş sayfası |
-| `/admin/dashboard` | Ana yönetim paneli |
-| `/admin/announcements` | Duyuru yönetimi |
-| `/admin/contact` | İletişim mesajları |
+
+|          Sayfa          |       Açıklama       |
+| :---------------------: | :------------------: |
+|     `/admin/login`      | Admin giriş sayfası  |
+|   `/admin/dashboard`    |  Ana yönetim paneli  |
+| `/admin/announcements`  |   Duyuru yönetimi    |
+|    `/admin/contact`     |  İletişim mesajları  |
 | `/admin/technical-team` | Teknik ekip yönetimi |
 
 ### Genel Sayfalar
-| Sayfa | Açıklama |
-|:---:|:---:|
-| `/` | Ana sayfa |
-| `/about` | Hakkımızda |
+
+|              Sayfa              |    Açıklama    |
+| :-----------------------------: | :------------: |
+|               `/`               |   Ana sayfa    |
+|            `/about`             |   Hakkımızda   |
 | `/technical-team/[web/ai/game]` | Teknik ekipler |
-| `/announcements` | Duyurular |
-| `/publications` | Yayınlar |
-| `/apply` | Başvuru formu |
-| `/contact` | İletişim |
+|        `/announcements`         |   Duyurular    |
+|         `/publications`         |    Yayınlar    |
+|            `/apply`             | Başvuru formu  |
+|           `/contact`            |    İletişim    |
 
 ## 🌟 İletişim
 

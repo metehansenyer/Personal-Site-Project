@@ -17,12 +17,12 @@ Merhaba, ben **Metehan Şenyer**, Kocaeli Üniversitesi Yazılım Mühendisliği
 
 {icons: [javascript, nodejs, discordjs, mongodb, replit]}
 
-| Platform | Kaynak |
-|:---:|:---:|
+|     Platform      |                        Kaynak                         |
+| :---------------: | :---------------------------------------------------: |
 | Discord Developer | [Portal](https://discord.com/developers/applications) |
-| MongoDB Atlas | [Cloud Database](https://www.mongodb.com/cloud/atlas) |
-| Replit | [Cloud IDE](https://replit.com) |
-| Better Stack | [Uptime Monitoring](https://betterstack.com/) |
+|   MongoDB Atlas   | [Cloud Database](https://www.mongodb.com/cloud/atlas) |
+|      Replit       |            [Cloud IDE](https://replit.com)            |
+|   Better Stack    |     [Uptime Monitoring](https://betterstack.com/)     |
 
 ## ⚙️ Kurulum ve Yapılandırma
 
@@ -30,12 +30,12 @@ Kurulum detaylarını [buradan](https://github.com/metehansenyer/Discord-Uptime-
 
 ## 🤖 Bot Komutları
 
-| Komut | Açıklama |
-|:---:|:---:|
+|      Komut      |         Açıklama          |
+| :-------------: | :-----------------------: |
 | /uptime listele | Kayıtlı URL'leri listeler |
-| /uptime ekle | Yeni URL ekler |
-| /uptime kaldır | URL siler |
-| /uptime temizle | Tüm URL'leri temizler |
+|  /uptime ekle   |      Yeni URL ekler       |
+| /uptime kaldır  |         URL siler         |
+| /uptime temizle |   Tüm URL'leri temizler   |
 
 ## 🌟 Özellikler
 

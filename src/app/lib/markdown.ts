@@ -1,9 +1,9 @@
 /**
  * Markdown Processing Module
- * 
+ *
  * This module handles the processing and rendering of markdown content for project pages.
  * It provides functionality to convert markdown files into styled HTML content.
- * 
+ *
  * Features:
  * - Markdown to HTML conversion
  * - GitHub-flavored markdown support
@@ -53,17 +53,19 @@ export async function getMarkdownContent(fileName: string) {
     // Read both files concurrently
     const [mdContent, template] = await Promise.all([
       fs.promises.readFile(mdPath, 'utf8'),
-      fs.promises.readFile(templatePath, 'utf8')
+      fs.promises.readFile(templatePath, 'utf8'),
     ])
 
     // Parse markdown content
     const { content } = matter(mdContent)
 
     // Process technology icons in the content
-    const regex = /\{icons:\s*\[(.*?)\]\}/g;
-    const matches = Array.from(content.matchAll(regex)) as RegExpMatchArray[];
-    const iconsArray = matches.map((match) => match[1].split(',').map((icon: string) => icon.trim())).flat();
-    const willBeReplaced = generateIconsHtml(iconsArray);
+    const regex = /\{icons:\s*\[(.*?)\]\}/g
+    const matches = Array.from(content.matchAll(regex)) as RegExpMatchArray[]
+    const iconsArray = matches
+      .map((match) => match[1].split(',').map((icon: string) => icon.trim()))
+      .flat()
+    const willBeReplaced = generateIconsHtml(iconsArray)
     const willBeProcessed = content.replace(regex, willBeReplaced)
 
     // Convert to HTML

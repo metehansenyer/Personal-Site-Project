@@ -2,10 +2,10 @@ import Link from 'next/link'
 
 /**
  * Button Component
- * 
+ *
  * A reusable button component that wraps Next.js Link component.
  * Used throughout the application for consistent navigation buttons.
- * 
+ *
  * Features:
  * - Customizable width, height, and font size through props
  * - Consistent hover and animation effects
@@ -23,12 +23,12 @@ interface ButtonProps {
 
 export default function Button({ href, width, height, fontSize, newTab, children }: ButtonProps) {
   return (
-    <Link href={href} target={newTab ? "_blank" : undefined}>
-      <div 
-        className={`${width} ${height} ${fontSize} bg-(--nav-background-color) text-center border-2 border-solid border-(--text-color) rounded-(--border-radius-large) py-4 leading-8 text-(--text-color) hover:bg-(--text-color) hover:text-(--nav-background-color) transition-all duration-300`}
+    <Link href={href} target={newTab ? '_blank' : undefined}>
+      <div
+        className={`${width} ${height} ${fontSize} rounded-(--border-radius-large) border-2 border-solid border-(--text-color) bg-(--nav-background-color) py-4 text-center leading-8 text-(--text-color) transition-all duration-300 hover:bg-(--text-color) hover:text-(--nav-background-color)`}
       >
         {children}
       </div>
     </Link>
   )
-} 
+}

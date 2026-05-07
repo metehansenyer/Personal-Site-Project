@@ -9,8 +9,8 @@ Merhaba, ben **Metehan Şenyer**, Kocaeli Üniversitesi Yazılım Mühendisliği
 ## 🎯 Projenin Temel Amaçları
 
 - **C# Programlama Dili** kullanılarak OOP prensiplerinin uygulanması.
--  **Mayın Tarlası Algoritmaları** ve oyun mekanikleri geliştirme.
--  **WinForms** kullanılarak oyunun görsel tasarımının oluşturulması.
+- **Mayın Tarlası Algoritmaları** ve oyun mekanikleri geliştirme.
+- **WinForms** kullanılarak oyunun görsel tasarımının oluşturulması.
 - Teknik özelliklere ek olarak **skor sistemi**, **görseller** ve **GUI** gibi detaylarla kullanıcı deneyimini zenginleştirmek.
 
 ## 🛠️ Kullanılan Araçlar
@@ -24,21 +24,21 @@ Proje boyunca aşağıdaki araçlar ve kaynaklardan faydalandım:
 - **.Net**: Oyunun çalıştırılması.
 - **Visual Studio**: Kod geliştirme ortamı.
 
-| Kullanılan Araç | Tavsiye Linkler |
-|:---:|:---:|
-| C# | [Microsoft](https://learn.microsoft.com/tr-tr/collections/yz26f8y64n7k07) |
-| C# | [Murat Yücedağ C# Eğitim Kampı](https://youtube.com/playlist?list=PLKnjBHu2xXNPmFMvGKVHA_ijjrgUyNIXr&si=gL6c-oeP9LUJCN2u) |
-| WinForms | [Winforms C# Tutorials](https://youtube.com/playlist?list=PLp_RsiLZjwQRqemuY82VEYvgyJ7uI04sm&si=xe6qiGXioaBvPOZn) |
-| Minesweeper | [Referans Oyun](https://www.google.com/fbx?fbx=minesweeper) |
+| Kullanılan Araç |                                                      Tavsiye Linkler                                                      |
+| :-------------: | :-----------------------------------------------------------------------------------------------------------------------: |
+|       C#        |                         [Microsoft](https://learn.microsoft.com/tr-tr/collections/yz26f8y64n7k07)                         |
+|       C#        | [Murat Yücedağ C# Eğitim Kampı](https://youtube.com/playlist?list=PLKnjBHu2xXNPmFMvGKVHA_ijjrgUyNIXr&si=gL6c-oeP9LUJCN2u) |
+|    WinForms     |     [Winforms C# Tutorials](https://youtube.com/playlist?list=PLp_RsiLZjwQRqemuY82VEYvgyJ7uI04sm&si=xe6qiGXioaBvPOZn)     |
+|   Minesweeper   |                                [Referans Oyun](https://www.google.com/fbx?fbx=minesweeper)                                |
 
 ## 🎮 Oynanış Mekanikleri
 
-| Mekanik           | Açıklama |
-|:---:|:---:|
-| Hücre Açma | Sol tık ile hücreleri açabilir, mayın olmayan hücrelerdeki sayıları görebilirsiniz. |
-| Bayrak Koyma | Sağ tık ile mayın olduğunu düşündüğünüz hücrelere bayrak koyabilirsiniz. |
-| Otomatik Açılma | Boş hücrelere tıkladığınızda çevresindeki mayınsız hücreler otomatik açılır. |
-| Skor Sistemi | Doğru bayrak yerleştirme ve hızlı tamamlama ile yüksek skor elde edebilirsiniz. |
+|     Mekanik     |                                      Açıklama                                       |
+| :-------------: | :---------------------------------------------------------------------------------: |
+|   Hücre Açma    | Sol tık ile hücreleri açabilir, mayın olmayan hücrelerdeki sayıları görebilirsiniz. |
+|  Bayrak Koyma   |      Sağ tık ile mayın olduğunu düşündüğünüz hücrelere bayrak koyabilirsiniz.       |
+| Otomatik Açılma |    Boş hücrelere tıkladığınızda çevresindeki mayınsız hücreler otomatik açılır.     |
+|  Skor Sistemi   |   Doğru bayrak yerleştirme ve hızlı tamamlama ile yüksek skor elde edebilirsiniz.   |
 
 ## 📊 Teknik Detaylar
 
@@ -47,7 +47,7 @@ Projenin detayları aşağıdaki gibidir:
 - **Sınıflar**: Oyunun yapısını modüler ve genişletilebilir hale getirmek için OOP prensiplerine uygun olarak tasarlandı.
   1. Cell, Board, Game gibi temel sınıflar yer almaktadır.
   2. ScoreManager ve GameState sınıfları oyun durumunu yönetir.
-- **Mayın Yerleştirme Algoritması**: 
+- **Mayın Yerleştirme Algoritması**:
   1. Oyun başlangıcında mayınlar rastgele yerleştirilir
   2. İlk tıklamada mayın gelmemesi sağlanır
   3. Her hücre için komşu mayın sayısı hesaplanır
@@ -65,6 +65,7 @@ Projenin detayları aşağıdaki gibidir:
 Proje dosyalarını [buradan](https://github.com/metehansenyer/KOU-YZM209-CSGameProject-Minesweeper/archive/refs/heads/main.zip) indirip kendi bilgisayarınızda çalıştırabilirsiniz:
 
 ### Geliştiriciler için
+
 ```bash
 git clone https://github.com/metehansenyer/KOU-YZM209-CSGameProject-Minesweeper.git
 ```
