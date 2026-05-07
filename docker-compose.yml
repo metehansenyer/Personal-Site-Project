@@ -1,0 +1,10 @@
+services:
+  app:
+    build: .
+    environment:
+      - NODE_ENV=production
+    restart: always
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.my-app.rule=Host(`who.metehansenyer.tech`)"
+      - "traefik.http.routers.app.entrypoints=web"

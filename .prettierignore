@@ -6,3 +6,4 @@ coverage/
 pnpm-lock.yaml
 public/
 next-env.d.ts
+docker-compose.yml
