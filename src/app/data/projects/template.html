@@ -1,9 +1,9 @@
 <!--
   Template HTML for Project Markdown Rendering
-  
+
   This template is used to render project markdown content with consistent styling.
   It includes GitHub-style markdown CSS and custom styling overrides.
-  
+
   Features:
   - GitHub markdown styling
   - Custom color scheme support using CSS variables
@@ -21,10 +21,11 @@
     <style>
       .markdown-body {
         box-sizing: border-box;
-        min-width: 200px;
+        min-width: 0;
         max-width: 980px;
         color: var(--text-color);
         background-color: transparent;
+        overflow-wrap: anywhere;
       }
 
       .markdown-body h1,
@@ -82,6 +83,7 @@
       }
 
       .markdown-body pre {
+        overflow-x: auto;
         background-color: var(--nav-background-color);
       }
 
@@ -130,6 +132,7 @@
 
       .markdown-body div.icon {
         display: flex;
+        flex-wrap: wrap;
         justify-content: center;
         align-items: center;
         gap: 10px;
@@ -199,6 +202,33 @@
         height: auto;
         border-radius: 12px;
         background: transparent;
+      }
+
+      .markdown-body img {
+        max-width: 100%;
+        height: auto;
+      }
+
+      @media (max-width: 640px) {
+        .markdown-body {
+          font-size: 0.95rem;
+        }
+
+        .markdown-body h1 {
+          font-size: 1.75rem;
+        }
+
+        .markdown-body h2 {
+          font-size: 1.45rem;
+        }
+
+        .markdown-body h3 {
+          font-size: 1.25rem;
+        }
+
+        .markdown-body pre {
+          padding: 12px;
+        }
       }
     </style>
   </head>

@@ -9,9 +9,9 @@ import Button from './Button'
  * The navbar is conditionally rendered based on the current route.
  *
  * Features:
- * - Automatically hides on home and mobile pages
+ * - Automatically hides on home, mobile, and small-screen layouts
  * - Dynamically filters out the current page from navigation options
- * - Uses consistent Button components for navigation
+ * - Uses consistent Button components for desktop navigation
  * - Responsive design with centered layout
  */
 
@@ -33,7 +33,7 @@ export default function Navbar() {
   const navigation = allNavigation.filter((item) => item.href !== pathname)
 
   return (
-    <nav className="bg-background z-50 w-full pt-1">
+    <nav className="bg-background z-50 hidden w-full pt-1 md:block">
       <div className="container mx-auto px-4">
         <div className="flex justify-center gap-8">
           {navigation.map((item) => (

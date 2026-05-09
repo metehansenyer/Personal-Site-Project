@@ -45,7 +45,7 @@ export default function Button({
   return (
     <Link href={href} target={newTab ? '_blank' : undefined} {...umamiProps}>
       <div
-        className={`${width} ${height} ${fontSize} rounded-(--border-radius-large) border-2 border-solid border-(--text-color) bg-(--nav-background-color) py-4 text-center leading-8 text-(--text-color) transition-all duration-300 hover:bg-(--text-color) hover:text-(--nav-background-color)`}
+        className={`${width} ${height} ${fontSize} rounded-(--border-radius-large) border-2 border-solid border-(--text-color) bg-(--nav-background-color) py-3 text-center leading-7 text-(--text-color) transition-all duration-300 hover:bg-(--text-color) hover:text-(--nav-background-color) md:py-4 md:leading-8`}
       >
         {children}
       </div>

@@ -1,5 +1,7 @@
 'use client'
+import Link from 'next/link'
 import { usePathname } from 'next/navigation'
+import { useState } from 'react'
 import { projects } from '@/app/data/projects'
 
 /**
@@ -12,15 +14,23 @@ import { projects } from '@/app/data/projects'
  * - Automatically hides on home and mobile pages
  * - Dynamically updates page title based on current route
  * - Handles special cases for project detail pages
- * - Responsive design with consistent styling
+ * - Uses a compact animated mobile navigation menu
  */
 
 export default function Header() {
   const pathname = usePathname()
+  const [isMenuOpen, setIsMenuOpen] = useState(false)
 
   // Ana sayfada header'ı gösterme
   if (pathname === '/') return null
   if (pathname === '/mobile') return null
+
+  const allNavigation = [
+    { name: 'Ana Sayfa', href: '/' },
+    { name: 'Ben Kimim?', href: '/about' },
+    { name: 'Portföy', href: '/portfolio' },
+    { name: 'İletişim', href: '/contact' },
+  ]
 
   // Sayfa başlığını belirle
   const getPageTitle = () => {
@@ -43,11 +53,71 @@ export default function Header() {
     }
   }
 
+  const pageTitle = getPageTitle()
+  const navigation = allNavigation.filter((item) => item.href !== pathname)
+  // Mobil menüde ana sayfa linki gösterilmez
+  const mobileNavigation = navigation.filter((item) => item.href !== '/')
+
   return (
-    <header className="w-full bg-(--background-color) py-4">
-      <div className="flex items-center justify-between px-8">
+    <header className="sticky top-0 z-50 w-full bg-(--background-color) py-3 md:static md:py-4">
+      {/* Desktop header */}
+      <div className="hidden items-center justify-between px-8 md:flex">
         <h1 className="text-[2rem] text-(--text-color)">Metehan Şenyer</h1>
-        <h2 className="text-[2rem] text-(--text-color)">{getPageTitle()}</h2>
+        <h2 className="text-right text-[2rem] text-(--text-color)">{pageTitle}</h2>
+      </div>
+
+      {/* Mobile header */}
+      <div className="px-4 md:hidden">
+        <div className="flex items-center justify-between gap-3">
+          <h1 className="min-w-0 flex-1 truncate text-xl font-semibold text-(--text-color)">
+            {pageTitle}
+          </h1>
+          <button
+            type="button"
+            className="group relative flex h-11 w-11 shrink-0 items-center justify-center rounded-full border-2 border-(--text-color) bg-(--nav-background-color) transition-colors duration-300 hover:bg-(--text-color)"
+            aria-label={isMenuOpen ? 'Navigasyonu kapat' : 'Navigasyonu aç'}
+            aria-expanded={isMenuOpen}
+            aria-controls="mobile-navigation"
+            onClick={() => setIsMenuOpen((current) => !current)}
+          >
+            <span
+              className={`absolute h-0.5 w-5 rounded-full bg-(--text-color) transition-all duration-300 group-hover:bg-(--nav-background-color) ${
+                isMenuOpen ? 'translate-y-0 rotate-45' : '-translate-y-1.5 rotate-0'
+              }`}
+            />
+            <span
+              className={`absolute h-0.5 w-5 rounded-full bg-(--text-color) transition-all duration-300 group-hover:bg-(--nav-background-color) ${
+                isMenuOpen ? 'scale-x-0 opacity-0' : 'scale-x-100 opacity-100'
+              }`}
+            />
+            <span
+              className={`absolute h-0.5 w-5 rounded-full bg-(--text-color) transition-all duration-300 group-hover:bg-(--nav-background-color) ${
+                isMenuOpen ? 'translate-y-0 -rotate-45' : 'translate-y-1.5 rotate-0'
+              }`}
+            />
+          </button>
+        </div>
+
+        <nav
+          id="mobile-navigation"
+          className={`overflow-hidden transition-all duration-300 ease-in-out ${
+            isMenuOpen ? 'max-h-96 pt-4 opacity-100' : 'max-h-0 pt-0 opacity-0'
+          }`}
+          aria-hidden={!isMenuOpen}
+        >
+          <div className="space-y-4">
+            {mobileNavigation.map((item) => (
+              <Link
+                key={item.href}
+                href={item.href}
+                className="block rounded-(--border-radius-large) border-2 border-solid border-(--text-color) bg-(--nav-background-color) px-6 py-4 text-center text-2xl leading-8 font-medium text-(--text-color) transition-colors hover:bg-(--text-color) hover:text-(--nav-background-color)"
+                onClick={() => setIsMenuOpen(false)}
+              >
+                {item.name}
+              </Link>
+            ))}
+          </div>
+        </nav>
       </div>
     </header>
   )

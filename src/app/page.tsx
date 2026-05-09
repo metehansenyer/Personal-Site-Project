@@ -25,11 +25,13 @@ const navigationButtons = [
 
 export default function Home() {
   return (
-    <main className="mx-auto flex h-full w-[80%] flex-col justify-center overflow-hidden">
+    <main className="mx-auto flex min-h-svh w-[80%] flex-col justify-center overflow-hidden md:min-h-screen">
       {/* Main Title Section */}
       <div className="text-center">
-        <div className="text-[1.5rem] leading-[3.5rem] text-(--text-color)">METE</div>
-        <div className="text-[7.5rem] leading-[7.5rem] text-(--text-color)">
+        <div className="text-sm leading-7 tracking-[0.2em] text-(--text-color) sm:text-[1.25rem] md:text-[1.5rem] md:leading-[3.5rem] md:tracking-normal">
+          METE
+        </div>
+        <div className="text-[clamp(3.8rem,15vw,4.75rem)] leading-[0.95] tracking-[-0.04em] text-(--text-color) md:text-[7.5rem] md:leading-[7.5rem] md:tracking-normal">
           BUYRUN
           <br />
           BENİM
@@ -37,12 +39,23 @@ export default function Home() {
       </div>
 
       {/* Navigation Section */}
-      <nav>
+      <nav className="mt-8 flex flex-col gap-3 md:mt-0 md:block">
         {navigationButtons.map((row, rowIndex) => (
-          <ul key={rowIndex} className="flex justify-center">
+          <ul
+            key={rowIndex}
+            className="flex flex-col items-center justify-center gap-3 md:flex-row md:gap-0"
+          >
             {row.map((button) => (
-              <li key={button.href} className="mx-auto mt-12">
-                <Button href={button.href} width="w-[27rem]" height="h-16" fontSize="text-[2rem]">
+              <li
+                key={button.href}
+                className="w-full max-w-[20rem] md:mx-auto md:mt-12 md:w-auto md:max-w-[27rem]"
+              >
+                <Button
+                  href={button.href}
+                  width="w-full md:w-[27rem]"
+                  height="h-14 md:h-16"
+                  fontSize="text-[1.15rem] md:text-[2rem]"
+                >
                   {button.text}
                 </Button>
               </li>

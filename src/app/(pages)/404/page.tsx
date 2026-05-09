@@ -11,7 +11,7 @@ import notFoundContent from '@/app/data/notFoundContent'
  */
 export default function NotFoundPage() {
   return (
-    <main className="h-fullmx-auto w-full px-4 py-8">
+    <main className="mx-auto w-full px-4 py-8">
       <div className="flex min-h-[60vh] flex-col items-center justify-center space-y-6">
         <h1 className="text-4xl font-bold text-(--text-color) md:text-6xl">
           {notFoundContent.title}

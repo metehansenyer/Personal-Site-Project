@@ -73,11 +73,11 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           }}
         />
       </head>
-      <body className={`flex min-h-screen flex-col ${inter.className}`}>
+      <body className={`flex min-h-screen flex-col overflow-x-hidden ${inter.className}`}>
         {/* Common layout elements */}
         <Header />
         <Navbar />
-        <main className="flex-1">{children}</main>
+        <main className="flex flex-1 flex-col">{children}</main>
         <Footer />
         {process.env.NODE_ENV === 'production' && (
           <Script

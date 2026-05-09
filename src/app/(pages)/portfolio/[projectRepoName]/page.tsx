@@ -40,8 +40,8 @@ export default async function ProjectPage({ params }: Props) {
   const content = await getMarkdownContent(project.repoName)
 
   return (
-    <main className="mx-auto w-full max-w-[980px] px-4 py-8">
-      <div className="space-y-8">
+    <main className="mx-auto w-full max-w-[980px] px-4 py-6 sm:py-8">
+      <div className="space-y-6 sm:space-y-8">
         {/* Project Banner Image */}
         <ProjectBanner project={project} />
 
@@ -56,7 +56,7 @@ export default async function ProjectPage({ params }: Props) {
             href={`https://github.com/${project.userName}/${project.repoName}`}
             width="w-full"
             height="h-full"
-            fontSize="text-[1.3rem]"
+            fontSize="text-[1.05rem] sm:text-[1.3rem]"
             newTab={true}
             umamiEvent="github-view-click"
             umamiEventData={{ project: project.repoName }}

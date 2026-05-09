@@ -22,8 +22,8 @@ export default function Footer() {
   if (pathname === '/mobile') return null
 
   return (
-    <footer className="w-full py-4 text-center">
-      <p className="text-base text-(--text-color) opacity-70">
+    <footer className="w-full px-4 py-4 text-center">
+      <p className="text-sm text-(--text-color) opacity-70 sm:text-base">
         <a
           href="https://github.com/metehansenyer"
           target="_blank"
@@ -36,7 +36,7 @@ export default function Footer() {
         <i className="fa-solid fa-heart mx-1 animate-pulse text-red-500" aria-hidden="true"></i> ile
         kodlandı
       </p>
-      <p className="mt-1 text-xs text-(--text-color) opacity-40">
+      <p className="mt-1 text-xs text-(--text-color) opacity-40 md:whitespace-nowrap">
         Bu site çerez kullanmayan ve kişisel veri toplamayan{' '}
         <a
           href="https://umami.is"

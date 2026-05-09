@@ -19,21 +19,23 @@ export default function Contact() {
   const linkedIn = socialLinks.find((link) => link.name === 'LinkedIn')
 
   return (
-    <main className="flex h-full w-full items-center justify-center">
+    <main className="flex flex-1 items-center justify-center px-4 py-8 md:px-0 md:py-0">
       <div className="mx-auto w-full max-w-2xl px-4">
         {/* Contact Card */}
-        <div className="space-y-6 rounded-(--border-radius-medium) bg-(--nav-background-color) p-6 text-center shadow-lg">
+        <div className="space-y-6 rounded-(--border-radius-medium) bg-(--nav-background-color) p-5 text-center shadow-lg md:p-6">
           {/* Title and Description */}
-          <h2 className="text-3xl font-bold text-(--text-color)">{contactContent.title}</h2>
-          <p className="text-lg text-(--text-color)">{contactContent.description}</p>
+          <h2 className="text-2xl font-bold text-(--text-color) md:text-3xl">
+            {contactContent.title}
+          </h2>
+          <p className="text-base text-(--text-color) md:text-lg">{contactContent.description}</p>
 
           {/* Contact Links */}
-          <div className="flex items-center justify-center gap-6 text-lg">
+          <div className="flex flex-col items-center justify-center gap-4 text-base md:flex-row md:gap-6 md:text-lg">
             {/* Email Link */}
             <a
               href={`mailto:${contactContent.email}`}
               target="_blank"
-              className="text-(--text-color) transition-colors duration-300 hover:text-(--text-color-white)"
+              className="break-all text-(--text-color) transition-colors duration-300 hover:text-(--text-color-white)"
               data-umami-event="email-click"
             >
               {contactContent.email}
@@ -41,7 +43,7 @@ export default function Contact() {
             {/* LinkedIn Link - Only shown if LinkedIn profile exists */}
             {linkedIn && (
               <>
-                <span className="text-(--text-color)">•</span>
+                <span className="hidden text-(--text-color) md:inline">•</span>
                 <a
                   href={linkedIn.url}
                   target="_blank"

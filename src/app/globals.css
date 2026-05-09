@@ -1,9 +1,9 @@
 /**
  * Global CSS Styles
- * 
+ *
  * This file contains global styles and CSS variables used throughout the application.
  * It provides consistent theming and base styles for all components.
- * 
+ *
  * Features:
  * - Dark theme color scheme
  * - Global CSS variables for colors and spacing
@@ -70,6 +70,8 @@
   body {
     width: 100%;
     height: 100%;
+    min-height: 100%;
+    overflow-x: hidden;
     background-color: var(--background-color);
     font-size: 100%;
     -webkit-touch-callout: none;
@@ -77,6 +79,14 @@
     -moz-user-select: none;
     -ms-user-select: none;
     user-select: none;
+  }
+
+  img,
+  svg,
+  video,
+  canvas {
+    max-width: 100%;
+    height: auto;
   }
 }
 
@@ -98,8 +108,14 @@ main {
 /* Responsive Design Adjustments
    Modifies styles for mobile devices (max-width: 768px) */
 @media (max-width: 768px) {
+  :root {
+    --border-radius-large: 48px;
+    --border-radius-medium: 24px;
+    --padding-standard: 1rem;
+  }
+
   .w-\[80\%\] {
-    width: 95%;
+    width: 92%;
   }
 
   .py-\[10\%\] {
@@ -107,11 +123,7 @@ main {
   }
 
   .text-\[7\.5rem\] {
-    font-size: 5rem;
-    line-height: 5rem;
-  }
-
-  .w-\[27rem\] {
-    width: 20rem;
+    font-size: clamp(3.75rem, 18vw, 5rem);
+    line-height: 0.95;
   }
 }

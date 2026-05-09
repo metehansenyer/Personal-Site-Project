@@ -25,7 +25,7 @@ export default function ProjectBanner({ project }: Props) {
   const [imageSrc, setImageSrc] = useState(project.banner)
 
   return (
-    <div className="relative overflow-hidden rounded-lg shadow-lg">
+    <div className="relative aspect-video overflow-hidden rounded-lg shadow-lg">
       <Image
         src={imageSrc}
         alt={`${project.title} banner`}
@@ -33,7 +33,7 @@ export default function ProjectBanner({ project }: Props) {
         height={1080}
         priority
         sizes="(max-width: 1024px) 100vw, 980px"
-        className="h-auto w-full object-contain"
+        className="h-full w-full object-cover sm:object-contain"
         onError={() => setImageSrc('/img/placeholder_img.png')}
       />
     </div>
