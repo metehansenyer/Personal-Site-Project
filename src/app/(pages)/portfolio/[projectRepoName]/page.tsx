@@ -14,14 +14,49 @@
  * - Responsive image handling
  */
 
+import type { Metadata } from 'next'
 import { projects } from '@/app/data/projects'
 import { getMarkdownContent } from '@/app/lib/markdown'
 import Button from '@/app/components/Button'
 import { redirect } from 'next/navigation'
 import ProjectBanner from '@/app/(pages)/portfolio/[projectRepoName]/ProjectBanner'
+import { SITE_URL, SITE_NAME } from '@/app/lib/site'
 
 type Props = {
   params: Promise<{ projectRepoName: string }>
+}
+
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const { projectRepoName } = await params
+  const project = projects.find((p) => p.repoName === projectRepoName)
+
+  if (!project) {
+    return {
+      title: 'Proje Bulunamadı',
+    }
+  }
+
+  const pageUrl = `${SITE_URL}/portfolio/${project.repoName}`
+  const bannerUrl = `${SITE_URL}${project.banner}`
+
+  return {
+    title: `${project.title} | ${SITE_NAME}`,
+    description: project.description,
+    openGraph: {
+      title: project.title,
+      description: project.description,
+      url: pageUrl,
+      siteName: SITE_NAME,
+      images: [{ url: bannerUrl }],
+      type: 'article',
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: project.title,
+      description: project.description,
+      images: [bannerUrl],
+    },
+  }
 }
 
 export default async function ProjectPage({ params }: Props) {

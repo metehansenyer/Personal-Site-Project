@@ -19,6 +19,7 @@ import Navbar from './components/Navbar'
 import Footer from './components/Footer'
 import Script from 'next/script'
 import { Inter } from 'next/font/google'
+import { SITE_URL, SITE_NAME } from './lib/site'
 
 // Configure Google Font (Inter)
 const inter = Inter({
@@ -30,16 +31,16 @@ const inter = Inter({
 
 // Metadata configuration for SEO and social sharing
 export const metadata: Metadata = {
-  title: 'Metehan Şenyer',
+  title: SITE_NAME,
   description: 'Yazılım Mühendisliği öğrencisi ve tutkulu bir yazılım geliştiricisi.',
   keywords: ['yazılım', 'web geliştirme', 'portfolio', 'metehan şenyer'],
-  authors: [{ name: 'Metehan Şenyer' }],
-  creator: 'Metehan Şenyer',
+  authors: [{ name: SITE_NAME }],
+  creator: SITE_NAME,
   openGraph: {
-    title: 'Metehan Şenyer',
+    title: SITE_NAME,
     description: 'Yazılım Mühendisliği öğrencisi ve tutkulu bir yazılım geliştiricisi.',
-    url: 'https://who.metehansenyer.tech/',
-    siteName: 'Metehan Şenyer',
+    url: `${SITE_URL}/`,
+    siteName: SITE_NAME,
     locale: 'tr_TR',
     type: 'website',
   },
@@ -64,8 +65,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             __html: JSON.stringify({
               '@context': 'https://schema.org',
               '@type': 'Person',
-              name: 'Metehan Şenyer',
-              url: 'https://who.metehansenyer.tech',
+              name: SITE_NAME,
+              url: SITE_URL,
               jobTitle: 'Yazılım Mühendisliği Öğrencisi',
               alumniOf: 'Kocaeli Üniversitesi',
               sameAs: ['https://github.com/metehansenyer', 'https://linkedin.com/in/metehansenyer'],
