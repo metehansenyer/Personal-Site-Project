@@ -41,13 +41,18 @@ export default function Header() {
   }
 
   const pageTitle = getPageTitle()
-  // All routes that show in nav, in the swap-driven order, excluding the current page
+  // Home is always rendered first and doesn't participate in the swap.
+  // The remaining routes follow in the order maintained by NavOrderProvider.
   const routeByPath = new Map(routes.map((r) => [r.path, r]))
-  const navigation = order
-    .filter((p) => p !== pathname)
-    .map((p) => routeByPath.get(p))
-    .filter((r): r is NonNullable<typeof r> => Boolean(r))
-    .map((r) => ({ name: r.label, href: r.path }))
+  const homeRoute = routeByPath.get('/')!
+  const navigation = [
+    { name: homeRoute.label, href: homeRoute.path },
+    ...order
+      .filter((p) => p !== pathname)
+      .map((p) => routeByPath.get(p))
+      .filter((r): r is NonNullable<typeof r> => Boolean(r))
+      .map((r) => ({ name: r.label, href: r.path })),
+  ]
   // Ana Sayfa is already excluded via showInNav: false — no extra filter needed
   const mobileNavigation = navigation
 

@@ -24,13 +24,18 @@ export default function Navbar() {
   // Ana sayfada navbar'ı gösterme
   if (pathname === '/') return null
 
-  // Mevcut sayfanın linkini filtreleyip çıkart
+  // Home is always rendered first and doesn't participate in the swap.
+  // The remaining routes follow in the order maintained by NavOrderProvider.
   const routeByPath = new Map(routes.map((r) => [r.path, r]))
-  const navigation = order
-    .filter((p) => p !== pathname)
-    .map((p) => routeByPath.get(p))
-    .filter((r): r is NonNullable<typeof r> => Boolean(r))
-    .map((r) => ({ name: r.label, href: r.path }))
+  const homeRoute = routeByPath.get('/')!
+  const navigation = [
+    { name: homeRoute.label, href: homeRoute.path },
+    ...order
+      .filter((p) => p !== pathname)
+      .map((p) => routeByPath.get(p))
+      .filter((r): r is NonNullable<typeof r> => Boolean(r))
+      .map((r) => ({ name: r.label, href: r.path })),
+  ]
 
   return (
     <nav className="bg-background z-50 hidden w-full pt-1 md:block">

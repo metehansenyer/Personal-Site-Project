@@ -43,12 +43,13 @@ export default function Button({
     : {}
 
   return (
-    <Link href={href as never} target={newTab ? '_blank' : undefined} {...umamiProps}>
-      <div
-        className={`${width} ${height} ${fontSize} flex items-center justify-center rounded-(--border-radius-large) border-2 border-solid border-(--text-color) bg-(--nav-background-color) px-4 text-center leading-none text-(--text-color) transition-all duration-300 hover:bg-(--text-color) hover:text-(--nav-background-color)`}
-      >
-        {children}
-      </div>
+    <Link
+      href={href as never}
+      target={newTab ? '_blank' : undefined}
+      {...umamiProps}
+      className={`${width} ${height} ${fontSize} inline-flex items-center justify-center rounded-(--border-radius-large) border-2 border-solid border-(--text-color) bg-(--nav-background-color) px-4 text-center leading-none text-(--text-color) transition-all duration-300 hover:bg-(--text-color) hover:text-(--nav-background-color)`}
+    >
+      {children}
     </Link>
   )
 }
