@@ -1,7 +1,9 @@
+'use client'
+
 import Image from 'next/image'
 import Link from 'next/link'
 import { Project } from '@/app/data/projects'
-import { useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 
 /**
  * ProjectCard Component
@@ -12,7 +14,8 @@ import { useState } from 'react'
  * Features:
  * - Displays project banner image
  * - Shows project title and description
- * - Includes technology tags clipped to one line via CSS overflow
+ * - Technology tags render on a single line; on hover the row slides left by
+ *   exactly the amount it overflows, revealing tags that didn't fit
  * - Responsive design with consistent styling
  */
 
@@ -23,9 +26,33 @@ type Props = {
 
 export default function ProjectCard({ project, priority = false }: Props) {
   const [src, setSrc] = useState(project.banner)
+  const [hover, setHover] = useState(false)
+  const [overflowPx, setOverflowPx] = useState(0)
+  const tagsContainerRef = useRef<HTMLDivElement>(null)
+  const tagsRowRef = useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    const container = tagsContainerRef.current
+    const row = tagsRowRef.current
+    if (!container || !row) return
+
+    const update = () => {
+      setOverflowPx(Math.max(0, row.scrollWidth - container.clientWidth))
+    }
+    update()
+
+    const ro = new ResizeObserver(update)
+    ro.observe(container)
+    ro.observe(row)
+    return () => ro.disconnect()
+  }, [project.technologies])
 
   return (
-    <div className="block h-[280px] sm:h-[320px] md:h-[450px]">
+    <div
+      className="block h-[280px] sm:h-[320px] md:h-[450px]"
+      onMouseEnter={() => setHover(true)}
+      onMouseLeave={() => setHover(false)}
+    >
       <Link href={`/portfolio/${project.repoName}`} className="block h-full">
         <article className="flex h-full cursor-pointer flex-col overflow-hidden rounded-lg bg-(--nav-background-color) shadow-lg transition-transform hover:scale-[1.02]">
           <div className="relative h-24 shrink-0 sm:h-32 md:h-48">
@@ -52,8 +79,14 @@ export default function ProjectCard({ project, priority = false }: Props) {
               </p>
             </div>
 
-            <div className="mt-3 max-h-[1.6rem] overflow-hidden sm:max-h-[1.75rem] md:max-h-[2rem]">
-              <div className="flex flex-wrap gap-1.5 md:gap-2">
+            <div ref={tagsContainerRef} className="mt-3 overflow-hidden">
+              <div
+                ref={tagsRowRef}
+                className="flex gap-1.5 whitespace-nowrap transition-transform duration-700 ease-in-out md:gap-2"
+                style={{
+                  transform: `translateX(${hover ? -overflowPx : 0}px)`,
+                }}
+              >
                 {project.technologies.map((tech) => (
                   <span
                     key={tech}
