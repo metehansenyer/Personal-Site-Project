@@ -52,7 +52,7 @@ export default function Home() {
               >
                 <Button
                   href={button.href}
-                  width="w-full"
+                  width="w-full md:w-[27rem]"
                   height="h-12 md:h-16"
                   fontSize="text-base md:text-[2rem]"
                 >
