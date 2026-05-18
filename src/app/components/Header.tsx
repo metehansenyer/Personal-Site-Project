@@ -3,6 +3,7 @@ import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { useState } from 'react'
 import { projects } from '@/app/data/projects'
+import { routes } from '@/app/data/routes'
 
 /**
  * Header Component
@@ -24,38 +25,26 @@ export default function Header() {
   // Ana sayfada header'ı gösterme
   if (pathname === '/') return null
 
-  const allNavigation = [
-    { name: 'Ana Sayfa', href: '/' },
-    { name: 'Ben Kimim?', href: '/about' },
-    { name: 'Portföy', href: '/portfolio' },
-    { name: 'İletişim', href: '/contact' },
-  ]
-
   // Sayfa başlığını belirle
   const getPageTitle = () => {
-    switch (pathname) {
-      case '/404':
-        return '404'
-      case '/about':
-        return 'Ben Kimim?'
-      case '/portfolio':
-        return 'Portföy'
-      case '/contact':
-        return 'İletişim'
-      default:
-        if (pathname?.startsWith('/portfolio/')) {
-          const projectId = pathname.split('/portfolio/')[1]
-          const project = projects.find((p) => p.repoName === projectId)
-          return project?.title || 'Proje Bulunamadı'
-        }
-        return ''
+    if (pathname === '/404') return '404'
+    const matched = routes.find((r) => r.path === pathname)
+    if (matched) return matched.title
+    if (pathname?.startsWith('/portfolio/')) {
+      const projectId = pathname.split('/portfolio/')[1]
+      const project = projects.find((p) => p.repoName === projectId)
+      return project?.title || 'Proje Bulunamadı'
     }
+    return ''
   }
 
   const pageTitle = getPageTitle()
-  const navigation = allNavigation.filter((item) => item.href !== pathname)
-  // Mobil menüde ana sayfa linki gösterilmez
-  const mobileNavigation = navigation.filter((item) => item.href !== '/')
+  // All routes that show in nav, excluding the current page
+  const navigation = routes
+    .filter((r) => r.showInNav && r.path !== pathname)
+    .map((r) => ({ name: r.label, href: r.path }))
+  // Ana Sayfa is already excluded via showInNav: false — no extra filter needed
+  const mobileNavigation = navigation
 
   return (
     <header className="sticky top-0 z-50 w-full bg-(--background-color) py-3 md:static md:py-4">

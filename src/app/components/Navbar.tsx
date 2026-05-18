@@ -1,6 +1,7 @@
 'use client'
 import { usePathname } from 'next/navigation'
 import Button from './Button'
+import { routes } from '@/app/data/routes'
 
 /**
  * Navbar Component
@@ -21,15 +22,10 @@ export default function Navbar() {
   // Ana sayfada navbar'ı gösterme
   if (pathname === '/') return null
 
-  const allNavigation = [
-    { name: 'Ana Sayfa', href: '/' },
-    { name: 'Ben Kimim?', href: '/about' },
-    { name: 'Portföy', href: '/portfolio' },
-    { name: 'İletişim', href: '/contact' },
-  ]
-
   // Mevcut sayfanın linkini filtreleyip çıkart
-  const navigation = allNavigation.filter((item) => item.href !== pathname)
+  const navigation = routes
+    .filter((r) => r.showInNav && r.path !== pathname)
+    .map((r) => ({ name: r.label, href: r.path }))
 
   return (
     <nav className="bg-background z-50 hidden w-full pt-1 md:block">
