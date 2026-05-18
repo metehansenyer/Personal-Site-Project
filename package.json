@@ -10,12 +10,16 @@
     "lint:fix": "eslint --fix",
     "format": "prettier --write . --cache",
     "format:check": "prettier --check . --cache",
-    "check": "pnpm lint && pnpm format:check"
+    "validate": "tsx scripts/validate-content.ts",
+    "check": "pnpm lint && pnpm format:check && pnpm validate"
   },
   "dependencies": {
     "next": "^16.2.6",
     "react": "^19.2.6",
     "react-dom": "^19.2.6"
+  },
+  "pnpm": {
+    "onlyBuiltDependencies": ["esbuild"]
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4.3.0",
@@ -39,6 +43,7 @@
     "remark-parse": "^11.0.0",
     "remark-rehype": "^11.1.2",
     "tailwindcss": "^4.3.0",
+    "tsx": "^4.22.1",
     "typescript": "^6.0.3",
     "unified": "^11.0.5"
   }
