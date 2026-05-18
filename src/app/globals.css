@@ -114,3 +114,52 @@ main {
     --padding-standard: 1rem;
   }
 }
+
+/* Project MDX content layout helpers
+   These class names appear inside project MDX files and were previously
+   styled by the deleted template.html. They are scoped to ProjectShell
+   (`.project-content`) so they don't leak into the rest of the site. */
+.project-content .project-logo {
+  display: flex;
+  justify-content: center;
+  margin: 24px 0;
+}
+
+.project-content .project-logo img {
+  max-width: 200px;
+  height: auto;
+  border-radius: 12px;
+  background: transparent;
+}
+
+.project-content .center-content {
+  text-align: center;
+  margin: 16px 0;
+}
+
+.project-content .badges {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  margin: 16px 0;
+}
+
+.project-content .badges a {
+  display: inline-block;
+  text-decoration: none;
+}
+
+.project-content .badges img {
+  display: block;
+  height: auto;
+}
+
+.project-content p[align='center'] {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
