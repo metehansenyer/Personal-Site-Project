@@ -3,6 +3,7 @@
 import Image from 'next/image'
 import Link from 'next/link'
 import { Project } from '@/app/data/projects'
+import icons from '@/app/data/icons'
 import { useEffect, useLayoutEffect, useRef, useState } from 'react'
 
 /**
@@ -98,7 +99,7 @@ export default function ProjectCard({ project, priority = false }: Props) {
                     key={tech}
                     className="bg-background inline-block shrink-0 rounded-full px-2 py-1 text-[0.65rem] leading-none whitespace-nowrap sm:text-xs"
                   >
-                    {tech}
+                    {icons[tech].name}
                   </span>
                 ))}
               {project.technologies.length > 2 && (
@@ -122,7 +123,7 @@ export default function ProjectCard({ project, priority = false }: Props) {
                     data-measure-tag=""
                     className="bg-background inline-block rounded-full px-3 py-1 text-sm"
                   >
-                    {tech}
+                    {icons[tech].name}
                   </span>
                 ))}
               </div>
@@ -140,7 +141,7 @@ export default function ProjectCard({ project, priority = false }: Props) {
                       key={tech}
                       className="bg-background inline-block rounded-full px-3 py-1 text-sm"
                     >
-                      {tech}
+                      {icons[tech].name}
                     </span>
                   ))}
                 </div>
@@ -155,7 +156,7 @@ export default function ProjectCard({ project, priority = false }: Props) {
                         key={tech}
                         className="bg-background inline-block rounded-full px-3 py-1 text-sm"
                       >
-                        {tech}
+                        {icons[tech].name}
                       </span>
                     ))}
                   </div>
