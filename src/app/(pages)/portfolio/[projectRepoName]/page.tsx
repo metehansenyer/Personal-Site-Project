@@ -26,6 +26,7 @@ import { MDXRemote } from 'next-mdx-remote/rsc'
 import remarkGfm from 'remark-gfm'
 import { mdxComponents } from '@/app/components/mdx/mdxComponents'
 import ProjectShell from '@/app/components/mdx/ProjectShell'
+import 'github-markdown-css/github-markdown-dark.css'
 
 // Directory containing project MDX files
 const PROJECTS_DIR = path.join(process.cwd(), 'src', 'app', 'data', 'projects')
