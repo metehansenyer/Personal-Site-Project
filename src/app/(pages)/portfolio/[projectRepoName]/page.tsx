@@ -4,23 +4,31 @@
  * This component renders the detailed view of a specific project.
  * It displays:
  * - Project banner image
- * - Project README content (rendered from markdown)
+ * - Project README content (rendered from MDX)
  * - GitHub repository link
  *
  * Features:
  * - Dynamic routing based on project repository name
- * - Markdown content rendering
+ * - MDX content rendering with typed React components
  * - Automatic redirection to 404 page for non-existent projects
  * - Responsive image handling
  */
 
 import type { Metadata } from 'next'
+import fs from 'fs'
+import path from 'path'
 import { projects } from '@/app/data/projects'
-import { getMarkdownContent } from '@/app/lib/markdown'
 import Button from '@/app/components/Button'
 import { redirect } from 'next/navigation'
 import ProjectBanner from '@/app/(pages)/portfolio/[projectRepoName]/ProjectBanner'
 import { SITE_URL, SITE_NAME } from '@/app/lib/site'
+import { MDXRemote } from 'next-mdx-remote/rsc'
+import remarkGfm from 'remark-gfm'
+import { mdxComponents } from '@/app/components/mdx/mdxComponents'
+import ProjectShell from '@/app/components/mdx/ProjectShell'
+
+// Directory containing project MDX files
+const PROJECTS_DIR = path.join(process.cwd(), 'src', 'app', 'data', 'projects')
 
 type Props = {
   params: Promise<{ projectRepoName: string }>
@@ -59,6 +67,12 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   }
 }
 
+export async function generateStaticParams() {
+  return projects.map((project) => ({
+    projectRepoName: project.repoName,
+  }))
+}
+
 export default async function ProjectPage({ params }: Props) {
   // Extract project repository name from URL parameters
   const { projectRepoName } = await params
@@ -71,8 +85,9 @@ export default async function ProjectPage({ params }: Props) {
     redirect('/404')
   }
 
-  // Get and parse the project's markdown content
-  const content = await getMarkdownContent(project.repoName)
+  // Read the MDX source file
+  const mdxPath = path.join(PROJECTS_DIR, `${project.repoName}.mdx`)
+  const source = await fs.promises.readFile(mdxPath, 'utf8')
 
   return (
     <main className="mx-auto w-full max-w-[980px] px-4 py-6 sm:py-8">
@@ -80,10 +95,20 @@ export default async function ProjectPage({ params }: Props) {
         {/* Project Banner Image */}
         <ProjectBanner project={project} />
 
-        {/* Project README Content */}
-        <article>
-          <div dangerouslySetInnerHTML={{ __html: content }} />
-        </article>
+        {/* Project MDX Content */}
+        <ProjectShell>
+          <MDXRemote
+            source={source}
+            components={mdxComponents}
+            options={{
+              mdxOptions: {
+                remarkPlugins: [remarkGfm],
+              },
+              // Allow JSX expression props like slugs={['typescript', 'nextjs']}
+              blockJS: false,
+            }}
+          />
+        </ProjectShell>
 
         {/* GitHub Repository Link */}
         <div>

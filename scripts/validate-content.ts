@@ -2,9 +2,9 @@
  * Build-time content validator
  *
  * Catches silent breakage modes:
- * - Missing markdown files for projects
+ * - Missing MDX files for projects
  * - Missing banner images for projects
- * - Unknown icon slugs in markdown {icons: [...]} blocks
+ * - Unknown icon slugs in MDX <Icon slugs={[...]} /> components
  * - Unknown icon slugs in Project.technologies[]
  *
  * Exit 0 on success, exit 1 on any failure.
@@ -19,7 +19,6 @@ const ROOT = path.resolve(__dirname, '..')
 const PROJECTS_DIR = path.join(ROOT, 'src', 'app', 'data', 'projects')
 const PUBLIC_DIR = path.join(ROOT, 'public')
 
-type IconSlug = keyof typeof icons
 const knownSlugs = new Set<string>(Object.keys(icons))
 
 interface Failure {
@@ -41,13 +40,13 @@ function pass(): void {
   checks++
 }
 
-// ── 1. Markdown files exist ───────────────────────────────────────────────────
+// ── 1. MDX files exist ────────────────────────────────────────────────────────
 
-console.log('\nChecking markdown files…')
+console.log('\nChecking MDX files…')
 for (const project of projects) {
-  const mdPath = path.join(PROJECTS_DIR, `${project.repoName}.md`)
-  if (!fs.existsSync(mdPath)) {
-    fail(`Missing markdown file: src/app/data/projects/${project.repoName}.md`, {
+  const mdxPath = path.join(PROJECTS_DIR, `${project.repoName}.mdx`)
+  if (!fs.existsSync(mdxPath)) {
+    fail(`Missing MDX file: src/app/data/projects/${project.repoName}.mdx`, {
       project: project.repoName,
     })
   } else {
@@ -68,26 +67,32 @@ for (const project of projects) {
   }
 }
 
-// ── 3. Icon slugs in markdown files ──────────────────────────────────────────
+// ── 3. Icon slugs in MDX files ────────────────────────────────────────────────
 
-console.log('Checking icon slugs in markdown files…')
-const iconBlockRegex = /\{icons:\s*\[(.*?)\]\}/g
+console.log('Checking icon slugs in MDX files…')
+// Matches <Icon slugs={['a', 'b', 'c']} /> or <Icon slugs={["a", "b"]} />
+// Note: using non-dotall regex with [\s\S] for broader TS target compatibility
+const iconJsxRegex = /<Icon\s+slugs=\{(\[[\s\S]*?\])\}\s*\/>/g
 
-const mdFiles = fs
+const mdxFiles = fs
   .readdirSync(PROJECTS_DIR)
-  .filter((f) => f.endsWith('.md'))
+  .filter((f) => f.endsWith('.mdx'))
   .map((f) => path.join(PROJECTS_DIR, f))
 
-for (const mdFile of mdFiles) {
-  const content = fs.readFileSync(mdFile, 'utf8')
-  const matches = Array.from(content.matchAll(iconBlockRegex))
-  const fileName = path.relative(ROOT, mdFile)
+for (const mdxFile of mdxFiles) {
+  const content = fs.readFileSync(mdxFile, 'utf8')
+  const matches = Array.from(content.matchAll(iconJsxRegex))
+  const fileName = path.relative(ROOT, mdxFile)
 
   for (const match of matches) {
-    const slugs = match[1].split(',').map((s) => s.trim()).filter(Boolean)
+    // Extract slug strings from the array literal e.g. ['typescript', 'nextjs']
+    const arrayLiteral = match[1]
+    const slugMatches = Array.from(arrayLiteral.matchAll(/['"]([^'"]+)['"]/g))
+    const slugs = slugMatches.map((m) => m[1])
+
     for (const slug of slugs) {
       if (!knownSlugs.has(slug)) {
-        fail(`Unknown icon slug "${slug}" in {icons: [...]} block`, { file: fileName })
+        fail(`Unknown icon slug "${slug}" in <Icon slugs={[...]} />`, { file: fileName })
       } else {
         pass()
       }
