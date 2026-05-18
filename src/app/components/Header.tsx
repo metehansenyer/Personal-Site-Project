@@ -4,6 +4,7 @@ import { usePathname } from 'next/navigation'
 import { useState } from 'react'
 import { projects } from '@/app/data/projects'
 import { routes } from '@/app/data/routes'
+import { useNavOrder } from './NavOrderProvider'
 
 /**
  * Header Component
@@ -20,6 +21,7 @@ import { routes } from '@/app/data/routes'
 
 export default function Header() {
   const pathname = usePathname()
+  const order = useNavOrder()
   const [isMenuOpen, setIsMenuOpen] = useState(false)
 
   // Ana sayfada header'ı gösterme
@@ -39,9 +41,12 @@ export default function Header() {
   }
 
   const pageTitle = getPageTitle()
-  // All routes that show in nav, excluding the current page
-  const navigation = routes
-    .filter((r) => r.showInNav && r.path !== pathname)
+  // All routes that show in nav, in the swap-driven order, excluding the current page
+  const routeByPath = new Map(routes.map((r) => [r.path, r]))
+  const navigation = order
+    .filter((p) => p !== pathname)
+    .map((p) => routeByPath.get(p))
+    .filter((r): r is NonNullable<typeof r> => Boolean(r))
     .map((r) => ({ name: r.label, href: r.path }))
   // Ana Sayfa is already excluded via showInNav: false — no extra filter needed
   const mobileNavigation = navigation

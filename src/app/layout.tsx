@@ -17,6 +17,7 @@ import './globals.css'
 import Header from './components/Header'
 import Navbar from './components/Navbar'
 import Footer from './components/Footer'
+import { NavOrderProvider } from './components/NavOrderProvider'
 import Script from 'next/script'
 import { Inter } from 'next/font/google'
 import { SITE_URL, SITE_NAME } from './lib/site'
@@ -82,10 +83,12 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       </head>
       <body className={`flex min-h-screen flex-col overflow-x-hidden ${inter.className}`}>
         {/* Common layout elements */}
-        <Header />
-        <Navbar />
-        <main className="flex flex-1 flex-col">{children}</main>
-        <Footer />
+        <NavOrderProvider>
+          <Header />
+          <Navbar />
+          <main className="flex flex-1 flex-col">{children}</main>
+          <Footer />
+        </NavOrderProvider>
         {process.env.NODE_ENV === 'production' && (
           <Script
             src="https://umami.metehansenyer.tech/script.js"

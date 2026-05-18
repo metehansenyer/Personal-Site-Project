@@ -2,6 +2,7 @@
 import { usePathname } from 'next/navigation'
 import Button from './Button'
 import { routes } from '@/app/data/routes'
+import { useNavOrder } from './NavOrderProvider'
 
 /**
  * Navbar Component
@@ -18,13 +19,17 @@ import { routes } from '@/app/data/routes'
 
 export default function Navbar() {
   const pathname = usePathname()
+  const order = useNavOrder()
 
   // Ana sayfada navbar'ı gösterme
   if (pathname === '/') return null
 
   // Mevcut sayfanın linkini filtreleyip çıkart
-  const navigation = routes
-    .filter((r) => r.showInNav && r.path !== pathname)
+  const routeByPath = new Map(routes.map((r) => [r.path, r]))
+  const navigation = order
+    .filter((p) => p !== pathname)
+    .map((p) => routeByPath.get(p))
+    .filter((r): r is NonNullable<typeof r> => Boolean(r))
     .map((r) => ({ name: r.label, href: r.path }))
 
   return (
