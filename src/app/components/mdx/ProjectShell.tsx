@@ -6,7 +6,7 @@ interface ProjectShellProps {
 
 export default function ProjectShell({ children }: ProjectShellProps) {
   return (
-    <article className="project-content w-full overflow-wrap-anywhere text-[var(--text-color)]">
+    <article className="project-content overflow-wrap-anywhere w-full text-[var(--text-color)]">
       {children}
     </article>
   )

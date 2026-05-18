@@ -275,8 +275,7 @@ const icons = {
   webscraping: {
     name: 'Web Scraping',
     url: 'https://en.wikipedia.org/wiki/Web_scraping',
-    imgSrc:
-      'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/chrome/chrome-original.svg',
+    imgSrc: 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/chrome/chrome-original.svg',
     alt: 'webscraping',
   },
   template: {

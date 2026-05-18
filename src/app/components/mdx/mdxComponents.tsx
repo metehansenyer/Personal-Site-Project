@@ -7,18 +7,12 @@ export const mdxComponents: MDXComponents = {
   Callout,
   // Headings with border-bottom styling matching the original template
   h1: ({ children, ...props }) => (
-    <h1
-      className="mb-4 border-b border-current pb-4 text-3xl font-bold sm:text-4xl"
-      {...props}
-    >
+    <h1 className="mb-4 border-b border-current pb-4 text-3xl font-bold sm:text-4xl" {...props}>
       {children}
     </h1>
   ),
   h2: ({ children, ...props }) => (
-    <h2
-      className="mb-4 border-b border-current pb-4 text-2xl font-bold sm:text-3xl"
-      {...props}
-    >
+    <h2 className="mb-4 border-b border-current pb-4 text-2xl font-bold sm:text-3xl" {...props}>
       {children}
     </h2>
   ),
@@ -85,10 +79,7 @@ export const mdxComponents: MDXComponents = {
     </div>
   ),
   th: ({ children, ...props }) => (
-    <th
-      className="border border-[var(--table-border-color)] px-3 py-2 text-left"
-      {...props}
-    >
+    <th className="border border-[var(--table-border-color)] px-3 py-2 text-left" {...props}>
       {children}
     </th>
   ),
@@ -107,10 +98,7 @@ export const mdxComponents: MDXComponents = {
   ),
   // Code blocks
   pre: ({ children, ...props }) => (
-    <pre
-      className="my-4 overflow-x-auto rounded bg-[var(--nav-background-color)] p-4"
-      {...props}
-    >
+    <pre className="my-4 overflow-x-auto rounded bg-[var(--nav-background-color)] p-4" {...props}>
       {children}
     </pre>
   ),
@@ -128,10 +116,7 @@ export const mdxComponents: MDXComponents = {
   ),
   // Blockquote
   blockquote: ({ children, ...props }) => (
-    <blockquote
-      className="my-4 border-l-4 border-current pl-4 opacity-80"
-      {...props}
-    >
+    <blockquote className="my-4 border-l-4 border-current pl-4 opacity-80" {...props}>
       {children}
     </blockquote>
   ),

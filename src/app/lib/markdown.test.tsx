@@ -68,9 +68,7 @@ describe('Icon component — unknown slugs', () => {
 
   it('renders valid icons and skips invalid ones in a mixed array', () => {
     const warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => {})
-    const html = renderToString(
-      <Icon slugs={['typescript', 'bad-slug', 'nextjs'] as IconSlug[]} />,
-    )
+    const html = renderToString(<Icon slugs={['typescript', 'bad-slug', 'nextjs'] as IconSlug[]} />)
     expect(html).toContain(icons.typescript.url)
     expect(html).toContain(icons.nextjs.url)
     expect(html).not.toContain('bad-slug')

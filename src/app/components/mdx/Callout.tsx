@@ -27,9 +27,7 @@ export default function Callout({ type, children }: CalloutProps) {
   const config = calloutConfig[type]
 
   return (
-    <div
-      className={`my-4 border-l-[6px] bg-transparent py-2 pl-4 pr-2 ${config.borderClass}`}
-    >
+    <div className={`my-4 border-l-[6px] bg-transparent py-2 pr-2 pl-4 ${config.borderClass}`}>
       <p className={`mb-[5px] font-bold ${config.textClass}`}>{config.label}</p>
       <div>{children}</div>
     </div>
