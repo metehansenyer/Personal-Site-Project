@@ -25,11 +25,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: 'monthly',
       priority: 0.7,
     },
-    {
-      url: `${BASE_URL}/mobile`,
-      changeFrequency: 'monthly',
-      priority: 0.6,
-    },
   ]
 
   const projectRoutes: MetadataRoute.Sitemap = projects.map((project) => ({

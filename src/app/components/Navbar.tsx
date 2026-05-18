@@ -9,7 +9,7 @@ import Button from './Button'
  * The navbar is conditionally rendered based on the current route.
  *
  * Features:
- * - Automatically hides on home, mobile, and small-screen layouts
+ * - Automatically hides on home page and small-screen layouts
  * - Dynamically filters out the current page from navigation options
  * - Uses consistent Button components for desktop navigation
  * - Responsive design with centered layout
@@ -20,7 +20,6 @@ export default function Navbar() {
 
   // Ana sayfada navbar'ı gösterme
   if (pathname === '/') return null
-  if (pathname === '/mobile') return null
 
   const allNavigation = [
     { name: 'Ana Sayfa', href: '/' },

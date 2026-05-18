@@ -12,7 +12,7 @@ import { useState } from 'react'
  * Features:
  * - Displays project banner image
  * - Shows project title and description
- * - Includes technology tags with desktop hover animation
+ * - Includes technology tags clipped to one line via CSS overflow
  * - Responsive design with consistent styling
  */
 
@@ -23,45 +23,9 @@ type Props = {
 
 export default function ProjectCard({ project, priority = false }: Props) {
   const [src, setSrc] = useState(project.banner)
-  const [isHovered, setIsHovered] = useState(false)
-
-  // Sabit genişlik değerleri (padding dahil)
-  const TAG_PADDING = 24 // px-3 (sol ve sağ padding)
-  const TAG_GAP = 8 // gap-2
-  const CONTAINER_WIDTH = 320 // Container genişliği
-
-  // Tag'lerin toplam genişliğini hesapla ve sığanları belirle
-  const calculateVisibleTags = () => {
-    let currentWidth = 0
-    let visibleCount = 0
-
-    for (const tech of project.technologies) {
-      // Her karakteri yaklaşık 8px olarak hesapla
-      const tagWidth = tech.length * 8 + TAG_PADDING
-
-      // Gap'i de ekleyerek toplam genişliği hesapla
-      if (currentWidth + tagWidth + (visibleCount > 0 ? TAG_GAP : 0) <= CONTAINER_WIDTH) {
-        currentWidth += tagWidth + (visibleCount > 0 ? TAG_GAP : 0)
-        visibleCount++
-      } else {
-        break
-      }
-    }
-
-    return visibleCount
-  }
-
-  const visibleCount = calculateVisibleTags()
-  const visibleTechs = project.technologies.slice(0, visibleCount)
-  const remainingTechs = project.technologies.slice(visibleCount)
-  const hasRemainingTechs = remainingTechs.length > 0
 
   return (
-    <div
-      className="block h-[280px] sm:h-[320px] md:h-[450px]"
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
-    >
+    <div className="block h-[280px] sm:h-[320px] md:h-[450px]">
       <Link href={`/portfolio/${project.repoName}`} className="block h-full">
         <article className="flex h-full cursor-pointer flex-col overflow-hidden rounded-lg bg-(--nav-background-color) shadow-lg transition-transform hover:scale-[1.02]">
           <div className="relative h-24 shrink-0 sm:h-32 md:h-48">
@@ -88,58 +52,16 @@ export default function ProjectCard({ project, priority = false }: Props) {
               </p>
             </div>
 
-            <div className="mt-3 flex flex-nowrap gap-1.5 overflow-hidden md:hidden">
-              {project.technologies
-                .slice(0, project.technologies.length > 2 ? 1 : 2)
-                .map((tech) => (
+            <div className="mt-3 max-h-[1.6rem] overflow-hidden sm:max-h-[1.75rem] md:max-h-[2rem]">
+              <div className="flex flex-wrap gap-1.5 md:gap-2">
+                {project.technologies.map((tech) => (
                   <span
                     key={tech}
-                    className="bg-background inline-block shrink-0 rounded-full px-2 py-1 text-[0.65rem] leading-none whitespace-nowrap sm:text-xs"
+                    className="bg-background inline-block shrink-0 rounded-full px-2 py-1 text-[0.65rem] leading-none whitespace-nowrap sm:text-xs md:px-3 md:text-sm"
                   >
                     {tech}
                   </span>
                 ))}
-              {project.technologies.length > 2 && (
-                <span className="bg-background inline-block shrink-0 rounded-full px-2 py-1 text-[0.65rem] leading-none whitespace-nowrap sm:text-xs">
-                  +{project.technologies.length - 1}
-                </span>
-              )}
-            </div>
-
-            <div className="relative hidden overflow-hidden md:block">
-              <div className="flex gap-2 whitespace-nowrap">
-                <div
-                  className={`flex gap-2 transition-all duration-700 ease-in-out ${
-                    hasRemainingTechs && isHovered
-                      ? '-translate-x-full opacity-0'
-                      : 'translate-x-0 opacity-100'
-                  }`}
-                >
-                  {visibleTechs.map((tech) => (
-                    <span
-                      key={tech}
-                      className="bg-background inline-block rounded-full px-3 py-1 text-sm"
-                    >
-                      {tech}
-                    </span>
-                  ))}
-                </div>
-                {hasRemainingTechs && (
-                  <div
-                    className={`absolute left-0 flex gap-2 transition-all duration-700 ease-in-out ${
-                      isHovered ? 'translate-x-0 opacity-100' : 'translate-x-full opacity-0'
-                    }`}
-                  >
-                    {remainingTechs.map((tech) => (
-                      <span
-                        key={tech}
-                        className="bg-background inline-block rounded-full px-3 py-1 text-sm"
-                      >
-                        {tech}
-                      </span>
-                    ))}
-                  </div>
-                )}
               </div>
             </div>
           </div>

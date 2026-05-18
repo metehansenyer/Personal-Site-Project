@@ -8,7 +8,7 @@ import { usePathname } from 'next/navigation'
  * The footer is conditionally rendered based on the current route.
  *
  * Features:
- * - Automatically hides on home and mobile pages
+ * - Automatically hides on home page
  * - Includes a link to the developer's GitHub profile
  * - Animated heart icon
  * - Consistent styling with the rest of the application
@@ -17,9 +17,8 @@ import { usePathname } from 'next/navigation'
 export default function Footer() {
   const pathname = usePathname()
 
-  // Don't show footer on home and mobile pages
+  // Don't show footer on home page
   if (pathname === '/') return null
-  if (pathname === '/mobile') return null
 
   return (
     <footer className="w-full px-4 py-4 text-center">

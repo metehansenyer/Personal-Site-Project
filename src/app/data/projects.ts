@@ -1,3 +1,5 @@
+import type { IconSlug } from './icons'
+
 /**
  * Projects Configuration Module
  *
@@ -19,7 +21,7 @@ export interface Project {
   title: string // Display title of the project
   description: string // Brief project description
   banner: string // URL to the project banner image
-  technologies: string[] // List of technologies used
+  technologies: IconSlug[] // List of technologies used
   releaseDate: Date // Release date of the project
 }
 
@@ -33,7 +35,7 @@ export const projects: Project[] = [
     description:
       'Next.js ve TypeScript ile geliştirilmiş, modern web teknolojilerini kullanan kişisel portfolio websitesi.',
     banner: '/img/home_page.png',
-    technologies: ['TypeScript', 'React', 'NextJS', 'TailwindCSS', 'Markdown'],
+    technologies: ['typescript', 'react', 'nextjs', 'tailwindcss', 'markdown'],
     releaseDate: new Date(2025, 1, 2),
   },
   {
@@ -43,7 +45,7 @@ export const projects: Project[] = [
     description:
       'Kocaeli Üniversitesi Mühendislik Fakültesi Yazılım Mühendisliği 24-25 Programlama Laboratuvarı III Projesi. Spacewar Oyunu.',
     banner: '/img/kou_yzm209_csgameproject_spacewar.png',
-    technologies: ['C#', 'Raylib'],
+    technologies: ['csharp', 'raylib'],
     releaseDate: new Date(2024, 12, 23),
   },
   {
@@ -53,7 +55,7 @@ export const projects: Project[] = [
     description:
       'Kocaeli Üniversitesi Mühendislik Fakültesi Yazılım Mühendisliği 24-25 Programlama Laboratuvarı III Projesi. Minesweeper.',
     banner: '/img/kou_yzm209_csgameproject_minesweeper.png',
-    technologies: ['C#', '.NET', 'Windows Forms'],
+    technologies: ['csharp', 'dotnet', 'winforms'],
     releaseDate: new Date(2024, 11, 1),
   },
   {
@@ -63,7 +65,7 @@ export const projects: Project[] = [
     description:
       'Kocaeli Üniversitesi Mühendislik Fakültesi Yazılım Mühendisliği 23-24 Web Teknolojileri Projesi. To Do sitesi.',
     banner: '/img/kou_yzm108_todositeproject.png',
-    technologies: ['HTML', 'CSS', 'JavaScript'],
+    technologies: ['html', 'css', 'javascript'],
     releaseDate: new Date(2024, 5, 10),
   },
   {
@@ -73,7 +75,7 @@ export const projects: Project[] = [
     description:
       'Kocaeli Üniversitesi Mühendislik Fakültesi Yazılım Mühendisliği 23-24 Programlama Laboratuvarı I Projesi. Angry Sharks Oyunu.',
     banner: '/img/kou_yzm104_cppgameproject_angrysharks.png',
-    technologies: ['C++', 'Raylib'],
+    technologies: ['cplusplus', 'raylib'],
     releaseDate: new Date(2024, 5, 4),
   },
   {
@@ -82,7 +84,7 @@ export const projects: Project[] = [
     title: 'Node.js Project: Uptime Bot',
     description: "Veritabanına kaydedilen URL'leri uyanık tutan bir Discord Bot Altyapısı.",
     banner: '/img/discord_uptime_bot.png',
-    technologies: ['NodeJS', 'Discord.JS'],
+    technologies: ['nodejs', 'discordjs'],
     releaseDate: new Date(2023, 9, 28),
   },
   {
@@ -92,7 +94,7 @@ export const projects: Project[] = [
     description:
       "PolyVal geliştiricilere basitleştirilmiş bir API sunarken, arka planda Zod'u kullanan çok dilli ve son derece özelleştirilebilir bir doğrulama kütüphanesidir.",
     banner: '/img/polyval.png',
-    technologies: ['NodeJS', 'Zod', 'Typescript'],
+    technologies: ['nodejs', 'zod', 'typescript'],
     releaseDate: new Date(2025, 5, 22),
   },
   {
@@ -102,7 +104,7 @@ export const projects: Project[] = [
     description:
       'Kocaeli Üniversitesi Mühendislik Fakültesi Yazılım Mühendisliği 24-25 Web Programlama Dersi Projesi. KollektifKampus.',
     banner: '/img/kou_yzm212_djangoproject_kollektifkampus.png',
-    technologies: ['Python', 'Django', 'SQLite'],
+    technologies: ['python', 'django', 'sqlite'],
     releaseDate: new Date(2025, 5, 28),
   },
   {
@@ -112,7 +114,7 @@ export const projects: Project[] = [
     description:
       'Kocaeli Üniversitesi öğrenci bilgi sisteminden otomatik not çekme ve offline erişim aracı. Veri toplama ile hızlı offline erişim sağlar.',
     banner: '/img/kou_not_bilgi_sistemi_cli.png',
-    technologies: ['Python', 'Selenium', 'Web Scraping'],
+    technologies: ['python', 'selenium', 'webscraping'],
     releaseDate: new Date(2025, 6, 9),
   },
   {
@@ -121,7 +123,7 @@ export const projects: Project[] = [
     title: 'VLR.GG Unofficial API',
     description: "VLR.GG'den Valorant espor verilerini kazıyıp sunan modern bir RESTful API.",
     banner: '/img/vlrgg-api.png',
-    technologies: ['Python', 'FastAPI', 'selectolax', 'Web Scraping'],
+    technologies: ['python', 'fastapi', 'selectolax', 'webscraping'],
     releaseDate: new Date(2025, 8, 24),
   },
   {
@@ -130,7 +132,7 @@ export const projects: Project[] = [
     title: 'KOU SENG Website',
     description: "Kocaeli Üniversitesi Yazılım Kulübü'nün resmi web sitesi.",
     banner: '/img/kou-seng-website.png',
-    technologies: ['NextJS', 'TypeScript', 'TailwindCSS', 'Express', 'MongoDB'],
+    technologies: ['nextjs', 'typescript', 'tailwindcss', 'express', 'mongodb'],
     releaseDate: new Date(2025, 9, 21),
   },
 ]

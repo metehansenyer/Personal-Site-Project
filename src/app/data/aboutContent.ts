@@ -1,3 +1,5 @@
+import type { IconSlug } from './icons'
+
 // Interface for profile information structure
 // Contains basic personal information like name, location, etc.
 interface ProfileInfo {
@@ -18,7 +20,7 @@ interface AboutContent {
   }
   loadingText: string
   noTechText: string
-  technologies: string[]
+  technologies: IconSlug[]
 }
 
 // Content configuration for the about page

@@ -24,7 +24,7 @@ interface IconDefinition {
 // - url: Official website or documentation
 // - imgSrc: Path to the icon image (using CDN)
 // - alt: Alternative text for accessibility
-const icons: { [key: string]: IconDefinition } = {
+const icons = {
   javascript: {
     name: 'JavaScript',
     url: 'https://developer.mozilla.org/en-US/docs/Web/JavaScript',
@@ -246,13 +246,48 @@ const icons: { [key: string]: IconDefinition } = {
     imgSrc: 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/vercel/vercel-original.svg',
     alt: 'vercel',
   },
+  express: {
+    name: 'Express',
+    url: 'https://expressjs.com/',
+    imgSrc:
+      'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/express/express-original.svg',
+    alt: 'express',
+  },
+  fastapi: {
+    name: 'FastAPI',
+    url: 'https://fastapi.tiangolo.com/',
+    imgSrc:
+      'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/fastapi/fastapi-original.svg',
+    alt: 'fastapi',
+  },
+  zod: {
+    name: 'Zod',
+    url: 'https://zod.dev/',
+    imgSrc: 'https://zod.dev/logo.svg',
+    alt: 'zod',
+  },
+  selectolax: {
+    name: 'selectolax',
+    url: 'https://github.com/rushter/selectolax',
+    imgSrc: 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/python/python-original.svg',
+    alt: 'selectolax',
+  },
+  webscraping: {
+    name: 'Web Scraping',
+    url: 'https://en.wikipedia.org/wiki/Web_scraping',
+    imgSrc:
+      'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/chrome/chrome-original.svg',
+    alt: 'webscraping',
+  },
   template: {
     name: 'template',
     url: 'url',
     imgSrc: 'src',
     alt: 'template',
   },
-}
+} as const
+
+export type IconSlug = keyof typeof icons
 
 /**
  * Generates HTML markup for displaying technology icons
@@ -261,11 +296,14 @@ const icons: { [key: string]: IconDefinition } = {
  * @param iconNames - Array of icon keys to generate HTML for
  * @returns HTML string containing icon elements
  */
-export function generateIconsHtml(iconNames: string[]): string {
+export function generateIconsHtml(iconNames: IconSlug[]): string {
   const iconHtml = iconNames
     .map((name) => {
       const icon = icons[name]
-      if (!icon) return ''
+      if (!icon) {
+        console.warn(`[icons] unknown icon slug: ${name}`)
+        return ''
+      }
 
       return `<a class="icon-link" href="${icon.url}" target="_blank" rel="noreferrer">\n<img class="icon-img" src="${icon.imgSrc}" alt="${icon.alt}"/>\n</a>`
     })
@@ -281,7 +319,7 @@ export function generateIconsHtml(iconNames: string[]): string {
  * @param iconNames - Array of icon keys to retrieve
  * @returns Array of IconDefinition objects
  */
-export function generateAboutTechnologies(iconNames: string[]): IconDefinition[] {
+export function generateAboutTechnologies(iconNames: IconSlug[]): IconDefinition[] {
   return iconNames.map((name) => icons[name])
 }
 

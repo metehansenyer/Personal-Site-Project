@@ -11,7 +11,7 @@ import { projects } from '@/app/data/projects'
  * The header is conditionally rendered based on the current route.
  *
  * Features:
- * - Automatically hides on home and mobile pages
+ * - Automatically hides on home page
  * - Dynamically updates page title based on current route
  * - Handles special cases for project detail pages
  * - Uses a compact animated mobile navigation menu
@@ -23,7 +23,6 @@ export default function Header() {
 
   // Ana sayfada header'ı gösterme
   if (pathname === '/') return null
-  if (pathname === '/mobile') return null
 
   const allNavigation = [
     { name: 'Ana Sayfa', href: '/' },

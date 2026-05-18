@@ -22,7 +22,8 @@ import remarkRehype from 'remark-rehype'
 import rehypeRaw from 'rehype-raw'
 import rehypeExternalLinks from 'rehype-external-links'
 import rehypeStringify from 'rehype-stringify'
-import { generateIconsHtml } from '@/app/data/icons'
+import icons, { generateIconsHtml } from '@/app/data/icons'
+import type { IconSlug } from '@/app/data/icons'
 
 // Directory containing project markdown files
 const PROJECTS_DIR = 'src/app/data/projects'
@@ -62,9 +63,16 @@ export async function getMarkdownContent(fileName: string) {
     // Process technology icons in the content
     const regex = /\{icons:\s*\[(.*?)\]\}/g
     const matches = Array.from(content.matchAll(regex)) as RegExpMatchArray[]
-    const iconsArray = matches
+    const rawSlugs = matches
       .map((match) => match[1].split(',').map((icon: string) => icon.trim()))
       .flat()
+    const iconsArray: IconSlug[] = rawSlugs.filter((slug): slug is IconSlug => {
+      if (!(slug in icons)) {
+        console.warn(`[markdown] unknown icon slug: ${slug}`)
+        return false
+      }
+      return true
+    })
     const willBeReplaced = generateIconsHtml(iconsArray)
     const willBeProcessed = content.replace(regex, willBeReplaced)
 
