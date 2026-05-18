@@ -2,9 +2,7 @@ import { NextConfig } from 'next/dist/server/config'
 
 const config: NextConfig = {
   output: 'standalone',
-  experimental: {
-    typedRoutes: true,
-  },
+  typedRoutes: true,
   images: {
     remotePatterns: [
       {
