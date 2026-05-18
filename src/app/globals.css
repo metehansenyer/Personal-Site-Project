@@ -106,24 +106,11 @@ main {
 }
 
 /* Responsive Design Adjustments
-   Modifies styles for mobile devices (max-width: 768px) */
+   Modifies CSS variables for mobile devices (max-width: 768px) */
 @media (max-width: 768px) {
   :root {
     --border-radius-large: 48px;
     --border-radius-medium: 24px;
     --padding-standard: 1rem;
-  }
-
-  .w-\[80\%\] {
-    width: 92%;
-  }
-
-  .py-\[10\%\] {
-    padding: 5% 0;
-  }
-
-  .text-\[7\.5rem\] {
-    font-size: clamp(3.75rem, 18vw, 5rem);
-    line-height: 0.95;
   }
 }

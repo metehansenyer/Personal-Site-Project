@@ -18,7 +18,7 @@ import { generateAboutTechnologies } from '@/app/data/icons'
  */
 export default function About() {
   return (
-    <main className="animate-fadeIn mx-auto flex h-full w-[80%] flex-col items-center gap-8 px-2 py-8 md:mt-10 md:flex-row md:gap-4 md:px-0 md:py-0">
+    <main className="animate-fadeIn mx-auto flex h-full w-full max-w-[92%] flex-col items-center gap-8 px-2 py-8 sm:max-w-[85%] md:mt-10 md:max-w-[80%] md:flex-row md:gap-4 md:px-0 md:py-0">
       {/* Profile Section - Contains photo, name, and contact information */}
       <section className="w-full space-y-4 md:w-1/3 md:pl-[5%]">
         <Image

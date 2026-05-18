@@ -19,7 +19,7 @@ export default function Portfolio() {
   // Show message if no projects are available
   if (projects.length === 0) {
     return (
-      <div className="mx-auto w-[80%] px-2 py-8 text-center">
+      <div className="mx-auto w-full max-w-[90%] px-4 py-8 text-center sm:max-w-[85%] md:max-w-[80%]">
         <p className="text-(--text-color) opacity-70">Henüz proje bulunmuyor.</p>
       </div>
     )
@@ -31,9 +31,9 @@ export default function Portfolio() {
   )
 
   return (
-    <main className="mx-auto w-[80%] px-2 py-8 md:px-0">
+    <main className="mx-auto w-full max-w-[90%] px-2 py-8 sm:max-w-[85%] md:max-w-[80%] md:px-0">
       {/* Project Grid - Responsive layout with different columns based on screen size */}
-      <div className="grid grid-cols-2 gap-4 md:grid-cols-2 md:gap-8 lg:grid-cols-3">
+      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:gap-8 lg:grid-cols-3">
         {sortedProjects.map((project, index) => (
           <ProjectCard key={project.repoName} project={project} priority={index < 3} />
         ))}

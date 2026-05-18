@@ -25,7 +25,7 @@ const navigationButtons = [
 
 export default function Home() {
   return (
-    <main className="mx-auto flex min-h-svh w-[80%] flex-col justify-center overflow-hidden md:min-h-screen">
+    <main className="mx-auto flex min-h-svh w-full max-w-[90%] flex-col justify-center overflow-hidden sm:max-w-[80%] md:min-h-screen">
       {/* Main Title Section */}
       <div className="text-center">
         <div className="text-sm leading-7 tracking-[0.2em] text-(--text-color) sm:text-[1.25rem] md:text-[1.5rem] md:leading-[3.5rem] md:tracking-normal">
@@ -48,13 +48,13 @@ export default function Home() {
             {row.map((button) => (
               <li
                 key={button.href}
-                className="w-full max-w-[20rem] md:mx-auto md:mt-12 md:w-auto md:max-w-[27rem]"
+                className="w-full md:mx-auto md:mt-12 md:w-auto md:max-w-[27rem]"
               >
                 <Button
                   href={button.href}
-                  width="w-full md:w-[27rem]"
-                  height="h-14 md:h-16"
-                  fontSize="text-[1.15rem] md:text-[2rem]"
+                  width="w-full"
+                  height="h-12 md:h-16"
+                  fontSize="text-base md:text-[2rem]"
                 >
                   {button.text}
                 </Button>

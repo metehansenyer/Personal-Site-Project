@@ -12,7 +12,7 @@
  * - Responsive layout structure
  */
 
-import type { Metadata } from 'next'
+import type { Metadata, Viewport } from 'next'
 import './globals.css'
 import Header from './components/Header'
 import Navbar from './components/Navbar'
@@ -28,6 +28,12 @@ const inter = Inter({
   variable: '--font-inter',
   preload: true,
 })
+
+// Viewport configuration for correct mobile rendering
+export const viewport: Viewport = {
+  width: 'device-width',
+  initialScale: 1,
+}
 
 // Metadata configuration for SEO and social sharing
 export const metadata: Metadata = {
