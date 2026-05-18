@@ -1,0 +1,168 @@
+/* Project content overrides on top of github-markdown-css.
+   Imported AFTER github-markdown-dark.css in the project detail page so
+   these rules win the cascade for table colors, heading borders, link
+   colors, code backgrounds, and callout labels. */
+
+.markdown-body {
+  box-sizing: border-box;
+  min-width: 0;
+  max-width: 980px;
+  color: var(--text-color);
+  background-color: transparent;
+  overflow-wrap: anywhere;
+}
+
+.markdown-body h1,
+.markdown-body h2,
+.markdown-body h3,
+.markdown-body h4,
+.markdown-body h5,
+.markdown-body h6 {
+  font-weight: bold;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid;
+}
+
+.markdown-body ul {
+  list-style: initial;
+}
+
+.markdown-body ol {
+  list-style: decimal;
+}
+
+.markdown-body ol ol,
+.markdown-body ul ol {
+  list-style-type: circle;
+}
+
+.markdown-body table {
+  display: block;
+  width: max-content;
+  max-width: 100%;
+  overflow: auto;
+}
+
+.markdown-body table td:nth-child(1) {
+  text-align: left;
+}
+
+.markdown-body table td,
+.markdown-body table th {
+  border: 1px solid var(--table-border-color);
+}
+
+.markdown-body table tr {
+  background-color: var(--table-background-color);
+  border-top: 1px solid var(--table-border-color-muted);
+}
+
+.markdown-body table tr:nth-child(2n) {
+  background-color: var(--table-background-color-muted);
+}
+
+.markdown-body a {
+  color: var(--text-color-blue);
+  text-decoration-line: underline;
+}
+
+.markdown-body pre {
+  overflow-x: auto;
+  background-color: var(--nav-background-color);
+}
+
+.markdown-body code {
+  background-color: var(--nav-background-color);
+}
+
+.markdown-body pre:has(code.language-IMPORTANT) {
+  background-color: transparent;
+  border-left: 6px solid var(--important-color);
+}
+
+.markdown-body pre:has(code.language-IMPORTANT)::before {
+  content: 'ⓘ ÖNEMLİ';
+  display: block;
+  padding-bottom: 5px;
+  color: var(--important-color);
+  font-weight: bold;
+}
+
+.markdown-body pre:has(code.language-WARNING) {
+  background-color: transparent;
+  border-left: 6px solid var(--warning-color);
+}
+
+.markdown-body pre:has(code.language-WARNING)::before {
+  content: '⚠️ UYARI';
+  display: block;
+  padding-bottom: 5px;
+  color: var(--warning-color);
+  font-weight: bold;
+}
+
+.markdown-body pre:has(code.language-NOTE) {
+  background-color: transparent;
+  border-left: 6px solid var(--note-color);
+}
+
+.markdown-body pre:has(code.language-NOTE)::before {
+  content: 'ⓘ NOT';
+  display: block;
+  padding-bottom: 5px;
+  color: var(--note-color);
+  font-weight: bold;
+}
+
+.markdown-body div.icon {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  margin: 20px 0;
+  background: transparent;
+}
+
+.markdown-body div.icon a.icon-link {
+  background: transparent;
+}
+
+.markdown-body div.icon a.icon-link img.icon-img {
+  background: transparent;
+  width: 40px;
+  height: 40px;
+}
+
+.markdown-body div.icon a.icon-link img.icon-img:hover {
+  scale: 110%;
+  transition: all;
+}
+
+.markdown-body img {
+  max-width: 100%;
+  height: auto;
+}
+
+@media (max-width: 640px) {
+  .markdown-body {
+    font-size: 0.95rem;
+  }
+
+  .markdown-body h1 {
+    font-size: 1.75rem;
+  }
+
+  .markdown-body h2 {
+    font-size: 1.45rem;
+  }
+
+  .markdown-body h3 {
+    font-size: 1.25rem;
+  }
+
+  .markdown-body pre {
+    padding: 12px;
+  }
+}
