@@ -1,9 +1,7 @@
-'use client'
-
 import Image from 'next/image'
 import Link from 'next/link'
 import { Project } from '@/app/data/projects'
-import { useEffect, useRef, useState } from 'react'
+import { useState } from 'react'
 
 /**
  * ProjectCard Component
@@ -14,8 +12,7 @@ import { useEffect, useRef, useState } from 'react'
  * Features:
  * - Displays project banner image
  * - Shows project title and description
- * - Technology tags render on a single line; on hover the row slides left by
- *   exactly the amount it overflows, revealing tags that didn't fit
+ * - Includes technology tags with desktop hover animation
  * - Responsive design with consistent styling
  */
 
@@ -26,32 +23,44 @@ type Props = {
 
 export default function ProjectCard({ project, priority = false }: Props) {
   const [src, setSrc] = useState(project.banner)
-  const [hover, setHover] = useState(false)
-  const [overflowPx, setOverflowPx] = useState(0)
-  const tagsContainerRef = useRef<HTMLDivElement>(null)
-  const tagsRowRef = useRef<HTMLDivElement>(null)
+  const [isHovered, setIsHovered] = useState(false)
 
-  useEffect(() => {
-    const container = tagsContainerRef.current
-    const row = tagsRowRef.current
-    if (!container || !row) return
+  // Sabit genişlik değerleri (padding dahil)
+  const TAG_PADDING = 24 // px-3 (sol ve sağ padding)
+  const TAG_GAP = 8 // gap-2
+  const CONTAINER_WIDTH = 320 // Container genişliği
 
-    const update = () => {
-      setOverflowPx(Math.max(0, row.scrollWidth - container.clientWidth))
+  // Tag'lerin toplam genişliğini hesapla ve sığanları belirle
+  const calculateVisibleTags = () => {
+    let currentWidth = 0
+    let visibleCount = 0
+
+    for (const tech of project.technologies) {
+      // Her karakteri yaklaşık 8px olarak hesapla
+      const tagWidth = tech.length * 8 + TAG_PADDING
+
+      // Gap'i de ekleyerek toplam genişliği hesapla
+      if (currentWidth + tagWidth + (visibleCount > 0 ? TAG_GAP : 0) <= CONTAINER_WIDTH) {
+        currentWidth += tagWidth + (visibleCount > 0 ? TAG_GAP : 0)
+        visibleCount++
+      } else {
+        break
+      }
     }
-    update()
 
-    const ro = new ResizeObserver(update)
-    ro.observe(container)
-    ro.observe(row)
-    return () => ro.disconnect()
-  }, [project.technologies])
+    return visibleCount
+  }
+
+  const visibleCount = calculateVisibleTags()
+  const visibleTechs = project.technologies.slice(0, visibleCount)
+  const remainingTechs = project.technologies.slice(visibleCount)
+  const hasRemainingTechs = remainingTechs.length > 0
 
   return (
     <div
       className="block h-[280px] sm:h-[320px] md:h-[450px]"
-      onMouseEnter={() => setHover(true)}
-      onMouseLeave={() => setHover(false)}
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
     >
       <Link href={`/portfolio/${project.repoName}`} className="block h-full">
         <article className="flex h-full cursor-pointer flex-col overflow-hidden rounded-lg bg-(--nav-background-color) shadow-lg transition-transform hover:scale-[1.02]">
@@ -79,22 +88,58 @@ export default function ProjectCard({ project, priority = false }: Props) {
               </p>
             </div>
 
-            <div ref={tagsContainerRef} className="mt-3 overflow-hidden">
-              <div
-                ref={tagsRowRef}
-                className="flex gap-1.5 whitespace-nowrap transition-transform duration-700 ease-in-out md:gap-2"
-                style={{
-                  transform: `translateX(${hover ? -overflowPx : 0}px)`,
-                }}
-              >
-                {project.technologies.map((tech) => (
+            <div className="mt-3 flex flex-nowrap gap-1.5 overflow-hidden md:hidden">
+              {project.technologies
+                .slice(0, project.technologies.length > 2 ? 1 : 2)
+                .map((tech) => (
                   <span
                     key={tech}
-                    className="bg-background inline-block shrink-0 rounded-full px-2 py-1 text-[0.65rem] leading-none whitespace-nowrap sm:text-xs md:px-3 md:text-sm"
+                    className="bg-background inline-block shrink-0 rounded-full px-2 py-1 text-[0.65rem] leading-none whitespace-nowrap sm:text-xs"
                   >
                     {tech}
                   </span>
                 ))}
+              {project.technologies.length > 2 && (
+                <span className="bg-background inline-block shrink-0 rounded-full px-2 py-1 text-[0.65rem] leading-none whitespace-nowrap sm:text-xs">
+                  +{project.technologies.length - 1}
+                </span>
+              )}
+            </div>
+
+            <div className="relative hidden overflow-hidden md:block">
+              <div className="flex gap-2 whitespace-nowrap">
+                <div
+                  className={`flex gap-2 transition-all duration-700 ease-in-out ${
+                    hasRemainingTechs && isHovered
+                      ? '-translate-x-full opacity-0'
+                      : 'translate-x-0 opacity-100'
+                  }`}
+                >
+                  {visibleTechs.map((tech) => (
+                    <span
+                      key={tech}
+                      className="bg-background inline-block rounded-full px-3 py-1 text-sm"
+                    >
+                      {tech}
+                    </span>
+                  ))}
+                </div>
+                {hasRemainingTechs && (
+                  <div
+                    className={`absolute left-0 flex gap-2 transition-all duration-700 ease-in-out ${
+                      isHovered ? 'translate-x-0 opacity-100' : 'translate-x-full opacity-0'
+                    }`}
+                  >
+                    {remainingTechs.map((tech) => (
+                      <span
+                        key={tech}
+                        className="bg-background inline-block rounded-full px-3 py-1 text-sm"
+                      >
+                        {tech}
+                      </span>
+                    ))}
+                  </div>
+                )}
               </div>
             </div>
           </div>
