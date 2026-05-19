@@ -22,11 +22,14 @@ export function NavOrderProvider({ children }: { children: React.ReactNode }) {
   const pathname = usePathname()
   const prevPathRef = useRef<string | null>(null)
 
-  const [order, setOrder] = useState<NavPath[]>(() => {
-    if (typeof window === 'undefined') return defaultOrder
+  // Always start with defaultOrder so SSR and the first client render match.
+  // sessionStorage is read in an effect below, after hydration.
+  const [order, setOrder] = useState<NavPath[]>(defaultOrder)
+
+  useEffect(() => {
     try {
       const stored = sessionStorage.getItem(STORAGE_KEY)
-      if (!stored) return defaultOrder
+      if (!stored) return
       const parsed: unknown = JSON.parse(stored)
       if (
         Array.isArray(parsed) &&
@@ -34,13 +37,12 @@ export function NavOrderProvider({ children }: { children: React.ReactNode }) {
         parsed.every((p): p is NavPath => typeof p === 'string' && isNavPath(p)) &&
         defaultOrder.every((p) => parsed.includes(p))
       ) {
-        return parsed
+        setOrder(parsed)
       }
     } catch {
       // fall through to default
     }
-    return defaultOrder
-  })
+  }, [])
 
   useEffect(() => {
     const prev = prevPathRef.current
