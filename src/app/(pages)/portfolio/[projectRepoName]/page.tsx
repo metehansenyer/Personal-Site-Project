@@ -113,7 +113,7 @@ export default async function ProjectPage({ params }: Props) {
         </ProjectShell>
 
         {/* GitHub Repository Link */}
-        <div>
+        <div className='mt-6'>
           <Button
             href={`https://github.com/${project.userName}/${project.repoName}`}
             width="w-full"
