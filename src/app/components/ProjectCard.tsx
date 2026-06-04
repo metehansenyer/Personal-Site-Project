@@ -61,13 +61,13 @@ export default function ProjectCard({ project, priority = false }: Props) {
 
   return (
     <div
-      className="block h-[280px] sm:h-[320px] md:h-[450px]"
+      className="block h-auto sm:h-[320px] md:h-[450px]"
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
       <Link href={`/portfolio/${project.repoName}`} className="block h-full">
         <article className="flex h-full cursor-pointer flex-col overflow-hidden rounded-lg bg-(--nav-background-color) shadow-lg transition-transform hover:scale-[1.02]">
-          <div className="relative h-24 shrink-0 sm:h-32 md:h-48">
+          <div className="relative h-44 shrink-0 sm:h-32 md:h-48">
             <Image
               src={src}
               alt={`${project.title} banner`}
@@ -80,31 +80,29 @@ export default function ProjectCard({ project, priority = false }: Props) {
             />
           </div>
 
-          <div className="flex min-h-0 flex-1 flex-col p-3 sm:p-4 md:h-[calc(450px-12rem)] md:p-6">
+          <div className="flex flex-1 flex-col p-4 sm:p-4 md:h-[calc(450px-12rem)] md:p-6">
             <div className="min-h-0 flex-1">
               <h2 className="mb-2 line-clamp-2 overflow-hidden text-base font-bold text-ellipsis text-(--text-color) sm:text-lg md:mb-4 md:h-14 md:text-2xl">
                 {project.title}
               </h2>
 
-              <p className="mb-3 line-clamp-5 text-xs text-(--text-color) opacity-90 sm:text-sm md:mb-4 md:line-clamp-4 md:text-base">
+              <p className="mb-3 line-clamp-3 text-xs text-(--text-color) opacity-90 sm:text-sm md:mb-4 md:line-clamp-4 md:text-base">
                 {project.description}
               </p>
             </div>
 
-            <div className="mt-3 flex flex-nowrap gap-1.5 overflow-hidden md:hidden">
-              {project.technologies
-                .slice(0, project.technologies.length > 2 ? 1 : 2)
-                .map((tech) => (
-                  <span
-                    key={tech}
-                    className="bg-background inline-block shrink-0 rounded-full px-2 py-1 text-[0.65rem] leading-none whitespace-nowrap sm:text-xs"
-                  >
-                    {icons[tech].name}
-                  </span>
-                ))}
-              {project.technologies.length > 2 && (
+            <div className="mt-3 flex flex-wrap gap-1.5 md:hidden">
+              {project.technologies.slice(0, 3).map((tech) => (
+                <span
+                  key={tech}
+                  className="bg-background inline-block shrink-0 rounded-full px-2 py-1 text-[0.65rem] leading-none whitespace-nowrap sm:text-xs"
+                >
+                  {icons[tech].name}
+                </span>
+              ))}
+              {project.technologies.length > 3 && (
                 <span className="bg-background inline-block shrink-0 rounded-full px-2 py-1 text-[0.65rem] leading-none whitespace-nowrap sm:text-xs">
-                  +{project.technologies.length - 1}
+                  +{project.technologies.length - 3}
                 </span>
               )}
             </div>

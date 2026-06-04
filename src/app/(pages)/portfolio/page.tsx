@@ -31,7 +31,7 @@ export default function Portfolio() {
   )
 
   return (
-    <main className="mx-auto w-full max-w-[90%] px-2 py-8 sm:max-w-[85%] md:max-w-[80%] md:px-0">
+    <main className="mx-auto w-full max-w-[90%] px-4 py-8 sm:max-w-[85%] md:max-w-[80%] md:px-0">
       {/* Project Grid - Responsive layout with different columns based on screen size */}
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:gap-8 lg:grid-cols-3">
         {sortedProjects.map((project, index) => (
