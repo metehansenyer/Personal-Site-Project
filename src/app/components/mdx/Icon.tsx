@@ -1,3 +1,4 @@
+import Image from 'next/image'
 import icons from '@/app/data/icons'
 import type { IconSlug } from '@/app/data/icons'
 
@@ -26,10 +27,12 @@ export default function Icon({ slugs }: IconProps) {
             target="_blank"
             rel="noreferrer"
           >
-            <img
-              className="icon-img h-[40px] w-[40px] bg-transparent transition-all hover:scale-110"
+            <Image
+              className="icon-img bg-transparent transition-all hover:scale-110"
               src={icon.imgSrc}
               alt={icon.alt}
+              width={40}
+              height={40}
             />
           </a>
         )

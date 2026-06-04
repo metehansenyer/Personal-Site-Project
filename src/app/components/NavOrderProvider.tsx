@@ -8,9 +8,7 @@ type NavPath = Exclude<SiteRoute['path'], '/'>
 
 const STORAGE_KEY = 'nav-order'
 
-const defaultOrder: NavPath[] = routes
-  .filter((r) => r.showInNav)
-  .map((r) => r.path as NavPath)
+const defaultOrder: NavPath[] = routes.filter((r) => r.showInNav).map((r) => r.path as NavPath)
 
 const NavOrderContext = createContext<readonly NavPath[]>(defaultOrder)
 
@@ -37,6 +35,7 @@ export function NavOrderProvider({ children }: { children: React.ReactNode }) {
         parsed.every((p): p is NavPath => typeof p === 'string' && isNavPath(p)) &&
         defaultOrder.every((p) => parsed.includes(p))
       ) {
+        // eslint-disable-next-line react-hooks/set-state-in-effect -- intentional post-hydration init: SSR renders defaultOrder, then client updates once from sessionStorage
         setOrder(parsed)
       }
     } catch {
