@@ -15,8 +15,8 @@ importers:
         specifier: ^3.1.1
         version: 3.1.1(@types/react@19.2.16)(react@19.2.7)
       '@next/mdx':
-        specifier: ^16.2.7
-        version: 16.2.7(@mdx-js/loader@3.1.1(webpack@5.106.2(esbuild@0.28.0)(postcss@8.5.15)))(@mdx-js/react@3.1.1(@types/react@19.2.16)(react@19.2.7))
+        specifier: ^16.2.9
+        version: 16.2.9(@mdx-js/loader@3.1.1(webpack@5.106.2(esbuild@0.28.0)(postcss@8.5.15)))(@mdx-js/react@3.1.1(@types/react@19.2.16)(react@19.2.7))
       '@types/mdx':
         specifier: ^2.0.13
         version: 2.0.13
@@ -619,8 +619,8 @@ packages:
   '@next/eslint-plugin-next@16.2.7':
     resolution: {integrity: sha512-VbS+QgMHqvIDMTIqD2xMBKK1otIpdAUKA8VLHFwR9h6OfU/mOm7w/69nQcvdmI8hCk99Wr2AsGLn/PJ/tMHw1w==}
 
-  '@next/mdx@16.2.7':
-    resolution: {integrity: sha512-4RmM0KISxvfHr37/cn9TAGD2oy1nvTQ+ycgknz2xpd8IrY980N7XDU3CXhfKOXPhIVgbshxFF9HQEQC32ZVa9A==}
+  '@next/mdx@16.2.9':
+    resolution: {integrity: sha512-SdweShKGCuN639JjyFSMQ8uldo+I+254+HucpjwdbFfaWHqUNN6dnQ1Of6laahnFyo48CcfDXEc2OBCS/Wfngw==}
     peerDependencies:
       '@mdx-js/loader': '>=0.15.0'
       '@mdx-js/react': '>=0.15.0'
@@ -944,6 +944,9 @@ packages:
 
   '@types/node@24.12.4':
     resolution: {integrity: sha512-GUUEShf+PBCGW2KaXwcIt3Yk+e3pkKwWKb9GSyM9WQVE+ep2jzmHdGsHzu4wgcZy5fN9FBdVzjpBQsYlpfpgLA==}
+
+  '@types/node@24.13.1':
+    resolution: {integrity: sha512-RSpUJGmvsJ1ZeBehQZFhIdpsz+bIpES0nIQXko4Ybq+N+kX6XvOq3Jo+iJ82FWLdblFq85AsMikd3m35jgezYg==}
 
   '@types/react-dom@19.2.3':
     resolution: {integrity: sha512-jp2L/eY6fn+KgVVQAOqYItbF0VY/YApe5Mz2F0aykSO8gx31bYCZyvSeYxCHKvzHG5eZjc+zyaS5BrBWya2+kQ==}
@@ -1544,6 +1547,10 @@ packages:
 
   enhanced-resolve@5.22.1:
     resolution: {integrity: sha512-6QEuw3zoX1SJQc7b87aBXke/no+mG2bTBgw29gWMQonLmpEkWoCAVkl+M49e48AZlWzxiDzDZzYdp6kobcyLww==}
+    engines: {node: '>=10.13.0'}
+
+  enhanced-resolve@5.23.0:
+    resolution: {integrity: sha512-yJN/BOOLxcOW2aQgeif9mSnaUB8KtvmMMp56oA1kx1CRfBKbhZm2pJ+NBY+3eOboHxix8lfjWpHE0Ei5U8RbSA==}
     engines: {node: '>=10.13.0'}
 
   entities@6.0.1:
@@ -3172,6 +3179,9 @@ packages:
   undici-types@7.16.0:
     resolution: {integrity: sha512-Zz+aZWSj8LE6zoxD+xrjh4VfkIG8Ya6LvYkZqtUQGJPZjYl53ypCaUwWqo7eI0x66KBGeRo+mlBEkMSeSZ38Nw==}
 
+  undici-types@7.18.2:
+    resolution: {integrity: sha512-AsuCzffGHJybSaRrmr5eHr81mwJU3kjw6M+uprWvCXiNeN9SOGwQ3Jn8jb8m3Z6izVgknn1R0FTCEAP2QrLY/w==}
+
   unified@11.0.5:
     resolution: {integrity: sha512-xKvGhPWw3k84Qjh8bI3ZeJjqnyadK+GEFtazSfZv/rKeTkTjOJho6mFqh2SM96iIcZokxiOpg78GazTSg8+KHA==}
 
@@ -3836,7 +3846,7 @@ snapshots:
     dependencies:
       fast-glob: 3.3.1
 
-  '@next/mdx@16.2.7(@mdx-js/loader@3.1.1(webpack@5.106.2(esbuild@0.28.0)(postcss@8.5.15)))(@mdx-js/react@3.1.1(@types/react@19.2.16)(react@19.2.7))':
+  '@next/mdx@16.2.9(@mdx-js/loader@3.1.1(webpack@5.106.2(esbuild@0.28.0)(postcss@8.5.15)))(@mdx-js/react@3.1.1(@types/react@19.2.16)(react@19.2.7))':
     dependencies:
       source-map: 0.7.6
     optionalDependencies:
@@ -4062,6 +4072,10 @@ snapshots:
   '@types/node@24.12.4':
     dependencies:
       undici-types: 7.16.0
+
+  '@types/node@24.13.1':
+    dependencies:
+      undici-types: 7.18.2
 
   '@types/react-dom@19.2.3(@types/react@19.2.16)':
     dependencies:
@@ -4687,6 +4701,11 @@ snapshots:
   emojis-list@3.0.0: {}
 
   enhanced-resolve@5.22.1:
+    dependencies:
+      graceful-fs: 4.2.11
+      tapable: 2.3.3
+
+  enhanced-resolve@5.23.0:
     dependencies:
       graceful-fs: 4.2.11
       tapable: 2.3.3
@@ -5568,7 +5587,7 @@ snapshots:
 
   jest-worker@27.5.1:
     dependencies:
-      '@types/node': 24.12.4
+      '@types/node': 24.13.1
       merge-stream: 2.0.0
       supports-color: 8.1.1
 
@@ -6907,6 +6926,8 @@ snapshots:
 
   undici-types@7.16.0: {}
 
+  undici-types@7.18.2: {}
+
   unified@11.0.5:
     dependencies:
       '@types/unist': 3.0.3
@@ -7073,7 +7094,7 @@ snapshots:
       acorn-import-phases: 1.0.4(acorn@8.16.0)
       browserslist: 4.28.2
       chrome-trace-event: 1.0.4
-      enhanced-resolve: 5.22.1
+      enhanced-resolve: 5.23.0
       es-module-lexer: 2.1.0
       eslint-scope: 5.1.1
       events: 3.3.0
