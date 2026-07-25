@@ -91,7 +91,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         </NavOrderProvider>
         {process.env.NODE_ENV === 'production' && (
           <Script
-            src="https://umami.metehansenyer.tech/script.js"
+            src="https://umami.metehansenyer.dev/script.js"
             data-website-id="41d22223-daff-461c-bec6-d56ddd7208f6"
             strategy="afterInteractive"
           />

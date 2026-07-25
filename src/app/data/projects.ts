@@ -60,16 +60,6 @@ export const projects: Project[] = [
   },
   {
     userName: 'metehansenyer',
-    repoName: 'KOU-YZM108-ToDoSiteProject',
-    title: 'Site Project: ToDo Site',
-    description:
-      'Kocaeli Üniversitesi Mühendislik Fakültesi Yazılım Mühendisliği 23-24 Web Teknolojileri Projesi. To Do sitesi.',
-    banner: '/img/kou_yzm108_todositeproject.png',
-    technologies: ['html', 'css', 'javascript'],
-    releaseDate: new Date(2024, 5, 10),
-  },
-  {
-    userName: 'metehansenyer',
     repoName: 'KOU-YZM104-CppGameProject-AngrySharks',
     title: 'Game Project: Angry Sharks',
     description:
@@ -77,15 +67,6 @@ export const projects: Project[] = [
     banner: '/img/kou_yzm104_cppgameproject_angrysharks.png',
     technologies: ['cplusplus', 'raylib'],
     releaseDate: new Date(2024, 5, 4),
-  },
-  {
-    userName: 'metehansenyer',
-    repoName: 'Discord-Uptime-Bot',
-    title: 'Node.js Project: Uptime Bot',
-    description: "Veritabanına kaydedilen URL'leri uyanık tutan bir Discord Bot Altyapısı.",
-    banner: '/img/discord_uptime_bot.png',
-    technologies: ['nodejs', 'discordjs'],
-    releaseDate: new Date(2023, 9, 28),
   },
   {
     userName: 'metehansenyer',
