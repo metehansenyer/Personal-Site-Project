@@ -1,23 +1,25 @@
-FROM node:24-slim AS deps
+# syntax=docker/dockerfile:1
+
+# ---- Stage 1: build the static site ----
+FROM node:24-slim AS build
 WORKDIR /app
 RUN corepack enable pnpm
+
+# Install dependencies first (cached unless the manifests change). Dev dependencies are
+# required: Astro, Tailwind and friends are devDependencies/build tools.
 COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
 RUN pnpm install --frozen-lockfile
 
-FROM node:24-slim AS builder
-WORKDIR /app
-RUN corepack enable pnpm
-COPY --from=deps /app/node_modules ./node_modules
 COPY . .
-RUN pnpm build
 
-FROM node:24-slim AS runner
-WORKDIR /app
-RUN addgroup --system --gid 1001 nodejs && adduser --system --uid 1001 nextjs
-COPY --from=builder /app/public ./public
-COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
-COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
-USER nextjs
-ENV PORT=3000
-ENV HOSTNAME="0.0.0.0"
-CMD ["node", "server.js"]
+# Optional canonical site URL (sitemap, canonical links, OpenGraph). When empty, astro.config.ts
+# falls back to its default, so unset the variable instead of passing an empty string.
+ARG SITE_URL
+RUN if [ -n "$SITE_URL" ]; then export SITE_URL; else unset SITE_URL; fi; pnpm build
+
+# ---- Stage 2: serve /app/dist with unprivileged nginx on port 3000 ----
+FROM nginxinc/nginx-unprivileged:alpine AS runner
+COPY docker/nginx.conf /etc/nginx/conf.d/default.conf
+COPY --from=build /app/dist /app/dist
+EXPOSE 3000
+# The base image already runs as the unprivileged "nginx" user and starts nginx in the foreground.
