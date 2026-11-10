@@ -6,7 +6,7 @@ import rehypeExternalLinks from 'rehype-external-links'
 
 // https://astro.build/config
 export default defineConfig({
-  site: process.env.SITE_URL ?? 'https://who.metehansenyer.tech',
+  site: process.env.SITE_URL ?? 'https://who.metehansenyer.dev',
   output: 'static',
   trailingSlash: 'ignore',
   markdown: {

@@ -50,7 +50,7 @@ The three nav pages (`/about`, `/portfolio`, `/contact`) keep a user-specific or
 
 ### Data layer (`src/data/`, `src/lib/`)
 
-Static TypeScript: `routes.ts` (nav labels, titles, sitemap metadata; single source of truth), `icons.ts` (technology icon registry keyed by slug, e.g. `typescript`, `astro`; `generateAboutTechnologies()` for the About page; exports `IconSlug`), `aboutContent.ts`, `contactContent.ts`, `socialLinks.ts`, `notFoundContent.ts`. `src/lib/site.ts` exports `SITE_URL` / `SITE_NAME` (`SITE_URL` comes from `astro.config.ts` `site`, overridable with the `SITE_URL` env var at build time, default `https://who.metehansenyer.tech`).
+Static TypeScript: `routes.ts` (nav labels, titles, sitemap metadata; single source of truth), `icons.ts` (technology icon registry keyed by slug, e.g. `typescript`, `astro`; `generateAboutTechnologies()` for the About page; exports `IconSlug`), `aboutContent.ts`, `contactContent.ts`, `socialLinks.ts`, `notFoundContent.ts`. `src/lib/site.ts` exports `SITE_URL` / `SITE_NAME` (`SITE_URL` comes from `astro.config.ts` `site`, overridable with the `SITE_URL` env var at build time, default `https://who.metehansenyer.dev`).
 
 ### Content collection (`src/content.config.ts`, `src/content/projects/*.mdx`)
 
@@ -92,7 +92,14 @@ const html = await container.renderToString(Button, { props: { ... }, slots: { d
 
 ### Deploy
 
-`Dockerfile`: node build stage (`pnpm build`, optional `SITE_URL` build arg) -> `nginxinc/nginx-unprivileged` serving `dist/` on port 3000 with `docker/nginx.conf` (no directory redirects, real 404 status with `/404.html`, gzip, immutable cache for `/_astro/*`). `docker-compose.yml` has Traefik labels; leave them alone. The site is also Vercel-ready (static output).
+`Dockerfile`: node build stage (`pnpm build`, optional `SITE_URL` build arg) -> `nginxinc/nginx-unprivileged` serving `dist/` on port 3000 with `docker/nginx.conf` (no directory redirects, real 404 status with `/404.html`, gzip, immutable cache for `/_astro/*`). `/healthz` returns `200 ok` (no access log) for health checks.
+
+Hosting: self-hosted on **Dokploy** as an _Application_ (not Compose; there is no compose file in the repo).
+
+- Build type: Dockerfile, Dockerfile path `Dockerfile`, context `.`.
+- Auto deploy on push to `main`.
+- Domain `who.metehansenyer.dev` is configured in the Dokploy Domains tab (routing and HTTPS come from there) with **Container Port 3000**, which must match `listen 3000` in `docker/nginx.conf`.
+- The Swarm health check uses the `/healthz` endpoint.
 
 ## Adding a project
 

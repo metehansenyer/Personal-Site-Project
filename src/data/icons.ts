@@ -252,6 +252,12 @@ const icons = {
     imgSrc: 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/vercel/vercel-original.svg',
     alt: 'vercel',
   },
+  docker: {
+    name: 'Docker',
+    url: 'https://www.docker.com/',
+    imgSrc: 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/docker/docker-original.svg',
+    alt: 'docker',
+  },
   express: {
     name: 'Express',
     url: 'https://expressjs.com/',

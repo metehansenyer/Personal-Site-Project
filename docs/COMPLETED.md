@@ -93,3 +93,8 @@ Findings worth remembering:
 - [x] Read the official Dokploy docs and compared them with the repo's deploy setup
 - [x] Removed the IPv6 `listen` line from `docker/nginx.conf` (nginx would refuse to start in a container
       without IPv6; unnecessary behind Traefik)
+- [x] Canonical domain switched to `who.metehansenyer.dev` (config, `robots.txt`, sitemap, canonical / `og:url`, README, content)
+- [x] `docker-compose.yml` removed (unused by a Dokploy Application; routing comes from the Domains tab)
+- [x] `/healthz` endpoint in `docker/nginx.conf` for the Swarm health check; config re-tested with a local nginx
+      against the real `dist/` (200s, no redirect on `/about`, real 404, immutable cache on `/_astro/*`)
+- [x] README / CLAUDE.md / Personal-Site-Project content: hosting described as self-hosted Docker + Dokploy; `docker` icon added

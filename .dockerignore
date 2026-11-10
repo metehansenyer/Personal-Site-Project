@@ -7,7 +7,6 @@ dist
 node_modules
 coverage
 docs
-docker-compose.yml
 Dockerfile
 .dockerignore
 .env*

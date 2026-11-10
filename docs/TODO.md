@@ -8,24 +8,24 @@ The infrastructure migration (Phases 0-4) is complete. What is left needs the ow
 
 ## Deployment (Dokploy) - needs the owner
 
-Hosting: Dokploy **Application**, **Dockerfile** build type, auto deploy on push to `main`, domain set in the
-Dokploy Domains tab. Checked against the official Dokploy docs (domains, build type, auto deploy,
-zero downtime, rollbacks, going to production).
+Hosting: Dokploy **Application**, **Dockerfile** build type, auto deploy on push to `main`, domain
+`who.metehansenyer.dev` set in the Dokploy Domains tab.
 
-- [ ] Owner decision: canonical domain. The owner named `who.metehansenyer.dev`, the code still says
-      `who.metehansenyer.tech` (`astro.config.ts`, `src/lib/site.ts`, `public/robots.txt`, README,
-      Personal-Site-Project content, `package.json` name). Canonical / `og:url` / sitemap follow this value.
-- [ ] Owner decision: delete `docker-compose.yml`. A Dokploy Application gets its routing from the Domains
-      tab (Dokploy writes the Traefik config itself), so the compose file and its inconsistent labels are unused.
-- [ ] Before merging to `main`: the Dokploy domain's **Container Port must stay 3000** (the nginx image listens
+- [ ] Before merging to `main`: the Dokploy domain's **Container Port must be 3000** (the nginx image listens
       on 3000, same as the old Next.js container). Dockerfile path `Dockerfile`, context `.`, no build stage.
 - [ ] First deploy is the first real build of the Docker image (no Docker daemon in the dev sandbox). After it,
-      check `/`, `/about` (no redirect), an unknown URL (404 page + status 404) and `/_astro/*` cache headers.
-- [ ] Optional: Swarm health check + `start-first` update with automatic rollback (Advanced -> Cluster Settings).
-      The image is alpine without curl, so the docs' curl example needs `wget` instead.
+      check `/`, `/about` (no redirect), an unknown URL (404 page + status 404), `/healthz` and `/_astro/*`
+      cache headers.
+- [ ] After the first successful deploy: paste the health check + update config into Dokploy
+      (Advanced -> Cluster Settings -> Swarm Settings):
+      Health Check `{"Test":["CMD","wget","-q","--spider","http://127.0.0.1:3000/healthz"],"Interval":30000000000,"Timeout":5000000000,"StartPeriod":10000000000,"Retries":3}`
+      Update Config `{"Parallelism":1,"Delay":10000000000,"FailureAction":"rollback","Order":"start-first"}`
+      Use `127.0.0.1`, not `localhost` (nginx listens on IPv4 only). Tested with GNU wget only; the image's
+      busybox wget should behave the same. A broken health check takes the domain down - if the site
+      disappears after saving, clear the Health Check field.
+- [ ] If `who.metehansenyer.tech` is still reachable, redirect it to `.dev` in Dokploy (Advanced -> Redirects).
 - [ ] Optional: deploy only after CI passes (turn Auto Deploy off, call Dokploy's deploy API from the CI
       workflow) or build the image in CI and deploy from a registry - the docs recommend the latter for production.
-- [ ] README still says the site is hosted on Vercel - fix once the domain question is answered.
 
 ## Backlog (next project: redesign)
 

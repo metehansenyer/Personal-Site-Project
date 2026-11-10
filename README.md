@@ -28,7 +28,8 @@ Bu proje, projelerimi ve yeteneklerimi sergilemek amacıyla modern web teknoloji
   <a href="https://fontawesome.com/" target="_blank" rel="noreferrer"> <img src="https://avatars.githubusercontent.com/u/1505683?s=48&v=4" alt="fontawesome" width="40" height="40"/> </a>
   <a href="https://daringfireball.net/projects/markdown/" target="_blank" rel="noreferrer"> <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/markdown/markdown-original.svg" alt="markdown" width="40" height="40"/> </a>
   <a href="https://pnpm.io/" target="_blank" rel="noreferrer"> <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/pnpm/pnpm-original.svg" alt="pnpm" width="40" height="40"/> </a>
-  <a href="https://vercel.com/" target="_blank" rel="noreferrer"> <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/vercel/vercel-original.svg" alt="vercel" width="40" height="40"/> </a>
+  <a href="https://www.docker.com/" target="_blank" rel="noreferrer"> <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/docker/docker-original.svg" alt="docker" width="40" height="40"/> </a>
+  <a href="https://nginx.org/" target="_blank" rel="noreferrer"> <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/nginx/nginx-original.svg" alt="nginx" width="40" height="40"/> </a>
 </p>
 
 - **Astro 7:** İçerik odaklı, statik çıktı üreten web çerçevesi. Arayüz kütüphanesi (React vb.) kullanılmaz; sayfalar saf Astro bileşenleriyle yazılmıştır.
@@ -37,7 +38,8 @@ Bu proje, projelerimi ve yeteneklerimi sergilemek amacıyla modern web teknoloji
 - **MDX İçerik Koleksiyonları:** Her proje, tiplenmiş frontmatter içeren tek bir `.mdx` dosyasıdır.
 - **Font Awesome:** İkonlar için.
 - **pnpm:** Paket yöneticisi.
-- **Vercel:** Barındırma ve dağıtım için.
+- **Docker & nginx:** Statik çıktıyı konteyner olarak paketlemek ve sunmak için.
+- **Dokploy:** Kendi sunucumda barındırma ve dağıtım için (imaj, deponun `Dockerfile` dosyasından üretilir).
 
 ## Özellikler
 
@@ -121,7 +123,9 @@ docker build -t personal-site .
 docker run --rm -p 3000:3000 personal-site
 ```
 
-Tarayıcıda [http://localhost:3000](http://localhost:3000) adresini açın. Kanonik site adresi `SITE_URL` build argümanıyla değiştirilebilir (`--build-arg SITE_URL=https://ornek.com`); verilmezse `https://who.metehansenyer.tech` kullanılır.
+Tarayıcıda [http://localhost:3000](http://localhost:3000) adresini açın. Kanonik site adresi `SITE_URL` build argümanıyla değiştirilebilir (`--build-arg SITE_URL=https://ornek.com`); verilmezse `https://who.metehansenyer.dev` kullanılır. Sağlık kontrolü için `/healthz` adresi `ok` döndürür.
+
+Yayın ortamında site, Dokploy ile kendi sunucumda barındırılır: Docker imajı deponun `Dockerfile` dosyasından üretilir ve Dokploy tarafından yayınlanır.
 
 ## İçerik Yönetimi
 
@@ -171,7 +175,7 @@ Web sitesinin içeriği `src` altındaki TypeScript ve MDX dosyaları aracılı�
 
 ## Canlı Demo
 
-Web sitesi şu adreste yayında: [who.metehansenyer.tech](https://who.metehansenyer.tech)
+Web sitesi şu adreste yayında: [who.metehansenyer.dev](https://who.metehansenyer.dev)
 
 ## Lisans
 
