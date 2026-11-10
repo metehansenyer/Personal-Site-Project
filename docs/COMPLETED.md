@@ -65,3 +65,25 @@ Findings worth remembering:
       remaining differences are sub-0.4% (image resampling) plus the intentionally rewritten Personal-Site-Project page
 - [x] Browser behaviour check: nav swap + persistence, mobile menu, card tag overflow, no console errors
 - [x] No framework runtime shipped: pages contain only small inline scripts, no JS bundles in `dist/_astro`
+
+## Phase 3 - Integration (coder: Sonnet, reviewed by lead)
+
+- [x] Tests: 60 tests in 4 files - `navOrder` logic (incl. a guard for the `toString()` serialization contract),
+      `Icon`, `Callout`, `Button` rendered through the Astro Container API; `passWithNoTests` removed
+- [x] Removed the legacy Next.js sources (`src/app/`), `scripts/validate-content.ts`, the unused placeholder image,
+      the temporary lint / format / tsconfig ignores and the unused `@vitest/coverage-v8`
+- [x] Tailwind class sorting in `.astro` files: `prettier-plugin-astro` pinned to `~0.14.1` (the Tailwind plugin
+      does not understand the 1.x AST), Dependabot ignore added; build output byte-identical after re-formatting
+- [x] Astro icon switched to a variant that is visible on the dark background
+- [x] README.md and CLAUDE.md rewritten for the Astro stack
+
+## Phase 4 - Lead QA
+
+- [x] `pnpm check` (0 errors / warnings / hints), `pnpm test` (60 passed), `pnpm build` (14 pages) all green
+- [x] Parity re-check against the old Next.js build, 9 routes x desktop + mobile: home, about, contact, 404 and
+      the mobile project pages are pixel-identical; portfolio and desktop project pages differ by at most 0.22%
+      of pixels (banner image resampling); the Personal-Site-Project page differs because its text was rewritten
+- [x] Behaviour re-check in a browser: nav order swap + persistence, mobile menu, card tag overflow, no console errors
+- [x] Build output: 4.4 MB `dist/`, zero `.js` files - pages carry only small inline scripts
+- [x] Status codes on the preview server: known routes 200, unknown URL 404, `sitemap.xml` with 13 URLs
+- [x] No `next` / `react` / `react-dom` left in `package.json`

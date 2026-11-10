@@ -7,6 +7,5 @@ export default getViteConfig({
   test: {
     environment: 'node',
     include: ['src/**/*.test.ts'],
-    passWithNoTests: true,
   },
 })

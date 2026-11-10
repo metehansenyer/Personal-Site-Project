@@ -197,7 +197,7 @@ const icons = {
   astro: {
     name: 'Astro',
     url: 'https://astro.build/',
-    imgSrc: 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/astro/astro-original.svg',
+    imgSrc: 'https://cdn.simpleicons.org/astro/white',
     alt: 'astro',
   },
   git: {

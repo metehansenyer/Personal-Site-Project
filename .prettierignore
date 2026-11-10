@@ -7,5 +7,3 @@ public/
 docker-compose.yml
 # MDX content: prettier's MDX formatter can mangle JSX and custom callouts
 src/content/**/*.mdx
-# TODO(phase-3): remove (legacy Next.js sources)
-src/app/

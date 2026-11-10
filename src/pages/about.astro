@@ -19,7 +19,9 @@ const technologies = generateAboutTechnologies(aboutContent.technologies)
 ---
 
 <BaseLayout title={title} description={description} ogType="profile" pageTitle={pageTitle}>
-  <main class="animate-fadeIn mx-auto flex h-full w-full max-w-[92%] flex-col items-center gap-8 px-2 py-8 sm:max-w-[85%] md:mt-10 md:max-w-[80%] md:flex-row md:gap-4 md:px-0 md:py-0">
+  <main
+    class="animate-fadeIn mx-auto flex h-full w-full max-w-[92%] flex-col items-center gap-8 px-2 py-8 sm:max-w-[85%] md:mt-10 md:max-w-[80%] md:flex-row md:gap-4 md:px-0 md:py-0"
+  >
     <!-- Profile Section - Contains photo, name, and contact information -->
     <section class="w-full space-y-4 md:w-1/3 md:pl-[5%]">
       <Image
@@ -72,19 +74,21 @@ const technologies = generateAboutTechnologies(aboutContent.technologies)
         </div>
         <!-- Social Links -->
         <div class="flex justify-center gap-3 pt-4 text-[2rem] md:justify-start md:text-[2.2rem]">
-          {socialLinks.map((link) => (
-            <a
-              href={link.url}
-              class="transition-all hover:scale-110 hover:text-(--nav-background-color)"
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label={link.name}
-              data-umami-event="social-link-click"
-              data-umami-event-platform={link.name}
-            >
-              <i class={link.icon} aria-hidden="true"></i>
-            </a>
-          ))}
+          {
+            socialLinks.map((link) => (
+              <a
+                href={link.url}
+                class="transition-all hover:scale-110 hover:text-(--nav-background-color)"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label={link.name}
+                data-umami-event="social-link-click"
+                data-umami-event-platform={link.name}
+              >
+                <i class={link.icon} aria-hidden="true" />
+              </a>
+            ))
+          }
         </div>
       </div>
     </section>
@@ -110,31 +114,33 @@ const technologies = generateAboutTechnologies(aboutContent.technologies)
         <div class="flex">
           <div class="w-1 rounded-l-[15px] bg-(--text-color)"></div>
           <div class="flex-1 px-4 py-2">
-            {aboutContent.technologies.length === 0 ? (
-              <p class="text-(--text-color) opacity-70">{aboutContent.noTechText}</p>
-            ) : (
-              <div class="flex flex-wrap justify-center gap-5 md:justify-start md:gap-6">
-                {technologies.map((tech) => (
-                  <a
-                    href={tech.url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    class="group/tech"
-                    aria-label={tech.name}
-                  >
-                    <img
-                      src={tech.imgSrc}
-                      alt={tech.alt}
-                      width="52"
-                      height="52"
-                      loading="lazy"
-                      decoding="async"
-                      class="transition-all duration-300 group-hover/tech:scale-110 group-hover/tech:brightness-110"
-                    />
-                  </a>
-                ))}
-              </div>
-            )}
+            {
+              aboutContent.technologies.length === 0 ? (
+                <p class="text-(--text-color) opacity-70">{aboutContent.noTechText}</p>
+              ) : (
+                <div class="flex flex-wrap justify-center gap-5 md:justify-start md:gap-6">
+                  {technologies.map((tech) => (
+                    <a
+                      href={tech.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      class="group/tech"
+                      aria-label={tech.name}
+                    >
+                      <img
+                        src={tech.imgSrc}
+                        alt={tech.alt}
+                        width="52"
+                        height="52"
+                        loading="lazy"
+                        decoding="async"
+                        class="transition-all duration-300 group-hover/tech:scale-110 group-hover/tech:brightness-110"
+                      />
+                    </a>
+                  ))}
+                </div>
+              )
+            }
           </div>
         </div>
       </div>

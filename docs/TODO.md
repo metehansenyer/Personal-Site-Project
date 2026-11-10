@@ -4,21 +4,29 @@ Open work only. Finished items move to [COMPLETED.md](./COMPLETED.md). Plan: [PL
 
 Legend: `[ ]` open, `[~]` in progress, `[!]` blocked / needs rework
 
-## Phase 3 - Integration
+The infrastructure migration (Phases 0-4) is complete. What is left needs the owner or a real host.
 
-- [~] Tests: Icon, Callout (Container API), navOrder logic; then drop `passWithNoTests` from `vitest.config.mts`
-- [~] Remove `scripts/validate-content.ts` and leftover `src/app/`
-- [~] Remove the `TODO(phase-3)` ignores for `src/app/` / `scripts/` (eslint, prettier, tsconfig); remove unused `public/img/placeholder_img.png`
-- [~] Tailwind class sorting is a silent no-op inside `.astro` with `prettier-plugin-astro` 1.x - evaluate pinning `~0.14.1` (or another fix), then re-format `src/**/*.astro`
-- [~] Astro icon (devicon `astro-original.svg`) is barely visible on the dark background - pick a visible variant
-- [~] Rewrite README.md and CLAUDE.md for the Astro stack
-- [~] `pnpm check && pnpm test && pnpm build` green
+## Needs the owner / a real host
 
-## Phase 4 - Lead QA
+- [ ] Docker image was never built (no Docker daemon in the dev sandbox). Build it and smoke test on a real
+      host: `/`, `/about` (no redirect), an unknown URL (404 page + status 404), `/_astro/*` cache headers.
+      `docker/nginx.conf` itself was tested with a local nginx against a fake `dist/`.
+- [ ] Owner decision: Traefik labels in `docker-compose.yml` use two router names (`my-app` for the rule,
+      `app` for the entrypoint) and no explicit `loadbalancer.server.port`. Left untouched on purpose.
+      The container still listens on 3000.
+- [ ] If the site is deployed on Vercel: confirm the project's framework preset switches to Astro
+      (output directory `dist`).
 
-- [ ] Final code review of all coder output (Phase 2 review done, see COMPLETED.md)
-- [ ] Re-run the browser parity check after Phase 3
-- [ ] Docker image was never built (no daemon in the sandbox): build + smoke test `docker/nginx.conf` on a real host
-- [ ] Owner decision: Traefik labels in `docker-compose.yml` use two router names (`my-app` rule, `app` entrypoint) and no explicit `loadbalancer.server.port` (container still listens on 3000)
-- [ ] JS payload / build output inspection
-- [ ] Final docs update, push
+## Backlog (next project: redesign)
+
+- [ ] New interface design, lighter animations, theme options (light / dark / ...)
+- [ ] Replace the Font Awesome kit script with inline SVG icons (last render-blocking third-party script)
+- [ ] Markdown and Vercel technology icons are black and nearly invisible on the dark background
+      (same as on the old site) - switch to visible variants or handle it with theming
+- [ ] Astro view transitions (`ClientRouter`) for page navigation
+- [ ] Self-host the devicon SVGs instead of loading them from jsDelivr
+- [ ] Accessibility pass: focus outlines are disabled globally, `user-select: none` on the whole page
+- [ ] Syntax highlighting for code blocks (Shiki is disabled for parity with the old site)
+- [ ] `Callout.astro`: fail with a clear message on an invalid `type`
+- [ ] Unpin `prettier-plugin-astro` (`~0.14.1`) once `prettier-plugin-tailwindcss` supports its 1.x AST
+- [ ] Tidy Next-era entries in `.gitignore` (`/build`, `.pnp`, `.yarn`)

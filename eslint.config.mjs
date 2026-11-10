@@ -5,14 +5,7 @@ import prettier from 'eslint-config-prettier/flat'
 import globals from 'globals'
 
 export default defineConfig([
-  globalIgnores([
-    'dist/**',
-    '.astro/**',
-    'node_modules/**',
-    'coverage/**',
-    'src/app/**', // TODO(phase-3): remove (legacy Next.js files)
-    'scripts/**', // TODO(phase-3): remove (legacy Next.js scripts)
-  ]),
+  globalIgnores(['dist/**', '.astro/**', 'node_modules/**', 'coverage/**']),
   ...tseslint.configs.recommended,
   ...astro.configs.recommended,
   {

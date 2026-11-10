@@ -44,18 +44,15 @@ const barBase =
         <span
           class:list={[barBase, '-translate-y-1.5 rotate-0']}
           data-closed="-translate-y-1.5 rotate-0"
-          data-open="translate-y-0 rotate-45"
-        ></span>
+          data-open="translate-y-0 rotate-45"></span>
         <span
           class:list={[barBase, 'scale-x-100 opacity-100']}
           data-closed="scale-x-100 opacity-100"
-          data-open="scale-x-0 opacity-0"
-        ></span>
+          data-open="scale-x-0 opacity-0"></span>
         <span
           class:list={[barBase, 'translate-y-1.5 rotate-0']}
           data-closed="translate-y-1.5 rotate-0"
-          data-open="translate-y-0 -rotate-45"
-        ></span>
+          data-open="translate-y-0 -rotate-45"></span>
       </button>
     </div>
 
@@ -67,15 +64,17 @@ const barBase =
       aria-hidden="true"
     >
       <div class="space-y-4" data-nav-list>
-        {navigation.map((item) => (
-          <a
-            href={item.href}
-            class="block rounded-(--border-radius-large) border-2 border-solid border-(--text-color) bg-(--nav-background-color) px-6 py-4 text-center text-2xl leading-8 font-medium text-(--text-color) transition-colors hover:bg-(--text-color) hover:text-(--nav-background-color)"
-            data-mobile-nav-link
-          >
-            {item.label}
-          </a>
-        ))}
+        {
+          navigation.map((item) => (
+            <a
+              href={item.href}
+              class="block rounded-(--border-radius-large) border-2 border-solid border-(--text-color) bg-(--nav-background-color) px-6 py-4 text-center text-2xl leading-8 font-medium text-(--text-color) transition-colors hover:bg-(--text-color) hover:text-(--nav-background-color)"
+              data-mobile-nav-link
+            >
+              {item.label}
+            </a>
+          ))
+        }
       </div>
     </nav>
   </div>

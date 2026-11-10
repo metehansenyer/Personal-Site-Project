@@ -19,17 +19,19 @@ const description =
 ---
 
 <BaseLayout title={title} description={description} ogType="website" pageTitle="Portföy">
-  {projects.length === 0 ? (
-    <div class="mx-auto w-full max-w-[90%] px-4 py-8 text-center sm:max-w-[85%] md:max-w-[80%]">
-      <p class="text-(--text-color) opacity-70">Henüz proje bulunmuyor.</p>
-    </div>
-  ) : (
-    <main class="mx-auto w-full max-w-[90%] px-4 py-8 sm:max-w-[85%] md:max-w-[80%] md:px-0">
-      <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 md:gap-8 lg:grid-cols-3">
-        {projects.map((project, index) => (
-          <ProjectCard project={project} priority={index < 3} />
-        ))}
+  {
+    projects.length === 0 ? (
+      <div class="mx-auto w-full max-w-[90%] px-4 py-8 text-center sm:max-w-[85%] md:max-w-[80%]">
+        <p class="text-(--text-color) opacity-70">Henüz proje bulunmuyor.</p>
       </div>
-    </main>
-  )}
+    ) : (
+      <main class="mx-auto w-full max-w-[90%] px-4 py-8 sm:max-w-[85%] md:max-w-[80%] md:px-0">
+        <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 md:gap-8 lg:grid-cols-3">
+          {projects.map((project, index) => (
+            <ProjectCard project={project} priority={index < 3} />
+          ))}
+        </div>
+      </main>
+    )
+  }
 </BaseLayout>

@@ -71,20 +71,19 @@ const jsonLd = JSON.stringify({
     <meta property="og:type" content={ogType} />
     {ogImage && <meta property="og:image" content={ogImage} />}
 
-    {twitterCard && (
-      <>
-        <meta name="twitter:card" content={twitterCard} />
-        <meta name="twitter:title" content={title} />
-        <meta name="twitter:description" content={description} />
-        {ogImage && <meta name="twitter:image" content={ogImage} />}
-      </>
-    )}
+    {
+      twitterCard && (
+        <>
+          <meta name="twitter:card" content={twitterCard} />
+          <meta name="twitter:title" content={title} />
+          <meta name="twitter:description" content={description} />
+          {ogImage && <meta name="twitter:image" content={ogImage} />}
+        </>
+      )
+    }
 
     <!-- Load Font Awesome icons before page renders -->
-    <script
-      is:inline
-      src="https://kit.fontawesome.com/76c7501aeb.js"
-      crossorigin="anonymous"
+    <script is:inline src="https://kit.fontawesome.com/76c7501aeb.js" crossorigin="anonymous"
     ></script>
 
     <!-- JSON-LD structured data -->
@@ -92,26 +91,32 @@ const jsonLd = JSON.stringify({
     <slot name="head" />
   </head>
   <body class="flex min-h-screen flex-col overflow-x-hidden">
-    {showChrome && (
-      <>
-        <Header pageTitle={pageTitle} pathname={pathname} />
-        <Navbar pathname={pathname} />
-      </>
-    )}
-    {/* Blocking inline script: must stay right after the nav markup. Also runs on pages
-        without chrome (home) so every page load records itself as the previous path. */}
+    {
+      showChrome && (
+        <>
+          <Header pageTitle={pageTitle} pathname={pathname} />
+          <Navbar pathname={pathname} />
+        </>
+      )
+    }
+    {
+      /* Blocking inline script: must stay right after the nav markup. Also runs on pages
+        without chrome (home) so every page load records itself as the previous path. */
+    }
     <NavOrderScript />
     <div class="flex flex-1 flex-col">
       <slot />
     </div>
     {showChrome && <Footer />}
-    {import.meta.env.PROD && (
-      <script
-        is:inline
-        defer
-        src="https://umami.metehansenyer.dev/script.js"
-        data-website-id="41d22223-daff-461c-bec6-d56ddd7208f6"
-      />
-    )}
+    {
+      import.meta.env.PROD && (
+        <script
+          is:inline
+          defer
+          src="https://umami.metehansenyer.dev/script.js"
+          data-website-id="41d22223-daff-461c-bec6-d56ddd7208f6"
+        />
+      )
+    }
   </body>
 </html>

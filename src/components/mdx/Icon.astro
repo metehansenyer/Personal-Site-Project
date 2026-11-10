@@ -25,17 +25,19 @@ const validIcons = slugs.flatMap((slug) => {
 ---
 
 <div class="icon my-5 flex w-full flex-wrap items-center justify-center gap-[10px] bg-transparent">
-  {validIcons.map(({ icon }) => (
-    <a class="icon-link bg-transparent" href={icon.url} target="_blank" rel="noreferrer">
-      <img
-        class="icon-img bg-transparent transition-all hover:scale-110"
-        src={icon.imgSrc}
-        alt={icon.alt}
-        width="40"
-        height="40"
-        loading="lazy"
-        decoding="async"
-      />
-    </a>
-  ))}
+  {
+    validIcons.map(({ icon }) => (
+      <a class="icon-link bg-transparent" href={icon.url} target="_blank" rel="noreferrer">
+        <img
+          class="icon-img bg-transparent transition-all hover:scale-110"
+          src={icon.imgSrc}
+          alt={icon.alt}
+          width="40"
+          height="40"
+          loading="lazy"
+          decoding="async"
+        />
+      </a>
+    ))
+  }
 </div>
