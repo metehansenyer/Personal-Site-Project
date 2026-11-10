@@ -4,7 +4,8 @@ name: Release
 # - Pushing a tag like v2.1.0 creates its release. Notes come from .github/releases/<tag>.md
 #   when that file exists, otherwise GitHub generates them from the merged PRs.
 # - Running it manually (workflow_dispatch) creates a release for every notes file that has
-#   none yet, oldest first. A missing tag is created on the commit the workflow runs on.
+#   none yet, oldest first. A missing tag is created on the commit named by an optional
+#   "<!-- commit: <full sha> -->" line in the notes file, or else on the commit the workflow runs on.
 # The first line of a notes file ("# <title>") is the release title; the rest is the body.
 
 on:
@@ -41,17 +42,21 @@ jobs:
               echo "$tag: release already exists, skipping"
               return
             fi
-            local args=("$tag")
+            local args=("$tag") target="$GITHUB_SHA"
+            if [ -f "$file" ]; then
+              target=$(sed -n 's/^<!-- commit: \([0-9a-f]\{40\}\) -->$/\1/p' "$file" | head -n 1)
+              target="${target:-$GITHUB_SHA}"
+            fi
             if gh api "repos/$GITHUB_REPOSITORY/git/ref/tags/$tag" >/dev/null 2>&1; then
               args+=(--verify-tag)
             else
-              args+=(--target "$GITHUB_SHA")
+              args+=(--target "$target")
             fi
             if [ -f "$file" ]; then
               local title body
               title=$(head -n 1 "$file" | sed 's/^# *//')
               body=$(mktemp)
-              tail -n +2 "$file" > "$body"
+              tail -n +2 "$file" | grep -v '^<!-- commit: ' > "$body"
               args+=(--title "$title" --notes-file "$body")
             else
               args+=(--title "$tag" --generate-notes)
