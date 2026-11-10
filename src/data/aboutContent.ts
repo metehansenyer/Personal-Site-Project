@@ -1,4 +1,4 @@
-import type { IconSlug } from './icons'
+import type { IconSlug } from '@/data/icons'
 
 // Interface for profile information structure
 // Contains basic personal information like name, location, etc.

@@ -1,4 +1,4 @@
-import type { IconSlug } from './icons'
+import type { IconSlug } from '@/data/icons'
 
 /**
  * Projects Configuration Module

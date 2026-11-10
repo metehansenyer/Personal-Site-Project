@@ -289,29 +289,6 @@ const icons = {
 export type IconSlug = keyof typeof icons
 
 /**
- * Generates HTML markup for displaying technology icons
- * Used in markdown content rendering
- *
- * @param iconNames - Array of icon keys to generate HTML for
- * @returns HTML string containing icon elements
- */
-export function generateIconsHtml(iconNames: IconSlug[]): string {
-  const iconHtml = iconNames
-    .map((name) => {
-      const icon = icons[name]
-      if (!icon) {
-        console.warn(`[icons] unknown icon slug: ${name}`)
-        return ''
-      }
-
-      return `<a class="icon-link" href="${icon.url}" target="_blank" rel="noreferrer">\n<img class="icon-img" src="${icon.imgSrc}" alt="${icon.alt}"/>\n</a>`
-    })
-    .join('\n')
-
-  return `<div class="icon">\n${iconHtml}</div>`
-}
-
-/**
  * Generates an array of icon definitions for the About page
  * Used to display technology badges in the skills section
  *

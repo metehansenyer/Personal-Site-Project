@@ -11,19 +11,19 @@ theme options) is a **later** project - this migration only prepares the ground 
 
 ## 2. Stack decision
 
-| Area          | Before                                    | After                                                     |
-| ------------- | ----------------------------------------- | --------------------------------------------------------- |
-| Framework     | Next.js 16 (App Router, standalone server) | **Astro 7** (`output: 'static'`)                          |
-| UI layer      | React 19 (client components everywhere)   | **Pure Astro components + small vanilla TS `<script>`s**  |
-| Content       | `projects.ts` + `.mdx` + next-mdx-remote  | **Astro content collection** (MDX with typed frontmatter) |
-| Styling       | Tailwind v4 via PostCSS                   | Tailwind v4 via `@tailwindcss/vite`                       |
-| Images        | `next/image` (runtime optimizer)          | `astro:assets` (build-time optimization, sharp)           |
-| Font          | `next/font/google` (Inter)                | `@fontsource-variable/inter` (self-hosted)                |
-| Sitemap       | `app/sitemap.ts`                          | `src/pages/sitemap.xml.ts` endpoint (same URL)            |
-| Type check    | `tsc --noEmit`                            | `astro check`                                             |
-| Lint / format | eslint-config-next, prettier              | typescript-eslint + eslint-plugin-astro, prettier-plugin-astro |
-| Tests         | vitest + react-dom/server                 | vitest + Astro Container API                              |
-| Runtime       | Node server (`server.js`) in Docker       | Static files served by nginx in Docker (also Vercel-ready) |
+| Area          | Before                                     | After                                                          |
+| ------------- | ------------------------------------------ | -------------------------------------------------------------- |
+| Framework     | Next.js 16 (App Router, standalone server) | **Astro 7** (`output: 'static'`)                               |
+| UI layer      | React 19 (client components everywhere)    | **Pure Astro components + small vanilla TS `<script>`s**       |
+| Content       | `projects.ts` + `.mdx` + next-mdx-remote   | **Astro content collection** (MDX with typed frontmatter)      |
+| Styling       | Tailwind v4 via PostCSS                    | Tailwind v4 via `@tailwindcss/vite`                            |
+| Images        | `next/image` (runtime optimizer)           | `astro:assets` (build-time optimization, sharp)                |
+| Font          | `next/font/google` (Inter)                 | `@fontsource-variable/inter` (self-hosted)                     |
+| Sitemap       | `app/sitemap.ts`                           | `src/pages/sitemap.xml.ts` endpoint (same URL)                 |
+| Type check    | `tsc --noEmit`                             | `astro check`                                                  |
+| Lint / format | eslint-config-next, prettier               | typescript-eslint + eslint-plugin-astro, prettier-plugin-astro |
+| Tests         | vitest + react-dom/server                  | vitest + Astro Container API                                   |
+| Runtime       | Node server (`server.js`) in Docker        | Static files served by nginx in Docker (also Vercel-ready)     |
 
 ### Why pure Astro (no Preact / Svelte / React / Vue)
 
@@ -78,15 +78,15 @@ docker/nginx.conf
 
 ## 5. Phases
 
-| Phase | Scope                                                                                     | Mode        |
-| ----- | ----------------------------------------------------------------------------------------- | ----------- |
-| 0     | Analysis, stack decision, plan docs                                                       | lead        |
-| 1     | Foundation: remove Next, install Astro + all deps, configs, BaseLayout, global CSS, home page builds | 1 coder     |
-| 2A    | Site chrome + static pages: Header/Navbar/Footer/Button, nav-order script, about, contact, 404 | parallel    |
-| 2B    | Content: collection schema, MDX migration, Icon/Callout, portfolio list + detail, ProjectCard, sitemap | parallel    |
-| 2C    | Tooling + deploy: ESLint, Prettier, vitest setup, CI, Dockerfile + nginx, dependabot      | parallel    |
-| 3     | Integration: tests, README + CLAUDE.md rewrite, dead file cleanup, full `pnpm check/test/build` | 1 coder     |
-| 4     | Lead QA: code review, browser parity check against the old site, fixes                    | lead        |
+| Phase | Scope                                                                                                  | Mode     |
+| ----- | ------------------------------------------------------------------------------------------------------ | -------- |
+| 0     | Analysis, stack decision, plan docs                                                                    | lead     |
+| 1     | Foundation: remove Next, install Astro + all deps, configs, BaseLayout, global CSS, home page builds   | 1 coder  |
+| 2A    | Site chrome + static pages: Header/Navbar/Footer/Button, nav-order script, about, contact, 404         | parallel |
+| 2B    | Content: collection schema, MDX migration, Icon/Callout, portfolio list + detail, ProjectCard, sitemap | parallel |
+| 2C    | Tooling + deploy: ESLint, Prettier, vitest setup, CI, Dockerfile + nginx, dependabot                   | parallel |
+| 3     | Integration: tests, README + CLAUDE.md rewrite, dead file cleanup, full `pnpm check/test/build`        | 1 coder  |
+| 4     | Lead QA: code review, browser parity check against the old site, fixes                                 | lead     |
 
 File ownership is disjoint between 2A / 2B / 2C so they can run in the same working tree.
 Only Phase 1 and Phase 3 may change dependencies in `package.json`.

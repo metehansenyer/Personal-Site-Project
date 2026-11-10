@@ -1,9 +1,8 @@
-.next/
-out/
-build/
+dist/
+.astro/
+src/app/
 node_modules/
 coverage/
 pnpm-lock.yaml
 public/
-next-env.d.ts
 docker-compose.yml
