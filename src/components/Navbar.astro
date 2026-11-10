@@ -1,10 +1,30 @@
 ---
+/**
+ * Navbar (desktop)
+ *
+ * Buttons to the other sections: Home first, then the remaining nav routes without the
+ * current page. Hidden on mobile (the Header has the collapsible menu there). The DOM
+ * order is adjusted from sessionStorage by `NavOrderScript.astro`.
+ */
+import Button from '@/components/Button.astro'
+import { getNavItems } from '@/lib/navOrder'
+
 interface Props {
   pathname: string
 }
 
-const { pathname: _pathname } = Astro.props
+const { pathname } = Astro.props
+const navigation = getNavItems(pathname)
 ---
 
-<!-- TODO Phase 2A: port src/app/components/Navbar.tsx -->
-<nav></nav>
+<nav class="bg-background z-50 hidden w-full pt-1 md:block">
+  <div class="container mx-auto px-4">
+    <div class="flex justify-center gap-8" data-nav-list>
+      {navigation.map((item) => (
+        <Button href={item.href} width="w-[16rem]" height="h-[4rem]" fontSize="text-[2rem]">
+          {item.label}
+        </Button>
+      ))}
+    </div>
+  </div>
+</nav>

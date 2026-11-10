@@ -24,3 +24,44 @@ Findings worth remembering:
 - Astro 7 defaults to the Sätteri markdown processor, which has no rehype plugin support. We opt into
   the unified processor (`@astrojs/markdown-remark`) to keep GFM + `rehype-external-links`.
 - `@astrojs/check` crashes with a beta `@emnapi/runtime`; pinned via `overrides` in `pnpm-workspace.yaml`.
+
+## Phase 2A - Site chrome + static pages (coder: Sonnet, reviewed by lead)
+
+- [x] `Header.astro` (desktop title row, mobile hamburger menu with a vanilla TS toggle and aria state)
+- [x] `Navbar.astro`, `Footer.astro`
+- [x] Nav order swap: pure logic in `src/lib/navOrder.ts`, blocking inline script in `NavOrderScript.astro`
+      (built from `fn.toString()` of the pure functions - single implementation, no flicker, works without JS/storage)
+- [x] `about.astro` (profile photo optimized to 1x/2x webp via `astro:assets`), `contact.astro`, `404.astro`
+
+## Phase 2B - Content + portfolio (coder: Sonnet, reviewed by lead)
+
+- [x] `src/content.config.ts`: `projects` collection, zod schema (`image()` banner, icon-slug enum, coerced date), case-preserving ids
+- [x] 9 MDX files moved to `src/content/projects/` with frontmatter; `projects.ts` removed; banners moved to `src/assets/img/`
+- [x] `mdx/Icon.astro`, `mdx/Callout.astro`; markdown links open in a new tab via `rehype-external-links`
+- [x] `ProjectCard.astro`: one measuring script for all cards, CSS-only hover slide, graceful no-JS fallback
+- [x] `portfolio/index.astro`, `portfolio/[repoName].astro` (OG/Twitter meta with optimized absolute banner URL)
+- [x] `sitemap.xml.ts` (same URLs / lastmod / changefreq / priority as before)
+- [x] `astro` icon added; Personal-Site-Project entry rewritten for the new stack
+- [x] Markdown parity: Shiki highlighting and smartypants disabled (old site had neither)
+
+## Phase 2C - Tooling + deploy (coder: Sonnet, reviewed by lead)
+
+- [x] ESLint flat config (typescript-eslint + eslint-plugin-astro + prettier), `.astro` script blocks linted
+- [x] Prettier ignores (`dist/`, `.astro/`, `coverage/`, MDX content - prettier can mangle JSX-in-MDX)
+- [x] `vitest.config.mts` via Astro `getViteConfig`; Container API rendering proven with a throwaway test
+- [x] Dockerfile: node build stage -> `nginx-unprivileged` static stage on port 3000; `docker/nginx.conf`
+      (no directory redirects, real 404 status, gzip, immutable cache for `/_astro/*`, security headers)
+- [x] `.dockerignore`, `docker-compose.yml` (Next env vars removed, Traefik labels untouched), redundant `.npmrc` removed
+- [x] CI workflow and dependabot verified - no change needed
+
+## Phase 2 review (lead)
+
+- [x] `pnpm build` (14 pages), `pnpm check` green
+- [x] Fixed: `vitest.config.mts` type error under `astro check`
+- [x] Fixed: canonical / `og:url` had a trailing slash (old URLs had none)
+- [x] Fixed: nav order swapped on typed URLs / external returns; now only on in-site nav-link clicks, like the old SPA
+- [x] Pixel comparison against the old Next.js build, 9 routes x desktop (1440) + mobile (390):
+      identical page heights everywhere; about / contact / home / 404 and mobile project pages are pixel-identical;
+      remaining differences are sub-0.4% (image resampling) plus the intentionally rewritten Personal-Site-Project page
+- [x] Browser behaviour check: nav swap + persistence, mobile menu, card tag overflow, no console errors
+- [x] No framework runtime shipped: pages contain only small inline scripts, no JS bundles in `dist/_astro`

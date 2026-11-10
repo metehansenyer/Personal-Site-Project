@@ -1,0 +1,143 @@
+---
+/**
+ * About page: profile photo/contact info and the details section (bio + technologies).
+ * Content comes from aboutContent / socialLinks / icons.
+ */
+import { Image } from 'astro:assets'
+import BaseLayout from '@/layouts/BaseLayout.astro'
+import profilePhoto from '@/assets/img/profil_fotografim.jpeg'
+import { socialLinks } from '@/data/socialLinks'
+import { aboutContent } from '@/data/aboutContent'
+import { generateAboutTechnologies } from '@/data/icons'
+import { routes } from '@/data/routes'
+
+const title = 'Hakkımda | Metehan Şenyer'
+const description =
+  'Yazılım mühendisliği öğrencisi olarak deneyimlerim, yeteneklerim ve hedeflerim hakkında detaylı bilgi.'
+const pageTitle = routes.find((r) => r.path === '/about')!.title
+const technologies = generateAboutTechnologies(aboutContent.technologies)
+---
+
+<BaseLayout title={title} description={description} ogType="profile" pageTitle={pageTitle}>
+  <main class="animate-fadeIn mx-auto flex h-full w-full max-w-[92%] flex-col items-center gap-8 px-2 py-8 sm:max-w-[85%] md:mt-10 md:max-w-[80%] md:flex-row md:gap-4 md:px-0 md:py-0">
+    <!-- Profile Section - Contains photo, name, and contact information -->
+    <section class="w-full space-y-4 md:w-1/3 md:pl-[5%]">
+      <Image
+        src={profilePhoto}
+        alt="İŞTE BEN"
+        width={250}
+        height={250}
+        densities={[1, 2]}
+        loading="eager"
+        fetchpriority="high"
+        class="mx-auto rounded-[35px] transition-transform duration-300 hover:scale-105 md:mx-0"
+      />
+
+      <!-- Profile Information -->
+      <div class="w-full text-[1rem] sm:text-[1.15rem] md:text-[1.3rem]">
+        <!-- Name -->
+        <div class="pb-2 text-center text-[1.4rem] font-bold md:text-left md:text-[1.7rem]">
+          {aboutContent.profile.name}
+        </div>
+        <!-- Info Rows -->
+        <div class="space-y-1">
+          <!-- Location Information -->
+          <div class="flex items-center justify-center gap-2 md:justify-start">
+            <span class="w-5 text-center">
+              <i class="fa-solid fa-location-dot" aria-hidden="true"></i>
+            </span>
+            <span class="break-words">{aboutContent.profile.location}</span>
+          </div>
+          <!-- Email Information -->
+          <div class="flex items-center justify-center gap-2 md:justify-start">
+            <span class="w-5 text-center">
+              <i class="fa-solid fa-envelope" aria-hidden="true"></i>
+            </span>
+            <a
+              href={`mailto:${aboutContent.profile.email}`}
+              target="_blank"
+              class="cursor-pointer break-words transition-colors hover:text-(--text-color-white)"
+              data-umami-event="email-click"
+            >
+              {aboutContent.profile.email}
+            </a>
+          </div>
+          <!-- Education Information -->
+          <div class="flex items-center justify-center gap-2 md:justify-start">
+            <span class="w-5 text-center">
+              <i class="fa-solid fa-graduation-cap fa-flip-horizontal" aria-hidden="true"></i>
+            </span>
+            <span class="break-words">{aboutContent.profile.education}</span>
+          </div>
+        </div>
+        <!-- Social Links -->
+        <div class="flex justify-center gap-3 pt-4 text-[2rem] md:justify-start md:text-[2.2rem]">
+          {socialLinks.map((link) => (
+            <a
+              href={link.url}
+              class="transition-all hover:scale-110 hover:text-(--nav-background-color)"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label={link.name}
+              data-umami-event="social-link-click"
+              data-umami-event-platform={link.name}
+            >
+              <i class={link.icon} aria-hidden="true"></i>
+            </a>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <!-- Details Section - Contains about me text and technologies -->
+    <section class="w-full space-y-6 md:w-2/3">
+      <!-- About Me Section -->
+      <div class="space-y-2">
+        <h2 class="text-[1.5rem] font-bold md:text-[1.8rem]">{aboutContent.sectionTitles.about}</h2>
+        <div class="flex">
+          <div class="w-1 rounded-l-[15px] bg-(--text-color)"></div>
+          <div class="flex-1 px-4 py-2 text-left md:text-justify">
+            <p class="text-[1.05rem] leading-relaxed md:text-[1.2rem]">{aboutContent.aboutMe}</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Technologies Section -->
+      <div class="space-y-2">
+        <h2 class="text-[1.5rem] font-bold md:text-[1.8rem]">
+          {aboutContent.sectionTitles.technologies}
+        </h2>
+        <div class="flex">
+          <div class="w-1 rounded-l-[15px] bg-(--text-color)"></div>
+          <div class="flex-1 px-4 py-2">
+            {aboutContent.technologies.length === 0 ? (
+              <p class="text-(--text-color) opacity-70">{aboutContent.noTechText}</p>
+            ) : (
+              <div class="flex flex-wrap justify-center gap-5 md:justify-start md:gap-6">
+                {technologies.map((tech) => (
+                  <a
+                    href={tech.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="group/tech"
+                    aria-label={tech.name}
+                  >
+                    <img
+                      src={tech.imgSrc}
+                      alt={tech.alt}
+                      width="52"
+                      height="52"
+                      loading="lazy"
+                      decoding="async"
+                      class="transition-all duration-300 group-hover/tech:scale-110 group-hover/tech:brightness-110"
+                    />
+                  </a>
+                ))}
+              </div>
+            )}
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+</BaseLayout>

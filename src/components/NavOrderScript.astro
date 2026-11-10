@@ -1,0 +1,58 @@
+---
+/**
+ * Blocking inline script that applies the persisted nav order before first paint.
+ *
+ * It must sit in the HTML right AFTER the Header/Navbar markup: Astro's processed
+ * `<script>` tags are deferred modules and could paint the default order first.
+ * Placing a synchronous inline script after the nav elements reorders them before the
+ * browser's first render of that content - no flicker.
+ *
+ * The pure logic lives in `src/lib/navOrder.ts` (unit tested). Its functions are
+ * serialized with `fn.toString()` so there is exactly one implementation; only the tiny
+ * DOM/storage glue below is written by hand. Works with sessionStorage unavailable
+ * (every access is in try/catch) and without JS (server HTML = default order).
+ *
+ * The "previous path" is recorded only when a nav link is clicked and is consumed by the
+ * next page load. Like the old SPA, a swap therefore happens only for in-site navigation
+ * between two nav pages - not for typed URLs, reloads or visits via the home page.
+ */
+import {
+  DEFAULT_ORDER,
+  NAV_ORDER_STORAGE_KEY,
+  NAV_PREV_PATH_STORAGE_KEY,
+  normalizePath,
+  parseStoredOrder,
+  swapOrder,
+} from '@/lib/navOrder'
+
+const script = `(function(){
+var normalizePath=${normalizePath.toString()};
+var parseStoredOrder=${parseStoredOrder.toString()};
+var swapOrder=${swapOrder.toString()};
+var DEFAULT_ORDER=${JSON.stringify(DEFAULT_ORDER)};
+var ORDER_KEY=${JSON.stringify(NAV_ORDER_STORAGE_KEY)};
+var PREV_KEY=${JSON.stringify(NAV_PREV_PATH_STORAGE_KEY)};
+var current=normalizePath(location.pathname);
+var order=DEFAULT_ORDER.slice();
+try{
+var prev=sessionStorage.getItem(PREV_KEY);
+order=swapOrder(parseStoredOrder(sessionStorage.getItem(ORDER_KEY),DEFAULT_ORDER),prev,current);
+sessionStorage.setItem(ORDER_KEY,JSON.stringify(order));
+sessionStorage.removeItem(PREV_KEY);
+}catch(e){}
+document.addEventListener('click',function(ev){
+var a=ev.target&&ev.target.closest?ev.target.closest('[data-nav-list] a'):null;
+if(!a)return;
+try{sessionStorage.setItem(PREV_KEY,current)}catch(e){}
+},true);
+var lists=document.querySelectorAll('[data-nav-list]');
+for(var l=0;l<lists.length;l++){
+var items=Array.prototype.slice.call(lists[l].children);
+var rank=function(el){var p=normalizePath(el.getAttribute('href')||'');var i=order.indexOf(p);return p==='/'?-1:(i===-1?order.length:i)};
+items.sort(function(a,b){return rank(a)-rank(b)});
+for(var k=0;k<items.length;k++)lists[l].appendChild(items[k]);
+}
+})();`
+---
+
+<script is:inline set:html={script} />

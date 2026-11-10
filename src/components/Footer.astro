@@ -1,5 +1,34 @@
 ---
+/**
+ * Footer
+ *
+ * Attribution and analytics notice. The layout does not render it on the home page.
+ */
 ---
 
-<!-- TODO Phase 2A: port src/app/components/Footer.tsx -->
-<footer></footer>
+<footer class="w-full px-4 py-4 text-center">
+  <p class="text-sm text-(--text-color) opacity-70 sm:text-base">
+    <a
+      href="https://github.com/metehansenyer"
+      target="_blank"
+      rel="noopener noreferrer"
+      class="transition-colors hover:text-(--text-color-white)"
+    >
+      Metehan Şenyer
+    </a>{' '}
+    tarafından <i class="fa-solid fa-heart mx-1 animate-pulse text-red-500" aria-hidden="true"></i>{' '}
+    ile kodlandı
+  </p>
+  <p class="mt-1 text-xs text-(--text-color) opacity-40">
+    Bu site çerez kullanmayan ve kişisel veri toplamayan{' '}
+    <a
+      href="https://umami.is"
+      target="_blank"
+      rel="noopener noreferrer"
+      class="underline underline-offset-2 transition-opacity hover:opacity-70"
+    >
+      Umami Analytics
+    </a>{' '}
+    kullanmaktadır. Veriler AB (Almanya) sunucularında barındırılmaktadır.
+  </p>
+</footer>

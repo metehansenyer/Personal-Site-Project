@@ -194,6 +194,12 @@ const icons = {
     imgSrc: 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/nextjs/nextjs-original.svg',
     alt: 'nextjs',
   },
+  astro: {
+    name: 'Astro',
+    url: 'https://astro.build/',
+    imgSrc: 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/astro/astro-original.svg',
+    alt: 'astro',
+  },
   git: {
     name: 'Git',
     url: 'https://git-scm.com/',
