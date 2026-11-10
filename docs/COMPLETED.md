@@ -87,3 +87,9 @@ Findings worth remembering:
 - [x] Build output: 4.4 MB `dist/`, zero `.js` files - pages carry only small inline scripts
 - [x] Status codes on the preview server: known routes 200, unknown URL 404, `sitemap.xml` with 13 URLs
 - [x] No `next` / `react` / `react-dom` left in `package.json`
+
+## Deployment review (lead)
+
+- [x] Read the official Dokploy docs and compared them with the repo's deploy setup
+- [x] Removed the IPv6 `listen` line from `docker/nginx.conf` (nginx would refuse to start in a container
+      without IPv6; unnecessary behind Traefik)
