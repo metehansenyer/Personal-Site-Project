@@ -2,4 +2,4 @@ User-agent: *
 Allow: /
 
 # Sitemap
-Sitemap: https://who.metehansenyer.tech/sitemap.xml 
+Sitemap: https://who.metehansenyer.dev/sitemap.xml 

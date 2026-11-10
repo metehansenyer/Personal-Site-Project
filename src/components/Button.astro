@@ -1,0 +1,41 @@
+---
+/**
+ * Button Component
+ *
+ * A reusable link-button used throughout the site for consistent navigation buttons.
+ *
+ * Features:
+ * - Customizable width, height, and font size through props
+ * - Consistent hover and animation effects
+ * - Accessible through keyboard navigation
+ */
+
+interface Props {
+  href: string
+  width: string
+  height: string
+  fontSize: string
+  newTab?: boolean
+  umamiEvent?: string
+  umamiEventData?: Record<string, string>
+}
+
+const { href, width, height, fontSize, newTab, umamiEvent, umamiEventData } = Astro.props
+
+const umamiProps = umamiEvent
+  ? {
+      'data-umami-event': umamiEvent,
+      ...Object.fromEntries(
+        Object.entries(umamiEventData ?? {}).map(([k, v]) => [`data-umami-event-${k}`, v]),
+      ),
+    }
+  : {}
+---
+
+<a href={href} target={newTab ? '_blank' : undefined} {...umamiProps}>
+  <div
+    class={`${width} ${height} ${fontSize} rounded-(--border-radius-large) border-2 border-solid border-(--text-color) bg-(--nav-background-color) py-3 text-center leading-7 text-(--text-color) transition-all duration-300 hover:bg-(--text-color) hover:text-(--nav-background-color) md:py-4 md:leading-8`}
+  >
+    <slot />
+  </div>
+</a>

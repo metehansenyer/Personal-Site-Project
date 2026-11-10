@@ -1,9 +1,8 @@
-.next/
-out/
-build/
+dist/
+.astro/
 node_modules/
 coverage/
 pnpm-lock.yaml
 public/
-next-env.d.ts
-docker-compose.yml
+# MDX content: prettier's MDX formatter can mangle JSX and custom callouts
+src/content/**/*.mdx

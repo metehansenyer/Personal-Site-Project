@@ -1,0 +1,18 @@
+---
+/**
+ * 404 (Not Found) page. Content comes from notFoundContent.
+ */
+import BaseLayout from '@/layouts/BaseLayout.astro'
+import notFoundContent from '@/data/notFoundContent'
+---
+
+<BaseLayout pageTitle="404">
+  <main class="mx-auto w-full px-4 py-8">
+    <div class="flex min-h-[60vh] flex-col items-center justify-center space-y-6">
+      <h1 class="text-4xl font-bold text-(--text-color) md:text-6xl">{notFoundContent.title}</h1>
+      <p class="text-center text-xl text-(--text-color) opacity-70 md:text-2xl">
+        {notFoundContent.description}
+      </p>
+    </div>
+  </main>
+</BaseLayout>

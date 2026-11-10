@@ -1,0 +1,43 @@
+---
+/**
+ * Icon (MDX component)
+ *
+ * Row of linked technology icons, used in project MDX as `<Icon slugs={['typescript']} />`.
+ * Unknown slugs are skipped with a console warning. Icons are remote SVGs, so plain
+ * <img> tags are used (no image optimization).
+ */
+import icons from '@/data/icons'
+import type { IconSlug } from '@/data/icons'
+
+interface Props {
+  slugs: IconSlug[]
+}
+
+const { slugs } = Astro.props
+
+const validIcons = slugs.flatMap((slug) => {
+  if (!(slug in icons)) {
+    console.warn(`[Icon] unknown icon slug: ${slug}`)
+    return []
+  }
+  return [{ slug, icon: icons[slug] }]
+})
+---
+
+<div class="icon my-5 flex w-full flex-wrap items-center justify-center gap-[10px] bg-transparent">
+  {
+    validIcons.map(({ icon }) => (
+      <a class="icon-link bg-transparent" href={icon.url} target="_blank" rel="noreferrer">
+        <img
+          class="icon-img bg-transparent transition-all hover:scale-110"
+          src={icon.imgSrc}
+          alt={icon.alt}
+          width="40"
+          height="40"
+          loading="lazy"
+          decoding="async"
+        />
+      </a>
+    ))
+  }
+</div>

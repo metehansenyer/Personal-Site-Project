@@ -9,6 +9,10 @@ updates:
         versions: ['>= 25.0.0']
       - dependency-name: 'eslint'
         versions: ['>= 10.0.0']
+      # prettier-plugin-tailwindcss (<= 0.8.1) cannot sort classes in .astro files together
+      # with prettier-plugin-astro 1.x (different AST); stay on 0.14.x until it supports 1.x.
+      - dependency-name: 'prettier-plugin-astro'
+        versions: ['>= 1.0.0']
 
   - package-ecosystem: 'github-actions'
     directory: '/'

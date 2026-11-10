@@ -1,0 +1,116 @@
+---
+/**
+ * Header
+ *
+ * Desktop: site name + page title. Mobile: page title, hamburger button and a
+ * collapsible nav (toggled by the vanilla script below). Nav order is adjusted from
+ * sessionStorage by `NavOrderScript.astro`.
+ */
+import { getNavItems } from '@/lib/navOrder'
+
+interface Props {
+  pageTitle: string
+  pathname: string
+}
+
+const { pageTitle, pathname } = Astro.props
+const navigation = getNavItems(pathname)
+
+const barBase =
+  'absolute h-0.5 w-5 rounded-full bg-(--text-color) transition-all duration-300 group-hover:bg-(--nav-background-color)'
+---
+
+<header class="sticky top-0 z-50 w-full bg-(--background-color) py-3 md:static md:py-4">
+  <!-- Desktop header -->
+  <div class="hidden items-center justify-between px-8 md:flex">
+    <h1 class="text-[2rem] text-(--text-color)">Metehan Şenyer</h1>
+    <h2 class="text-right text-[2rem] text-(--text-color)">{pageTitle}</h2>
+  </div>
+
+  <!-- Mobile header -->
+  <div class="px-4 md:hidden">
+    <div class="flex items-center justify-between gap-3">
+      <h1 class="min-w-0 flex-1 truncate text-xl font-semibold text-(--text-color)">{pageTitle}</h1>
+      <button
+        type="button"
+        id="mobile-menu-button"
+        class="group relative flex h-11 w-11 shrink-0 items-center justify-center rounded-full border-2 border-(--text-color) bg-(--nav-background-color) transition-colors duration-300 hover:bg-(--text-color)"
+        aria-label="Navigasyonu aç"
+        aria-expanded="false"
+        aria-controls="mobile-navigation"
+        data-label-open="Navigasyonu kapat"
+        data-label-closed="Navigasyonu aç"
+      >
+        <span
+          class:list={[barBase, '-translate-y-1.5 rotate-0']}
+          data-closed="-translate-y-1.5 rotate-0"
+          data-open="translate-y-0 rotate-45"></span>
+        <span
+          class:list={[barBase, 'scale-x-100 opacity-100']}
+          data-closed="scale-x-100 opacity-100"
+          data-open="scale-x-0 opacity-0"></span>
+        <span
+          class:list={[barBase, 'translate-y-1.5 rotate-0']}
+          data-closed="translate-y-1.5 rotate-0"
+          data-open="translate-y-0 -rotate-45"></span>
+      </button>
+    </div>
+
+    <nav
+      id="mobile-navigation"
+      class="max-h-0 overflow-hidden pt-0 opacity-0 transition-all duration-300 ease-in-out"
+      data-closed="max-h-0 pt-0 opacity-0"
+      data-open="max-h-96 pt-4 opacity-100"
+      aria-hidden="true"
+    >
+      <div class="space-y-4" data-nav-list>
+        {
+          navigation.map((item) => (
+            <a
+              href={item.href}
+              class="block rounded-(--border-radius-large) border-2 border-solid border-(--text-color) bg-(--nav-background-color) px-6 py-4 text-center text-2xl leading-8 font-medium text-(--text-color) transition-colors hover:bg-(--text-color) hover:text-(--nav-background-color)"
+              data-mobile-nav-link
+            >
+              {item.label}
+            </a>
+          ))
+        }
+      </div>
+    </nav>
+  </div>
+</header>
+
+<script>
+  const button = document.getElementById('mobile-menu-button')
+  const panel = document.getElementById('mobile-navigation')
+
+  /** Swaps the `data-closed` / `data-open` class lists of an element. */
+  function applyState(el: HTMLElement, isOpen: boolean) {
+    const remove = (isOpen ? el.dataset.closed : el.dataset.open) ?? ''
+    const add = (isOpen ? el.dataset.open : el.dataset.closed) ?? ''
+    el.classList.remove(...remove.split(' ').filter(Boolean))
+    el.classList.add(...add.split(' ').filter(Boolean))
+  }
+
+  function setOpen(isOpen: boolean) {
+    if (!button || !panel) return
+    button.setAttribute('aria-expanded', String(isOpen))
+    button.setAttribute(
+      'aria-label',
+      (isOpen ? button.dataset.labelOpen : button.dataset.labelClosed) ?? '',
+    )
+    panel.setAttribute('aria-hidden', String(!isOpen))
+    button.querySelectorAll<HTMLElement>('[data-closed]').forEach((bar) => applyState(bar, isOpen))
+    applyState(panel, isOpen)
+  }
+
+  if (button && panel) {
+    button.addEventListener('click', () => {
+      setOpen(button.getAttribute('aria-expanded') !== 'true')
+    })
+    // A full page navigation follows; close right away so bfcache restores a closed menu.
+    panel.querySelectorAll('[data-mobile-nav-link]').forEach((link) => {
+      link.addEventListener('click', () => setOpen(false))
+    })
+  }
+</script>

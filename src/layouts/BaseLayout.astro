@@ -1,0 +1,122 @@
+---
+/**
+ * Base Layout
+ *
+ * Shared document shell for every page: SEO metadata, Font Awesome, JSON-LD,
+ * analytics and (optionally) the site chrome (Header, Navbar, Footer).
+ */
+import '@/styles/global.css'
+import Header from '@/components/Header.astro'
+import Navbar from '@/components/Navbar.astro'
+import Footer from '@/components/Footer.astro'
+import NavOrderScript from '@/components/NavOrderScript.astro'
+import { SITE_URL, SITE_NAME } from '@/lib/site'
+
+interface Props {
+  title?: string
+  description?: string
+  ogType?: string
+  /** Absolute URL of the Open Graph image. */
+  ogImage?: string
+  twitterCard?: 'summary' | 'summary_large_image'
+  /** Text shown in the header. */
+  pageTitle?: string
+  /** Whether Header, Navbar and Footer render. The home page passes false. */
+  showChrome?: boolean
+}
+
+const {
+  title = SITE_NAME,
+  description = 'Yazılım Mühendisliği öğrencisi ve tutkulu bir yazılım geliştiricisi.',
+  ogType = 'website',
+  ogImage,
+  twitterCard,
+  pageTitle = '',
+  showChrome = true,
+} = Astro.props
+
+// Strip the trailing slash the static build adds (/about/ -> /about) so nav matching,
+// canonical and og:url stay identical to the old URLs.
+const pathname = Astro.url.pathname.replace(/(.)\/$/, '$1')
+const canonicalUrl = new URL(pathname, `${SITE_URL}/`).href
+
+const jsonLd = JSON.stringify({
+  '@context': 'https://schema.org',
+  '@type': 'Person',
+  name: SITE_NAME,
+  url: SITE_URL,
+  jobTitle: 'Yazılım Mühendisliği Öğrencisi',
+  alumniOf: 'Kocaeli Üniversitesi',
+  sameAs: ['https://github.com/metehansenyer', 'https://linkedin.com/in/metehansenyer'],
+})
+---
+
+<!doctype html>
+<html lang="tr">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <meta name="keywords" content="yazılım, web geliştirme, portfolio, metehan şenyer" />
+    <meta name="author" content={SITE_NAME} />
+    <link rel="canonical" href={canonicalUrl} />
+    <link rel="icon" href="/favicon.ico" />
+
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonicalUrl} />
+    <meta property="og:site_name" content={SITE_NAME} />
+    <meta property="og:locale" content="tr_TR" />
+    <meta property="og:type" content={ogType} />
+    {ogImage && <meta property="og:image" content={ogImage} />}
+
+    {
+      twitterCard && (
+        <>
+          <meta name="twitter:card" content={twitterCard} />
+          <meta name="twitter:title" content={title} />
+          <meta name="twitter:description" content={description} />
+          {ogImage && <meta name="twitter:image" content={ogImage} />}
+        </>
+      )
+    }
+
+    <!-- Load Font Awesome icons before page renders -->
+    <script is:inline src="https://kit.fontawesome.com/76c7501aeb.js" crossorigin="anonymous"
+    ></script>
+
+    <!-- JSON-LD structured data -->
+    <script type="application/ld+json" set:html={jsonLd} />
+    <slot name="head" />
+  </head>
+  <body class="flex min-h-screen flex-col overflow-x-hidden">
+    {
+      showChrome && (
+        <>
+          <Header pageTitle={pageTitle} pathname={pathname} />
+          <Navbar pathname={pathname} />
+        </>
+      )
+    }
+    {
+      /* Blocking inline script: must stay right after the nav markup. Also runs on pages
+        without chrome (home) so every page load records itself as the previous path. */
+    }
+    <NavOrderScript />
+    <div class="flex flex-1 flex-col">
+      <slot />
+    </div>
+    {showChrome && <Footer />}
+    {
+      import.meta.env.PROD && (
+        <script
+          is:inline
+          defer
+          src="https://umami.metehansenyer.dev/script.js"
+          data-website-id="41d22223-daff-461c-bec6-d56ddd7208f6"
+        />
+      )
+    }
+  </body>
+</html>
