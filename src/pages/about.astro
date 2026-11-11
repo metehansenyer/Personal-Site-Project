@@ -4,7 +4,9 @@
  * Content comes from aboutContent / socialLinks / icons.
  */
 import { Image } from 'astro:assets'
+import { faEnvelope, faGraduationCap, faLocationDot } from '@fortawesome/free-solid-svg-icons'
 import BaseLayout from '@/layouts/BaseLayout.astro'
+import FaIcon from '@/components/FaIcon.astro'
 import profilePhoto from '@/assets/img/profil_fotografim.jpeg'
 import { socialLinks } from '@/data/socialLinks'
 import { aboutContent } from '@/data/aboutContent'
@@ -49,14 +51,14 @@ const technologies = generateAboutTechnologies(aboutContent.technologies)
           <!-- Location Information -->
           <div class="flex items-center justify-center gap-2 md:justify-start">
             <span class="w-5 text-center">
-              <i class="fa-solid fa-location-dot" aria-hidden="true"></i>
+              <FaIcon icon={faLocationDot} />
             </span>
             <span class="break-words">{aboutContent.profile.location}</span>
           </div>
           <!-- Email Information -->
           <div class="flex items-center justify-center gap-2 md:justify-start">
             <span class="w-5 text-center">
-              <i class="fa-solid fa-envelope" aria-hidden="true"></i>
+              <FaIcon icon={faEnvelope} />
             </span>
             <a
               href={`mailto:${CONTACT_EMAIL}`}
@@ -69,7 +71,7 @@ const technologies = generateAboutTechnologies(aboutContent.technologies)
           <!-- Education Information -->
           <div class="flex items-center justify-center gap-2 md:justify-start">
             <span class="w-5 text-center">
-              <i class="fa-solid fa-graduation-cap fa-flip-horizontal" aria-hidden="true"></i>
+              <FaIcon icon={faGraduationCap} flip />
             </span>
             <span class="break-words">{aboutContent.profile.education}</span>
           </div>
@@ -87,7 +89,7 @@ const technologies = generateAboutTechnologies(aboutContent.technologies)
                 data-umami-event="social-link-click"
                 data-umami-event-platform={link.name}
               >
-                <i class={link.icon} aria-hidden="true" />
+                <FaIcon icon={link.icon} />
               </a>
             ))
           }

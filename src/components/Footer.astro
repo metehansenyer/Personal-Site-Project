@@ -4,6 +4,8 @@
  *
  * Attribution and analytics notice. The layout does not render it on the home page.
  */
+import { faHeart } from '@fortawesome/free-solid-svg-icons'
+import FaIcon from '@/components/FaIcon.astro'
 ---
 
 <footer class="w-full px-4 py-4 text-center">
@@ -16,9 +18,7 @@
     >
       Metehan Şenyer
     </a>{' '}
-    tarafından <i class="fa-solid fa-heart mx-1 animate-pulse text-red-500" aria-hidden="true"></i>{
-      ' '
-    }
+    tarafından <FaIcon icon={faHeart} class="mx-1 animate-pulse text-red-500" />{' '}
     ile kodlandı
   </p>
   <p class="mt-1 text-xs text-(--text-color) opacity-40">

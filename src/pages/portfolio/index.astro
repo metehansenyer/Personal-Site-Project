@@ -32,7 +32,10 @@ const description =
         <h1 class="sr-only">{route.title}</h1>
         <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 md:gap-8 lg:grid-cols-3">
           {projects.map((project, index) => (
-            <ProjectCard project={project} priority={index < 3} />
+            <ProjectCard
+              project={project}
+              loading={index === 0 ? 'priority' : index < 3 ? 'eager' : 'lazy'}
+            />
           ))}
         </div>
       </main>

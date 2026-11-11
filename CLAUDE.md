@@ -36,11 +36,11 @@ File-based: `index.astro` (`/`), `about.astro`, `contact.astro`, `404.astro`, `p
 
 ### Layout (`src/layouts/BaseLayout.astro`)
 
-Wraps every page: `<head>` SEO (title, description, canonical, Open Graph, Twitter, JSON-LD), Font Awesome kit script, global CSS, production-only Umami script, and the site chrome. Props (all optional): `title`, `description`, `ogType`, `ogImage` (absolute URL; default is `src/assets/img/home_page.png` via `getImage`, PNG 1200 wide) with `ogImageWidth` / `ogImageHeight`, `pageTitle` (text in the Header), `showChrome` (default `true`; the home page passes `false` to hide Header/Navbar/Footer), `noindex` (robots noindex, no canonical / `og:url`; used by 404), `jsonLd` (emit the Person JSON-LD; home and about only). Twitter tags are always emitted (`summary_large_image`). Canonical / `og:url` have no trailing slash (the pathname is stripped). Page titles are built with `documentTitle(page)` from `lib/site.ts` (`<page> | Metehan Şenyer`).
+Wraps every page: `<head>` SEO (title, description, canonical, Open Graph, Twitter, JSON-LD), global CSS, production-only Umami script, and the site chrome. Props (all optional): `title`, `description`, `ogType`, `ogImage` (absolute URL; default is `src/assets/img/home_page.png` via `getImage`, PNG 1200 wide) with `ogImageWidth` / `ogImageHeight`, `pageTitle` (text in the Header), `showChrome` (default `true`; the home page passes `false` to hide Header/Navbar/Footer), `noindex` (robots noindex, no canonical / `og:url`; used by 404), `jsonLd` (emit the Person JSON-LD; home and about only). Twitter tags are always emitted (`summary_large_image`). Canonical / `og:url` have no trailing slash (the pathname is stripped). Page titles are built with `documentTitle(page)` from `lib/site.ts` (`<page> | Metehan Şenyer`).
 
 ### Components (`src/components/`)
 
-`Header` (desktop title row + mobile hamburger menu, toggled by a vanilla script via `aria-expanded` and swapping each element's `data-closed` / `data-open` class lists), `Navbar`, `Footer`, `Button` (link-button with `href`, `width`, `height`, `fontSize`, `newTab`, `umamiEvent`, `umamiEventData` -> `data-umami-event*` attributes), `ProjectCard` (one measuring script for all cards decides how many tech tags fit; hover slide is CSS-only), `NavOrderScript`, and `mdx/Icon`, `mdx/Callout`.
+`Header` (desktop title row + mobile hamburger menu, toggled by a vanilla script via `aria-expanded` and swapping each element's `data-closed` / `data-open` class lists), `Navbar`, `Footer`, `FaIcon` (inline SVG for a Font Awesome Free icon definition: `<FaIcon icon={faHeart} class="..." flip />`; 1em high, `currentColor`, `aria-hidden`), `Button` (link-button with `href`, `width`, `height`, `fontSize`, `newTab`, `umamiEvent`, `umamiEventData` -> `data-umami-event*` attributes), `ProjectCard` (one measuring script for all cards decides how many tech tags fit; hover slide is CSS-only), `NavOrderScript`, and `mdx/Icon`, `mdx/Callout`.
 
 ### Nav order (`src/lib/navOrder.ts` + `src/components/NavOrderScript.astro`)
 
@@ -69,7 +69,7 @@ An unknown icon slug or missing field fails the build, so there is no separate c
 
 The detail page renders the MDX body inside `.markdown-body` (`github-markdown-css` dark theme, then `src/styles/markdown-overrides.css`, which must come after it) and passes `components={{ Icon, Callout }}`, so MDX files use them without importing:
 
-- `<Icon slugs={['typescript', 'astro']} />` renders linked technology icons (`mdx/Icon.astro`; unknown slugs are skipped with a `console.warn`; plain `<img>` of remote SVGs).
+- `<Icon slugs={['typescript', 'astro']} />` renders linked technology icons (`mdx/Icon.astro`; unknown slugs are skipped with a `console.warn`; plain `<img>` of the self-hosted files).
 - `<Callout type="important" | "warning" | "note">...</Callout>` renders a highlighted block with a coloured left border and a Turkish label (`mdx/Callout.astro`).
 
 Prettier ignores `src/content/**/*.mdx` on purpose (its MDX formatter can mangle JSX).
@@ -78,7 +78,7 @@ Prettier ignores `src/content/**/*.mdx` on purpose (its MDX formatter can mangle
 
 Tailwind CSS v4 through `@tailwindcss/vite` (configured in `astro.config.ts`; no `tailwind.config.*`). `src/styles/global.css` holds `@import 'tailwindcss'`, the self-hosted Inter font (`@fontsource-variable/inter`) and the CSS variables (`--background-color`, `--text-color`, `--nav-background-color`, ...) used as `bg-(--nav-background-color)` etc. Prettier sorts Tailwind classes in `.astro` files with `prettier-plugin-tailwindcss`; this only works with `prettier-plugin-astro` **0.14.x** (pinned `~0.14.1`; 1.x has a different AST the Tailwind plugin does not understand, and Dependabot ignores `>= 1.0.0`). Do not bump it until the Tailwind plugin supports 1.x. Classes inside `data-open` / `data-closed` attributes and JS strings are not sorted; they are applied by script via `classList`.
 
-Images in `src/assets/img/` go through `astro:assets` (`<Image>`, `getImage`, optimized at build with sharp). Technology icons are remote SVGs from jsDelivr (and simpleicons for Astro) in plain `<img>` tags. No remote image goes through `astro:assets`, so `image.domains` is not configured; add it if that changes.
+Images in `src/assets/img/` go through `astro:assets` (`<Image>`, `getImage`, optimized at build with sharp). Technology icons are self-hosted files in `public/icons/tech/` (devicon / simpleicons SVGs, a few PNG logos) referenced as `/icons/tech/<file>` in plain `<img>` tags, not through `astro:assets`, so `image.domains` is not configured. UI icons (location, mail, social links, heart) are Font Awesome Free definitions from `@fortawesome/free-solid-svg-icons` / `free-brands-svg-icons` rendered as inline SVG by `FaIcon.astro` (no kit script, no icon font); `socialLinks.ts` stores the icon definitions, not class strings. Only the icons that are imported end up in the build.
 
 ### Tests
 
@@ -109,4 +109,4 @@ Hosting: self-hosted on **Dokploy** as an _Application_ (not Compose; there is n
 
 ## Adding a technology icon
 
-Add an entry to the `icons` object in `src/data/icons.ts` with `name` (also used as the img alt text), `url`, `imgSrc`. The key is the slug used in MDX frontmatter `technologies`, in `<Icon slugs={[...]} />`, and in `aboutContent.ts`. Pick an image that is visible on the dark (`#1f2937` / `#374151`) background and returns an SVG over HTTP.
+Save the logo (prefer SVG, from devicon (MIT) or simpleicons (CC0); PNG only when no SVG exists) as `public/icons/tech/<slug>.<ext>` and add an entry to the `icons` object in `src/data/icons.ts` with `name` (also used as the img alt text), `url`, `imgSrc: '/icons/tech/<slug>.<ext>'`. Slugs that share a logo may point at the same file. The key is the slug used in MDX frontmatter `technologies`, in `<Icon slugs={[...]} />`, and in `aboutContent.ts`. Pick an image that is visible on the dark (`#1f2937` / `#374151`) background; for a black logo, add a light `fill` (e.g. `#d1d5db`) to the local SVG (as done for `markdown.svg` and `vercel.svg`). Do not hotlink remote images.

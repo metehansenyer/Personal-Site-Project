@@ -1,0 +1,45 @@
+---
+/**
+ * FaIcon Component
+ *
+ * Inline SVG for a Font Awesome Free icon (CC BY 4.0, see README). Pass an icon definition
+ * from `@fortawesome/free-solid-svg-icons` or `@fortawesome/free-brands-svg-icons`; only the
+ * imported icons end up in the build. Sized like Font Awesome's own SVGs: 1em high, inline,
+ * `vertical-align: -0.125em`, width from the icon's aspect ratio, colour from `currentColor`.
+ */
+import type { FaIconDefinition } from '@/lib/faIcon'
+
+interface Props {
+  icon: FaIconDefinition
+  /** Extra classes (colour, margin, animation, ...). */
+  class?: string
+  /** Mirror the icon horizontally (Font Awesome's `fa-flip-horizontal`). */
+  flip?: boolean
+}
+
+const { icon, class: className, flip = false } = Astro.props
+const [width, height, , , pathData] = icon.icon
+const paths = typeof pathData === 'string' ? [pathData] : pathData
+const style = [
+  'display:inline-block',
+  'height:1em',
+  'max-width:none',
+  'overflow:visible',
+  'vertical-align:-0.125em',
+  flip ? 'transform:scaleX(-1)' : '',
+]
+  .filter(Boolean)
+  .join(';')
+---
+
+<svg
+  aria-hidden="true"
+  focusable="false"
+  viewBox={`0 0 ${width} ${height}`}
+  fill="currentColor"
+  class:list={['fa-icon', className]}
+  style={style}
+  data-icon={icon.iconName}
+>
+  {paths.map((d) => <path d={d} />)}
+</svg>

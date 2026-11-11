@@ -36,7 +36,7 @@ Bu proje, projelerimi ve yeteneklerimi sergilemek amacıyla modern web teknoloji
 - **TypeScript:** Düz JavaScript'e derlenen yazılı bir JavaScript üst kümesi.
 - **Tailwind CSS v4:** Hızlı UI geliştirme için bir yardımcı program öncelikli CSS çerçevesi.
 - **MDX İçerik Koleksiyonları:** Her proje, tiplenmiş frontmatter içeren tek bir `.mdx` dosyasıdır.
-- **Font Awesome:** İkonlar için.
+- **Font Awesome Free:** Arayüz ikonları için (satır içi SVG olarak, kit/script yüklenmez).
 - **pnpm:** Paket yöneticisi.
 - **Docker & nginx:** Statik çıktıyı konteyner olarak paketlemek ve sunmak için.
 - **Dokploy:** Kendi sunucumda barındırma ve dağıtım için (imaj, deponun `Dockerfile` dosyasından üretilir).
@@ -171,12 +171,14 @@ Web sitesinin içeriği `src` altındaki TypeScript ve MDX dosyaları aracılı�
 
 ### Yeni teknoloji ikonu ekleme
 
-`src/data/icons.ts` içindeki `icons` nesnesine `name` (aynı zamanda img alt metni olarak kullanılır), `url` ve `imgSrc` alanlarıyla yeni bir kayıt ekleyin. Anahtar, hem proje frontmatter'ındaki `technologies` listesinde hem de `<Icon slugs={[...]} />` içinde kullanılan kısa addır.
+Logoyu (mümkünse SVG) `public/icons/tech/<anahtar>.<uzantı>` olarak kaydedin ve `src/data/icons.ts` içindeki `icons` nesnesine `name` (aynı zamanda img alt metni olarak kullanılır), `url` ve `imgSrc` (`/icons/tech/<anahtar>.<uzantı>`) alanlarıyla yeni bir kayıt ekleyin. Teknoloji logoları depoda barındırılır (devicon: MIT, simpleicons: CC0); uzak bir adresten yüklenmez. Anahtar, hem proje frontmatter'ındaki `technologies` listesinde hem de `<Icon slugs={[...]} />` içinde kullanılan kısa addır.
 
 ## Canlı Demo
 
 Web sitesi şu adreste yayında: [who.metehansenyer.dev](https://who.metehansenyer.dev)
 
 ## Lisans
+
+İkonlar: [Font Awesome Free](https://fontawesome.com/license/free) ikonları [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/) lisansıyla kullanılmaktadır. Teknoloji logoları kendi sahiplerinin ticari markalarıdır.
 
 Bu proje MIT Lisansı altında lisanslanmıştır. Ayrıntılar için [LICENSE](LICENSE) dosyasına bakın.

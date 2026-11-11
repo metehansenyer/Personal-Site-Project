@@ -2,7 +2,7 @@
 /**
  * Base Layout
  *
- * Shared document shell for every page: SEO metadata, Font Awesome, JSON-LD,
+ * Shared document shell for every page: SEO metadata, JSON-LD,
  * analytics and (optionally) the site chrome (Header, Navbar, Footer).
  */
 import { getImage } from 'astro:assets'
@@ -99,10 +99,6 @@ const jsonLd = JSON.stringify({
     <meta name="twitter:title" content={title} />
     <meta name="twitter:description" content={description} />
     <meta name="twitter:image" content={image.url} />
-
-    <!-- Load Font Awesome icons before page renders -->
-    <script is:inline src="https://kit.fontawesome.com/76c7501aeb.js" crossorigin="anonymous"
-    ></script>
 
     <!-- JSON-LD structured data -->
     {withJsonLd && <script type="application/ld+json" set:html={jsonLd} />}

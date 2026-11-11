@@ -3,6 +3,7 @@
  * Contact page: email and LinkedIn, content from contactContent / socialLinks.
  */
 import BaseLayout from '@/layouts/BaseLayout.astro'
+import FaIcon from '@/components/FaIcon.astro'
 import { socialLinks } from '@/data/socialLinks'
 import { contactContent } from '@/data/contactContent'
 import { getRoute } from '@/data/routes'
@@ -53,7 +54,7 @@ const linkedIn = socialLinks.find((link) => link.name === 'LinkedIn')
                   data-umami-event="social-link-click"
                   data-umami-event-platform="LinkedIn"
                 >
-                  <i class={`${linkedIn.icon} text-xl`} aria-hidden="true" />
+                  <FaIcon icon={linkedIn.icon} class="text-xl" />
                   <span>LinkedIn</span>
                 </a>
               </>
