@@ -98,3 +98,20 @@ Findings worth remembering:
 - [x] `/healthz` endpoint in `docker/nginx.conf` for the Swarm health check; config re-tested with a local nginx
       against the real `dist/` (200s, no redirect on `/about`, real 404, immutable cache on `/_astro/*`)
 - [x] README / CLAUDE.md / Personal-Site-Project content: hosting described as self-hosted Docker + Dokploy; `docker` icon added
+
+## Tooling, CI and tests
+
+- [x] Container API tests for `Header` (no headings, inert closed mobile nav, aria wiring), `BaseLayout` (SEO meta, noindex, JSON-LD, only the Umami third-party script) and `ProjectCard` (loading modes, link, mobile tag row)
+- [x] `eslint-plugin-jsx-a11y` enabled through `astro.configs['jsx-a11y-recommended']` (no findings in the current code)
+- [x] `package.json`: `private`, `type: module`, `engines.node >=22`; `rehype-external-links` moved to `dependencies`
+- [x] `.gitignore` tidied (Next.js / Yarn-era entries removed)
+- [x] nginx: `X-Frame-Options: DENY` and `Permissions-Policy` headers
+- [x] CI: concurrency (cancels superseded PR runs) and a `docker` job that builds the image and runs `scripts/smoke-test.sh`
+
+## Performance pass
+
+- [x] Font Awesome kit script replaced with inline SVG icons (`FaIcon.astro` + `@fortawesome/free-*-svg-icons`; only the 8 used icons are built in, no render-blocking third-party script); `socialLinks.ts` now holds typed icon definitions
+- [x] Technology icons self-hosted in `public/icons/tech/` (no jsDelivr / simpleicons / wikimedia / GitHub hotlinks); the broken zod.dev logo URL replaced by the simpleicons Zod logo
+- [x] Markdown and Vercel icons are visible on the dark background (light `fill` in the local SVGs)
+- [x] Accessibility: focus outlines and `user-select` fixed in earlier commits
+- [x] Portfolio banners: first card `priority`, cards 2-3 eager, the rest lazy; overflow tech tags also reveal on keyboard focus (`group-focus-within`)

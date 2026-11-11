@@ -11,12 +11,12 @@ pnpm preview      # Serve dist/ locally (runs as a daemon: `astro preview status
 pnpm typecheck    # astro check (types for .astro, .ts and content)
 pnpm lint         # ESLint check (lint:fix to auto-fix)
 pnpm format       # Prettier write (format:check is read-only)
-pnpm check        # typecheck + lint + format:check (what CI runs first)
+pnpm check        # typecheck + lint (incl. jsx-a11y) + format:check (what CI runs first)
 pnpm test         # Vitest, one run (test:watch for watch mode)
 ```
 
 Package manager: **pnpm** (v12, see `packageManager` in `package.json`). Do not use npm or yarn. Node 22+.
-CI (`.github/workflows/ci.yml`) runs `pnpm check`, `pnpm test`, `pnpm build`.
+CI (`.github/workflows/ci.yml`) has two jobs: `verify` runs `pnpm check`, `pnpm test`, `pnpm build`; `docker` builds the image, starts it and runs `scripts/smoke-test.sh` against it. A newer run on the same ref cancels the older one for pull requests only. Locally: `docker build -t site . && docker run -d -p 3000:3000 --name site site && bash scripts/smoke-test.sh` (then `docker rm -f site`).
 
 ## Astro 7 is newer than most training data
 
@@ -32,15 +32,15 @@ Static site: `output: 'static'`, pure Astro components, **no UI framework** (no 
 
 ### Routing (`src/pages/`)
 
-File-based: `index.astro` (`/`), `about.astro`, `contact.astro`, `404.astro`, `portfolio/index.astro`, `portfolio/[repoName].astro` (one page per content-collection entry via `getStaticPaths`), `sitemap.xml.ts` (endpoint; static routes from `src/data/routes.ts` plus one URL per project). `public/robots.txt` and `public/favicon.ico` are static assets. 14 pages are built in total.
+File-based: `index.astro` (`/`), `about.astro`, `contact.astro`, `404.astro`, `portfolio/index.astro`, `portfolio/[repoName].astro` (one page per content-collection entry via `getStaticPaths`), `sitemap.xml.ts` (endpoint; static routes from `src/data/routes.ts` plus one URL per project; no changefreq/priority, `lastmod` only for projects = release date), `robots.txt.ts` (endpoint; Sitemap line built from `SITE_URL`). `public/favicon.ico` is a static asset. 14 pages are built in total.
 
 ### Layout (`src/layouts/BaseLayout.astro`)
 
-Wraps every page: `<head>` SEO (title, description, canonical, Open Graph, Twitter, JSON-LD), Font Awesome kit script, global CSS, production-only Umami script, and the site chrome. Props (all optional): `title`, `description`, `ogType`, `ogImage` (absolute URL), `twitterCard` (`summary` | `summary_large_image`), `pageTitle` (text in the Header), `showChrome` (default `true`; the home page passes `false` to hide Header/Navbar/Footer). Canonical / `og:url` have no trailing slash (the pathname is stripped).
+Wraps every page: `<head>` SEO (title, description, canonical, Open Graph, Twitter, JSON-LD), global CSS, production-only Umami script, and the site chrome. Props (all optional): `title`, `description`, `ogType`, `ogImage` (absolute URL; default is `src/assets/img/home_page.png` via `getImage`, PNG 1200 wide) with `ogImageWidth` / `ogImageHeight`, `pageTitle` (text in the Header), `showChrome` (default `true`; the home page passes `false` to hide Header/Navbar/Footer), `noindex` (robots noindex, no canonical / `og:url`; used by 404), `jsonLd` (emit the Person JSON-LD; home and about only). Twitter tags are always emitted (`summary_large_image`). Canonical / `og:url` have no trailing slash (the pathname is stripped). Page titles are built with `documentTitle(page)` from `lib/site.ts` (`<page> | Metehan Şenyer`).
 
 ### Components (`src/components/`)
 
-`Header` (desktop title row + mobile hamburger menu, toggled by a vanilla script via `aria-expanded` and swapping each element's `data-closed` / `data-open` class lists), `Navbar`, `Footer`, `Button` (link-button with `href`, `width`, `height`, `fontSize`, `newTab`, `umamiEvent`, `umamiEventData` -> `data-umami-event*` attributes), `ProjectCard` (one measuring script for all cards decides how many tech tags fit; hover slide is CSS-only), `NavOrderScript`, and `mdx/Icon`, `mdx/Callout`.
+`Header` (desktop title row + mobile hamburger menu, toggled by a vanilla script via `aria-expanded` and swapping each element's `data-closed` / `data-open` class lists), `Navbar`, `Footer`, `FaIcon` (inline SVG for a Font Awesome Free icon definition: `<FaIcon icon={faHeart} class="..." flip />`; 1em high, `currentColor`, `aria-hidden`), `Button` (link-button with `href`, `width`, `height`, `fontSize`, `newTab`, `umamiEvent`, `umamiEventData` -> `data-umami-event*` attributes), `ProjectCard` (one measuring script for all cards decides how many tech tags fit; hover slide is CSS-only), `NavOrderScript`, and `mdx/Icon`, `mdx/Callout`.
 
 ### Nav order (`src/lib/navOrder.ts` + `src/components/NavOrderScript.astro`)
 
@@ -50,7 +50,7 @@ The three nav pages (`/about`, `/portfolio`, `/contact`) keep a user-specific or
 
 ### Data layer (`src/data/`, `src/lib/`)
 
-Static TypeScript: `routes.ts` (nav labels, titles, sitemap metadata; single source of truth), `icons.ts` (technology icon registry keyed by slug, e.g. `typescript`, `astro`; `generateAboutTechnologies()` for the About page; exports `IconSlug`), `aboutContent.ts`, `contactContent.ts`, `socialLinks.ts`, `notFoundContent.ts`. `src/lib/site.ts` exports `SITE_URL` / `SITE_NAME` (`SITE_URL` comes from `astro.config.ts` `site`, overridable with the `SITE_URL` env var at build time, default `https://who.metehansenyer.dev`).
+Static TypeScript: `routes.ts` (nav labels, titles, optional `homeLabel`, `getRoute(path)` helper that throws on unknown paths; single source of truth, also used by the home buttons and sitemap), `icons.ts` (technology icon registry keyed by slug, e.g. `typescript`, `astro`; `generateAboutTechnologies()` for the About page; exports `IconSlug`), `aboutContent.ts`, `contactContent.ts`, `socialLinks.ts`, `notFoundContent.ts`. `src/lib/site.ts` exports `SITE_URL` / `SITE_NAME` / `CONTACT_EMAIL` / `documentTitle` (`SITE_URL` is `import.meta.env.SITE`, i.e. `astro.config.ts` `site`, overridable with the `SITE_URL` env var at build time, default `https://who.metehansenyer.dev`; it throws if `site` is unset).
 
 ### Content collection (`src/content.config.ts`, `src/content/projects/*.mdx`)
 
@@ -69,7 +69,7 @@ An unknown icon slug or missing field fails the build, so there is no separate c
 
 The detail page renders the MDX body inside `.markdown-body` (`github-markdown-css` dark theme, then `src/styles/markdown-overrides.css`, which must come after it) and passes `components={{ Icon, Callout }}`, so MDX files use them without importing:
 
-- `<Icon slugs={['typescript', 'astro']} />` renders linked technology icons (`mdx/Icon.astro`; unknown slugs are skipped with a `console.warn`; plain `<img>` of remote SVGs).
+- `<Icon slugs={['typescript', 'astro']} />` renders linked technology icons (`mdx/Icon.astro`; unknown slugs are skipped with a `console.warn`; plain `<img>` of the self-hosted files).
 - `<Callout type="important" | "warning" | "note">...</Callout>` renders a highlighted block with a coloured left border and a Turkish label (`mdx/Callout.astro`).
 
 Prettier ignores `src/content/**/*.mdx` on purpose (its MDX formatter can mangle JSX).
@@ -78,11 +78,11 @@ Prettier ignores `src/content/**/*.mdx` on purpose (its MDX formatter can mangle
 
 Tailwind CSS v4 through `@tailwindcss/vite` (configured in `astro.config.ts`; no `tailwind.config.*`). `src/styles/global.css` holds `@import 'tailwindcss'`, the self-hosted Inter font (`@fontsource-variable/inter`) and the CSS variables (`--background-color`, `--text-color`, `--nav-background-color`, ...) used as `bg-(--nav-background-color)` etc. Prettier sorts Tailwind classes in `.astro` files with `prettier-plugin-tailwindcss`; this only works with `prettier-plugin-astro` **0.14.x** (pinned `~0.14.1`; 1.x has a different AST the Tailwind plugin does not understand, and Dependabot ignores `>= 1.0.0`). Do not bump it until the Tailwind plugin supports 1.x. Classes inside `data-open` / `data-closed` attributes and JS strings are not sorted; they are applied by script via `classList`.
 
-Images in `src/assets/img/` go through `astro:assets` (`<Image>`, `getImage`, optimized at build with sharp). Technology icons are remote SVGs from jsDelivr (and simpleicons for Astro) in plain `<img>` tags; `image.domains` in `astro.config.ts` only matters for `astro:assets` remote images.
+Images in `src/assets/img/` go through `astro:assets` (`<Image>`, `getImage`, optimized at build with sharp). Technology icons are self-hosted files in `public/icons/tech/` (devicon / simpleicons SVGs, a few PNG logos) referenced as `/icons/tech/<file>` in plain `<img>` tags, not through `astro:assets`, so `image.domains` is not configured. UI icons (location, mail, social links, heart) are Font Awesome Free definitions from `@fortawesome/free-solid-svg-icons` / `free-brands-svg-icons` rendered as inline SVG by `FaIcon.astro` (no kit script, no icon font); `socialLinks.ts` stores the icon definitions, not class strings. Only the icons that are imported end up in the build.
 
 ### Tests
 
-Vitest (`vitest.config.mts` uses Astro's `getViteConfig`, so `.astro` files and the `@/` alias work). Tests are `src/**/*.test.ts`: `lib/navOrder.test.ts` (pure logic + the toString contract) and `components/**` tests that render components with the Container API:
+Vitest (`vitest.config.mts` uses Astro's `getViteConfig`, so `.astro` files and the `@/` alias work). Tests are `src/**/*.test.ts`: `lib/navOrder.test.ts` (pure logic + the toString contract), `lib/endpoints.test.ts` (robots/sitemap, `astro:content` mocked), and `components/**` / `layouts/BaseLayout.test.ts` tests that render components with the Container API (Header a11y wiring, ProjectCard loading modes and tag row, BaseLayout SEO/JSON-LD/scripts; `vi.stubEnv('PROD', true)` switches on the production-only Umami script):
 
 ```ts
 import { experimental_AstroContainer as AstroContainer } from 'astro/container'
@@ -92,7 +92,7 @@ const html = await container.renderToString(Button, { props: { ... }, slots: { d
 
 ### Deploy
 
-`Dockerfile`: node build stage (`pnpm build`, optional `SITE_URL` build arg) -> `nginxinc/nginx-unprivileged` serving `dist/` on port 3000 with `docker/nginx.conf` (no directory redirects, real 404 status with `/404.html`, gzip, immutable cache for `/_astro/*`). `/healthz` returns `200 ok` (no access log) for health checks.
+`Dockerfile`: node build stage (`pnpm build`, optional `SITE_URL` build arg) -> `nginxinc/nginx-unprivileged` serving `dist/` on port 3000 with `docker/nginx.conf` (no directory redirects, real 404 status with `/404.html`, gzip, immutable cache for `/_astro/*`, `X-Content-Type-Options`, `X-Frame-Options: DENY`, `Referrer-Policy`, `Permissions-Policy`; no CSP, no HSTS because TLS terminates at Traefik). No `location` may define its own `add_header`, or it loses the server-level headers. `/healthz` returns `200 ok` (no access log) for health checks. `scripts/smoke-test.sh [base-url]` asserts the behaviour above against a running server (200s, no redirect on `/about`, 404 page + status, `/healthz`, immutable `/_astro/*`, security headers); it is not part of the image.
 
 Hosting: self-hosted on **Dokploy** as an _Application_ (not Compose; there is no compose file in the repo).
 
@@ -109,4 +109,4 @@ Hosting: self-hosted on **Dokploy** as an _Application_ (not Compose; there is n
 
 ## Adding a technology icon
 
-Add an entry to the `icons` object in `src/data/icons.ts` with `name`, `url`, `imgSrc`, `alt`. The key is the slug used in MDX frontmatter `technologies`, in `<Icon slugs={[...]} />`, and in `aboutContent.ts`. Pick an image that is visible on the dark (`#1f2937` / `#374151`) background and returns an SVG over HTTP.
+Save the logo (prefer SVG, from devicon (MIT) or simpleicons (CC0); PNG only when no SVG exists) as `public/icons/tech/<slug>.<ext>` and add an entry to the `icons` object in `src/data/icons.ts` with `name` (also used as the img alt text), `url`, `imgSrc: '/icons/tech/<slug>.<ext>'`. Slugs that share a logo may point at the same file. The key is the slug used in MDX frontmatter `technologies`, in `<Icon slugs={[...]} />`, and in `aboutContent.ts`. Pick an image that is visible on the dark (`#1f2937` / `#374151`) background; for a black logo, add a light `fill` (e.g. `#d1d5db`) to the local SVG (as done for `markdown.svg` and `vercel.svg`). Do not hotlink remote images.

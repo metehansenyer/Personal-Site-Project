@@ -2,27 +2,35 @@
 /**
  * Base Layout
  *
- * Shared document shell for every page: SEO metadata, Font Awesome, JSON-LD,
+ * Shared document shell for every page: SEO metadata, JSON-LD,
  * analytics and (optionally) the site chrome (Header, Navbar, Footer).
  */
+import { getImage } from 'astro:assets'
 import '@/styles/global.css'
 import Header from '@/components/Header.astro'
 import Navbar from '@/components/Navbar.astro'
 import Footer from '@/components/Footer.astro'
 import NavOrderScript from '@/components/NavOrderScript.astro'
 import { SITE_URL, SITE_NAME } from '@/lib/site'
+import { socialLinks } from '@/data/socialLinks'
+import defaultOgImage from '@/assets/img/home_page.png'
 
 interface Props {
   title?: string
   description?: string
   ogType?: string
-  /** Absolute URL of the Open Graph image. */
+  /** Absolute URL of the Open Graph image. Defaults to a screenshot of the home page. */
   ogImage?: string
-  twitterCard?: 'summary' | 'summary_large_image'
+  ogImageWidth?: number
+  ogImageHeight?: number
   /** Text shown in the header. */
   pageTitle?: string
   /** Whether Header, Navbar and Footer render. The home page passes false. */
   showChrome?: boolean
+  /** Adds `<meta name="robots" content="noindex">` and omits canonical / og:url (404 page). */
+  noindex?: boolean
+  /** Emits the JSON-LD Person block (home and about pages only). */
+  jsonLd?: boolean
 }
 
 const {
@@ -30,9 +38,12 @@ const {
   description = 'Yazılım Mühendisliği öğrencisi ve tutkulu bir yazılım geliştiricisi.',
   ogType = 'website',
   ogImage,
-  twitterCard,
+  ogImageWidth,
+  ogImageHeight,
   pageTitle = '',
   showChrome = true,
+  noindex = false,
+  jsonLd: withJsonLd = false,
 } = Astro.props
 
 // Strip the trailing slash the static build adds (/about/ -> /about) so nav matching,
@@ -40,14 +51,25 @@ const {
 const pathname = Astro.url.pathname.replace(/(.)\/$/, '$1')
 const canonicalUrl = new URL(pathname, `${SITE_URL}/`).href
 
+// PNG/JPEG only: not every scraper handles WebP. Width 1200 is the usual OG size.
+let image = { url: ogImage, width: ogImageWidth, height: ogImageHeight }
+if (!ogImage) {
+  const fallback = await getImage({ src: defaultOgImage, width: 1200, format: 'png' })
+  image = {
+    url: new URL(fallback.src, `${SITE_URL}/`).href,
+    width: fallback.attributes.width,
+    height: fallback.attributes.height,
+  }
+}
+
 const jsonLd = JSON.stringify({
   '@context': 'https://schema.org',
   '@type': 'Person',
   name: SITE_NAME,
   url: SITE_URL,
   jobTitle: 'Yazılım Mühendisliği Öğrencisi',
-  alumniOf: 'Kocaeli Üniversitesi',
-  sameAs: ['https://github.com/metehansenyer', 'https://linkedin.com/in/metehansenyer'],
+  affiliation: { '@type': 'CollegeOrUniversity', name: 'Kocaeli Üniversitesi' },
+  sameAs: socialLinks.map((link) => link.url),
 })
 ---
 
@@ -58,39 +80,31 @@ const jsonLd = JSON.stringify({
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>{title}</title>
     <meta name="description" content={description} />
-    <meta name="keywords" content="yazılım, web geliştirme, portfolio, metehan şenyer" />
     <meta name="author" content={SITE_NAME} />
-    <link rel="canonical" href={canonicalUrl} />
+    {noindex && <meta name="robots" content="noindex" />}
+    {!noindex && <link rel="canonical" href={canonicalUrl} />}
     <link rel="icon" href="/favicon.ico" />
 
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
-    <meta property="og:url" content={canonicalUrl} />
+    {!noindex && <meta property="og:url" content={canonicalUrl} />}
     <meta property="og:site_name" content={SITE_NAME} />
     <meta property="og:locale" content="tr_TR" />
     <meta property="og:type" content={ogType} />
-    {ogImage && <meta property="og:image" content={ogImage} />}
+    <meta property="og:image" content={image.url} />
+    {image.width && <meta property="og:image:width" content={String(image.width)} />}
+    {image.height && <meta property="og:image:height" content={String(image.height)} />}
 
-    {
-      twitterCard && (
-        <>
-          <meta name="twitter:card" content={twitterCard} />
-          <meta name="twitter:title" content={title} />
-          <meta name="twitter:description" content={description} />
-          {ogImage && <meta name="twitter:image" content={ogImage} />}
-        </>
-      )
-    }
-
-    <!-- Load Font Awesome icons before page renders -->
-    <script is:inline src="https://kit.fontawesome.com/76c7501aeb.js" crossorigin="anonymous"
-    ></script>
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={image.url} />
 
     <!-- JSON-LD structured data -->
-    <script type="application/ld+json" set:html={jsonLd} />
+    {withJsonLd && <script type="application/ld+json" set:html={jsonLd} />}
     <slot name="head" />
   </head>
-  <body class="flex min-h-screen flex-col overflow-x-hidden">
+  <body class="flex min-h-screen flex-col">
     {
       showChrome && (
         <>

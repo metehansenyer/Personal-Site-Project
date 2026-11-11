@@ -9,14 +9,14 @@
  * - Banner image optimized at build time (astro:assets)
  * - Title and description
  * - Technology tags. Mobile (<md): first 3 tags + "+N". Desktop (md+): only the tags that fit
- *   in one row are shown; when some do not fit, hovering the card slides them out to the
+ *   in one row are shown; when some do not fit, hovering or focusing the card slides them out to the
  *   left and slides the remaining tags in from the right.
  *
  * How the tag overflow works: all tags are rendered on the server inside the "visible"
  * group (so without JavaScript they are simply clipped in one row). A tiny script
  * (see bottom) measures an invisible copy of the row and moves the tags that do not fit
  * into the "remaining" group, then sets `data-has-remaining` on the card. The hover
- * animation itself is pure CSS (Tailwind `group-hover` + `group-data-*` variants).
+ * animation itself is pure CSS (Tailwind `group-hover` / `group-focus-within` + `group-data-*` variants).
  */
 import { Image } from 'astro:assets'
 import type { CollectionEntry } from 'astro:content'
@@ -24,11 +24,15 @@ import icons from '@/data/icons'
 
 interface Props {
   project: CollectionEntry<'projects'>
-  /** Eager / high priority image loading for above-the-fold cards. */
-  priority?: boolean
+  /**
+   * Banner loading policy. `priority`: eager, sync decode and `fetchpriority="high"` (the LCP
+   * candidate). `eager`: loads right away at default priority (probably above the fold on wider
+   * layouts). `lazy` (default): loads when near the viewport.
+   */
+  loading?: 'priority' | 'eager' | 'lazy'
 }
 
-const { project, priority = false } = Astro.props
+const { project, loading = 'lazy' } = Astro.props
 const { title, description, banner, technologies } = project.data
 
 const tagClass = 'bg-background inline-block rounded-full px-3 py-1 text-sm'
@@ -48,8 +52,8 @@ const mobileTagClass =
           widths={[400, 640, 800, 1200]}
           sizes="(max-width: 639px) 90vw, (max-width: 1023px) 42vw, 27vw"
           class="absolute inset-0 h-full w-full object-cover"
-          priority={priority}
-          loading={priority ? 'eager' : 'lazy'}
+          priority={loading === 'priority'}
+          loading={loading === 'lazy' ? 'lazy' : 'eager'}
         />
       </div>
 
@@ -103,7 +107,7 @@ const mobileTagClass =
           <div class="absolute inset-0 flex gap-2 whitespace-nowrap">
             <div
               data-tag-visible
-              class="flex gap-2 transition-all duration-700 ease-in-out group-hover/card:group-data-[has-remaining]/card:-translate-x-full group-hover/card:group-data-[has-remaining]/card:opacity-0"
+              class="flex gap-2 transition-all duration-700 ease-in-out group-focus-within/card:group-data-[has-remaining]/card:-translate-x-full group-focus-within/card:group-data-[has-remaining]/card:opacity-0 group-hover/card:group-data-[has-remaining]/card:-translate-x-full group-hover/card:group-data-[has-remaining]/card:opacity-0"
             >
               {
                 technologies.map((tech) => (
@@ -115,7 +119,7 @@ const mobileTagClass =
             </div>
             <div
               data-tag-remaining
-              class="absolute left-0 flex translate-x-full gap-2 opacity-0 transition-all duration-700 ease-in-out group-hover/card:translate-x-0 group-hover/card:opacity-100"
+              class="absolute left-0 flex translate-x-full gap-2 opacity-0 transition-all duration-700 ease-in-out group-focus-within/card:translate-x-0 group-focus-within/card:opacity-100 group-hover/card:translate-x-0 group-hover/card:opacity-100"
             >
             </div>
           </div>

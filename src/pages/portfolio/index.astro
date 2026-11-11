@@ -8,17 +8,20 @@
 import { getCollection } from 'astro:content'
 import BaseLayout from '@/layouts/BaseLayout.astro'
 import ProjectCard from '@/components/ProjectCard.astro'
+import { getRoute } from '@/data/routes'
+import { documentTitle } from '@/lib/site'
 
 const projects = (await getCollection('projects')).sort(
   (a, b) => b.data.releaseDate.getTime() - a.data.releaseDate.getTime(),
 )
 
-const title = 'Portfolyo | Metehan Şenyer'
+const route = getRoute('/portfolio')
+const title = documentTitle(route.title)
 const description =
   'Geliştirdiğim projeler, açık kaynak katkılarım ve yazılım alanındaki çalışmalarımın detaylı sunumu.'
 ---
 
-<BaseLayout title={title} description={description} ogType="website" pageTitle="Portföy">
+<BaseLayout title={title} description={description} ogType="website" pageTitle={route.title}>
   {
     projects.length === 0 ? (
       <div class="mx-auto w-full max-w-[90%] px-4 py-8 text-center sm:max-w-[85%] md:max-w-[80%]">
@@ -26,9 +29,13 @@ const description =
       </div>
     ) : (
       <main class="mx-auto w-full max-w-[90%] px-4 py-8 sm:max-w-[85%] md:max-w-[80%] md:px-0">
+        <h1 class="sr-only">{route.title}</h1>
         <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 md:gap-8 lg:grid-cols-3">
           {projects.map((project, index) => (
-            <ProjectCard project={project} priority={index < 3} />
+            <ProjectCard
+              project={project}
+              loading={index === 0 ? 'priority' : index < 3 ? 'eager' : 'lazy'}
+            />
           ))}
         </div>
       </main>

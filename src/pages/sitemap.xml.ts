@@ -2,7 +2,9 @@
  * Sitemap endpoint (static, built to /sitemap.xml).
  *
  * Static routes come from `src/data/routes.ts`, project pages from the `projects`
- * content collection (lastmod = release date).
+ * content collection. `changefreq` / `priority` are omitted on purpose (ignored by Google).
+ * `lastmod` is only set for projects, using the release date as a lower bound of the real
+ * modification date (the content has no `updatedDate` field); static routes have none.
  */
 import type { APIRoute } from 'astro'
 import { getCollection } from 'astro:content'
@@ -12,8 +14,6 @@ import { SITE_URL } from '@/lib/site'
 interface Entry {
   url: string
   lastModified?: Date
-  changeFrequency: string
-  priority: number
 }
 
 const escapeXml = (value: string) =>
@@ -27,8 +27,6 @@ const escapeXml = (value: string) =>
 export const GET: APIRoute = async () => {
   const staticEntries: Entry[] = routes.map((route) => ({
     url: route.path === '/' ? SITE_URL : `${SITE_URL}${route.path}`,
-    changeFrequency: route.sitemap.changeFrequency,
-    priority: route.sitemap.priority,
   }))
 
   // Newest first (deterministic; collection order depends on the file system).
@@ -38,8 +36,6 @@ export const GET: APIRoute = async () => {
   const projectEntries: Entry[] = projects.map((project) => ({
     url: `${SITE_URL}/portfolio/${project.id}`,
     lastModified: project.data.releaseDate,
-    changeFrequency: 'monthly',
-    priority: 0.7,
   }))
 
   const body = [...staticEntries, ...projectEntries]
@@ -48,8 +44,6 @@ export const GET: APIRoute = async () => {
         '<url>',
         `<loc>${escapeXml(entry.url)}</loc>`,
         entry.lastModified ? `<lastmod>${entry.lastModified.toISOString()}</lastmod>` : '',
-        `<changefreq>${entry.changeFrequency}</changefreq>`,
-        `<priority>${entry.priority}</priority>`,
         '</url>',
       ]
         .filter(Boolean)

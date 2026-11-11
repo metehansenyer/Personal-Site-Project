@@ -5,7 +5,6 @@ import type { IconSlug } from '@/data/icons'
 interface ProfileInfo {
   name: string
   location: string
-  email: string
   education: string
 }
 
@@ -18,7 +17,6 @@ interface AboutContent {
     about: string
     technologies: string
   }
-  loadingText: string
   noTechText: string
   technologies: IconSlug[]
 }
@@ -29,7 +27,6 @@ export const aboutContent: AboutContent = {
   profile: {
     name: 'Metehan Şenyer',
     location: 'Kocaeli, Türkiye',
-    email: 'mthansnyr@gmail.com',
     education: 'KOÜ YZM (3. Sınıf)',
   },
   aboutMe:
@@ -38,7 +35,6 @@ export const aboutContent: AboutContent = {
     about: 'Hakkımda',
     technologies: 'Kullandığım Teknolojiler',
   },
-  loadingText: 'Teknolojiler yükleniyor...',
   noTechText: 'Henüz teknoloji eklenmedi.',
   technologies: [
     'javascript',

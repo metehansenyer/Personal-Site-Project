@@ -8,6 +8,7 @@ export default defineConfig([
   globalIgnores(['dist/**', '.astro/**', 'node_modules/**', 'coverage/**']),
   ...tseslint.configs.recommended,
   ...astro.configs.recommended,
+  ...astro.configs['jsx-a11y-recommended'],
   {
     languageOptions: { globals: { ...globals.browser, ...globals.node } },
   },

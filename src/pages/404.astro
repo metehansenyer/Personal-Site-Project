@@ -4,9 +4,10 @@
  */
 import BaseLayout from '@/layouts/BaseLayout.astro'
 import notFoundContent from '@/data/notFoundContent'
+import { documentTitle } from '@/lib/site'
 ---
 
-<BaseLayout pageTitle="404">
+<BaseLayout title={documentTitle(notFoundContent.title)} pageTitle={notFoundContent.title} noindex>
   <main class="mx-auto w-full px-4 py-8">
     <div class="flex min-h-[60vh] flex-col items-center justify-center space-y-6">
       <h1 class="text-4xl font-bold text-(--text-color) md:text-6xl">{notFoundContent.title}</h1>

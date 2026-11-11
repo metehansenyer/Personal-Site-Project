@@ -3,14 +3,16 @@
  * Contact page: email and LinkedIn, content from contactContent / socialLinks.
  */
 import BaseLayout from '@/layouts/BaseLayout.astro'
+import FaIcon from '@/components/FaIcon.astro'
 import { socialLinks } from '@/data/socialLinks'
 import { contactContent } from '@/data/contactContent'
-import { routes } from '@/data/routes'
+import { getRoute } from '@/data/routes'
+import { CONTACT_EMAIL, documentTitle } from '@/lib/site'
 
-const title = 'İletişim | Metehan Şenyer'
+const title = documentTitle('İletişim')
 const description =
   'Benimle iletişime geçin. İş birliği, proje önerileri veya herhangi bir soru için buradayım.'
-const pageTitle = routes.find((r) => r.path === '/contact')!.title
+const pageTitle = getRoute('/contact').title
 
 const linkedIn = socialLinks.find((link) => link.name === 'LinkedIn')
 ---
@@ -23,7 +25,7 @@ const linkedIn = socialLinks.find((link) => link.name === 'LinkedIn')
         class="space-y-6 rounded-(--border-radius-medium) bg-(--nav-background-color) p-5 text-center shadow-lg md:p-6"
       >
         <!-- Title and Description -->
-        <h2 class="text-2xl font-bold text-(--text-color) md:text-3xl">{contactContent.title}</h2>
+        <h1 class="text-2xl font-bold text-(--text-color) md:text-3xl">{contactContent.title}</h1>
         <p class="text-base text-(--text-color) md:text-lg">{contactContent.description}</p>
 
         <!-- Contact Links -->
@@ -32,12 +34,11 @@ const linkedIn = socialLinks.find((link) => link.name === 'LinkedIn')
         >
           <!-- Email Link -->
           <a
-            href={`mailto:${contactContent.email}`}
-            target="_blank"
+            href={`mailto:${CONTACT_EMAIL}`}
             class="break-all text-(--text-color) transition-colors duration-300 hover:text-(--text-color-white)"
             data-umami-event="email-click"
           >
-            {contactContent.email}
+            {CONTACT_EMAIL}
           </a>
           <!-- LinkedIn Link - Only shown if LinkedIn profile exists -->
           {
@@ -53,7 +54,7 @@ const linkedIn = socialLinks.find((link) => link.name === 'LinkedIn')
                   data-umami-event="social-link-click"
                   data-umami-event-platform="LinkedIn"
                 >
-                  <i class={`${linkedIn.icon} text-xl`} aria-hidden="true" />
+                  <FaIcon icon={linkedIn.icon} class="text-xl" />
                   <span>LinkedIn</span>
                 </a>
               </>

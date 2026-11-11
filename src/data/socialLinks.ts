@@ -6,16 +6,19 @@
  *
  * Features:
  * - Standardized social link definitions
- * - Font Awesome icon integration
+ * - Font Awesome icon definitions (rendered with FaIcon.astro)
  * - Consistent link formatting
  * - Easy profile management
  */
+
+import { faGithub, faInstagram, faLinkedin, faMedium } from '@fortawesome/free-brands-svg-icons'
+import type { FaIconDefinition } from '@/lib/faIcon'
 
 // Interface defining the structure of a social media link
 // Used to maintain type safety and consistent link data
 interface SocialLink {
   name: string // Display name of the social platform
-  icon: string // Font Awesome icon class
+  icon: FaIconDefinition // Font Awesome icon definition
   url: string // Profile URL
 }
 
@@ -24,22 +27,22 @@ interface SocialLink {
 export const socialLinks: SocialLink[] = [
   {
     name: 'LinkedIn',
-    icon: 'fa-brands fa-linkedin',
+    icon: faLinkedin,
     url: 'https://www.linkedin.com/in/metehansenyer/',
   },
   {
     name: 'GitHub',
-    icon: 'fa-brands fa-github',
+    icon: faGithub,
     url: 'https://github.com/metehansenyer',
   },
   {
     name: 'Medium',
-    icon: 'fa-brands fa-medium',
+    icon: faMedium,
     url: 'https://medium.com/@metehansenyer',
   },
   {
     name: 'Instagram',
-    icon: 'fa-brands fa-instagram',
+    icon: faInstagram,
     url: 'https://www.instagram.com/metehansenyer',
   },
 ]

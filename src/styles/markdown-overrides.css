@@ -75,6 +75,11 @@
   background-color: var(--nav-background-color);
 }
 
+/* github-markdown-css colours `pre` itself; keep the code inside on the site text colour. */
+.markdown-body pre code {
+  color: var(--text-color);
+}
+
 .markdown-body pre:has(code.language-IMPORTANT) {
   background-color: transparent;
   border-left: 6px solid var(--important-color);
@@ -164,5 +169,11 @@
 
   .markdown-body pre {
     padding: 12px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .markdown-body div.icon a.icon-link img.icon-img:hover {
+    scale: none;
   }
 }
