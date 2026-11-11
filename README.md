@@ -179,6 +179,6 @@ Web sitesi şu adreste yayında: [who.metehansenyer.dev](https://who.metehanseny
 
 ## Lisans
 
-İkonlar: [Font Awesome Free](https://fontawesome.com/license/free) ikonları [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/) lisansıyla kullanılmaktadır. Teknoloji logoları kendi sahiplerinin ticari markalarıdır.
+İkonlar: [Font Awesome Free](https://fontawesome.com/license/free) ikonları [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/) lisansıyla kullanılmaktadır. Teknoloji logoları kendi sahiplerinin ticari markalarıdır; devicon kaynaklı dosyaların MIT lisans bildirimi `public/icons/tech/NOTICE.txt` içindedir.
 
 Bu proje MIT Lisansı altında lisanslanmıştır. Ayrıntılar için [LICENSE](LICENSE) dosyasına bakın.
