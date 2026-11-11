@@ -11,7 +11,7 @@
  * - Easy profile management
  */
 
-import { faGithub, faInstagram, faLinkedin, faMedium } from '@fortawesome/free-brands-svg-icons'
+import { faGithub, faLinkedin } from '@fortawesome/free-brands-svg-icons'
 import type { FaIconDefinition } from '@/lib/faIcon'
 
 // Interface defining the structure of a social media link
@@ -34,15 +34,5 @@ export const socialLinks: SocialLink[] = [
     name: 'GitHub',
     icon: faGithub,
     url: 'https://github.com/metehansenyer',
-  },
-  {
-    name: 'Medium',
-    icon: faMedium,
-    url: 'https://medium.com/@metehansenyer',
-  },
-  {
-    name: 'Instagram',
-    icon: faInstagram,
-    url: 'https://www.instagram.com/metehansenyer',
   },
 ]
