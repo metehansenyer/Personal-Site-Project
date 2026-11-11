@@ -11,6 +11,11 @@ on:
 permissions:
   contents: read
 
+# A newer run on the same ref cancels the older one for pull requests; runs on main finish.
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
 jobs:
   verify:
     runs-on: ubuntu-latest
@@ -40,3 +45,23 @@ jobs:
 
       - name: Build
         run: pnpm build
+
+  docker:
+    name: docker (build and smoke test)
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+
+      - name: Build image
+        run: docker build -t site .
+
+      - name: Start container
+        run: docker run -d -p 3000:3000 --name site site
+
+      - name: Smoke test
+        run: bash scripts/smoke-test.sh http://127.0.0.1:3000
+
+      - name: Container logs
+        if: failure()
+        run: docker logs site

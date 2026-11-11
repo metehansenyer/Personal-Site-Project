@@ -99,6 +99,15 @@ Findings worth remembering:
       against the real `dist/` (200s, no redirect on `/about`, real 404, immutable cache on `/_astro/*`)
 - [x] README / CLAUDE.md / Personal-Site-Project content: hosting described as self-hosted Docker + Dokploy; `docker` icon added
 
+## Tooling, CI and tests
+
+- [x] Container API tests for `Header` (no headings, inert closed mobile nav, aria wiring), `BaseLayout` (SEO meta, noindex, JSON-LD, only the Umami third-party script) and `ProjectCard` (loading modes, link, mobile tag row)
+- [x] `eslint-plugin-jsx-a11y` enabled through `astro.configs['jsx-a11y-recommended']` (no findings in the current code)
+- [x] `package.json`: `private`, `type: module`, `engines.node >=22`; `rehype-external-links` moved to `dependencies`
+- [x] `.gitignore` tidied (Next.js / Yarn-era entries removed)
+- [x] nginx: `X-Frame-Options: DENY` and `Permissions-Policy` headers
+- [x] CI: concurrency (cancels superseded PR runs) and a `docker` job that builds the image and runs `scripts/smoke-test.sh`
+
 ## Performance pass
 
 - [x] Font Awesome kit script replaced with inline SVG icons (`FaIcon.astro` + `@fortawesome/free-*-svg-icons`; only the 8 used icons are built in, no render-blocking third-party script); `socialLinks.ts` now holds typed icon definitions

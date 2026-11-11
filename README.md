@@ -123,7 +123,7 @@ docker build -t personal-site .
 docker run --rm -p 3000:3000 personal-site
 ```
 
-Tarayıcıda [http://localhost:3000](http://localhost:3000) adresini açın. Kanonik site adresi (canonical, sitemap.xml ve robots.txt dahil) `SITE_URL` build argümanıyla değiştirilebilir (`--build-arg SITE_URL=https://ornek.com`); verilmezse `https://who.metehansenyer.dev` kullanılır. Sağlık kontrolü için `/healthz` adresi `ok` döndürür.
+Tarayıcıda [http://localhost:3000](http://localhost:3000) adresini açın. Kanonik site adresi (canonical, sitemap.xml ve robots.txt dahil) `SITE_URL` build argümanıyla değiştirilebilir (`--build-arg SITE_URL=https://ornek.com`); verilmezse `https://who.metehansenyer.dev` kullanılır. Sağlık kontrolü için `/healthz` adresi `ok` döndürür. Çalışan konteyneri `bash scripts/smoke-test.sh http://127.0.0.1:3000` ile doğrulayabilirsiniz (durum kodları, yönlendirme olmaması, 404 sayfası, önbellek ve güvenlik başlıkları); CI aynı betiği her çalıştırmada imaj üzerinde çalıştırır.
 
 Yayın ortamında site, Dokploy ile kendi sunucumda barındırılır: Docker imajı deponun `Dockerfile` dosyasından üretilir ve Dokploy tarafından yayınlanır.
 

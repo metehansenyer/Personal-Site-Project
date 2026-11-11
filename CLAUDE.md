@@ -11,12 +11,12 @@ pnpm preview      # Serve dist/ locally (runs as a daemon: `astro preview status
 pnpm typecheck    # astro check (types for .astro, .ts and content)
 pnpm lint         # ESLint check (lint:fix to auto-fix)
 pnpm format       # Prettier write (format:check is read-only)
-pnpm check        # typecheck + lint + format:check (what CI runs first)
+pnpm check        # typecheck + lint (incl. jsx-a11y) + format:check (what CI runs first)
 pnpm test         # Vitest, one run (test:watch for watch mode)
 ```
 
 Package manager: **pnpm** (v12, see `packageManager` in `package.json`). Do not use npm or yarn. Node 22+.
-CI (`.github/workflows/ci.yml`) runs `pnpm check`, `pnpm test`, `pnpm build`.
+CI (`.github/workflows/ci.yml`) has two jobs: `verify` runs `pnpm check`, `pnpm test`, `pnpm build`; `docker` builds the image, starts it and runs `scripts/smoke-test.sh` against it. A newer run on the same ref cancels the older one for pull requests only. Locally: `docker build -t site . && docker run -d -p 3000:3000 --name site site && bash scripts/smoke-test.sh` (then `docker rm -f site`).
 
 ## Astro 7 is newer than most training data
 
@@ -82,7 +82,7 @@ Images in `src/assets/img/` go through `astro:assets` (`<Image>`, `getImage`, op
 
 ### Tests
 
-Vitest (`vitest.config.mts` uses Astro's `getViteConfig`, so `.astro` files and the `@/` alias work). Tests are `src/**/*.test.ts`: `lib/navOrder.test.ts` (pure logic + the toString contract) and `components/**` tests that render components with the Container API:
+Vitest (`vitest.config.mts` uses Astro's `getViteConfig`, so `.astro` files and the `@/` alias work). Tests are `src/**/*.test.ts`: `lib/navOrder.test.ts` (pure logic + the toString contract), `lib/endpoints.test.ts` (robots/sitemap, `astro:content` mocked), and `components/**` / `layouts/BaseLayout.test.ts` tests that render components with the Container API (Header a11y wiring, ProjectCard loading modes and tag row, BaseLayout SEO/JSON-LD/scripts; `vi.stubEnv('PROD', true)` switches on the production-only Umami script):
 
 ```ts
 import { experimental_AstroContainer as AstroContainer } from 'astro/container'
@@ -92,7 +92,7 @@ const html = await container.renderToString(Button, { props: { ... }, slots: { d
 
 ### Deploy
 
-`Dockerfile`: node build stage (`pnpm build`, optional `SITE_URL` build arg) -> `nginxinc/nginx-unprivileged` serving `dist/` on port 3000 with `docker/nginx.conf` (no directory redirects, real 404 status with `/404.html`, gzip, immutable cache for `/_astro/*`). `/healthz` returns `200 ok` (no access log) for health checks.
+`Dockerfile`: node build stage (`pnpm build`, optional `SITE_URL` build arg) -> `nginxinc/nginx-unprivileged` serving `dist/` on port 3000 with `docker/nginx.conf` (no directory redirects, real 404 status with `/404.html`, gzip, immutable cache for `/_astro/*`, `X-Content-Type-Options`, `X-Frame-Options: DENY`, `Referrer-Policy`, `Permissions-Policy`; no CSP, no HSTS because TLS terminates at Traefik). No `location` may define its own `add_header`, or it loses the server-level headers. `/healthz` returns `200 ok` (no access log) for health checks. `scripts/smoke-test.sh [base-url]` asserts the behaviour above against a running server (200s, no redirect on `/about`, 404 page + status, `/healthz`, immutable `/_astro/*`, security headers); it is not part of the image.
 
 Hosting: self-hosted on **Dokploy** as an _Application_ (not Compose; there is no compose file in the repo).
 
