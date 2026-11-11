@@ -12,27 +12,36 @@
  * DOM/storage glue below is written by hand. Works with sessionStorage unavailable
  * (every access is in try/catch) and without JS (server HTML = default order).
  *
+ * Paths are locale-independent: the current URL and the link hrefs are mapped from `/en/about`
+ * to `/about` first, so one order is shared by all languages (language switcher links are not
+ * inside `[data-nav-list]`, so switching language never swaps).
+ *
  * The "previous path" is recorded only when a nav link is clicked and is consumed by the
  * next page load. Like the old SPA, a swap therefore happens only for in-site navigation
  * between two nav pages - not for typed URLs, reloads or visits via the home page.
  */
 import {
   DEFAULT_ORDER,
+  LOCALE_PREFIXES,
   NAV_ORDER_STORAGE_KEY,
   NAV_PREV_PATH_STORAGE_KEY,
   normalizePath,
   parseStoredOrder,
+  stripLocalePrefix,
   swapOrder,
 } from '@/lib/navOrder'
 
 const script = `(function(){
 var normalizePath=${normalizePath.toString()};
+var stripLocalePrefix=${stripLocalePrefix.toString()};
 var parseStoredOrder=${parseStoredOrder.toString()};
 var swapOrder=${swapOrder.toString()};
+var PREFIXES=${JSON.stringify(LOCALE_PREFIXES)};
 var DEFAULT_ORDER=${JSON.stringify(DEFAULT_ORDER)};
 var ORDER_KEY=${JSON.stringify(NAV_ORDER_STORAGE_KEY)};
 var PREV_KEY=${JSON.stringify(NAV_PREV_PATH_STORAGE_KEY)};
-var current=normalizePath(location.pathname);
+var route=function(p){return stripLocalePrefix(normalizePath(p),PREFIXES)};
+var current=route(location.pathname);
 var order=DEFAULT_ORDER.slice();
 try{
 var prev=sessionStorage.getItem(PREV_KEY);
@@ -48,7 +57,7 @@ try{sessionStorage.setItem(PREV_KEY,current)}catch(e){}
 var lists=document.querySelectorAll('[data-nav-list]');
 for(var l=0;l<lists.length;l++){
 var items=Array.prototype.slice.call(lists[l].children);
-var rank=function(el){var p=normalizePath(el.getAttribute('href')||'');var i=order.indexOf(p);return p==='/'?-1:(i===-1?order.length:i)};
+var rank=function(el){var p=route(el.getAttribute('href')||'');var i=order.indexOf(p);return p==='/'?-1:(i===-1?order.length:i)};
 items.sort(function(a,b){return rank(a)-rank(b)});
 for(var k=0;k<items.length;k++)lists[l].appendChild(items[k]);
 }

@@ -1,0 +1,211 @@
+---
+title: "VLR.GG Unofficial API"
+description: "A modern RESTful API that scrapes Valorant esports data from VLR.GG and serves it."
+---
+
+<div class="project-logo">
+  <a href="https://vlrgg.metehansenyer.dev">
+    <img
+      src="https://raw.githubusercontent.com/metehansenyer/vlrgg-api/main/static/img/logo_with_text.png"
+      alt="VLR.GG API Logo"
+      width="150"
+    />
+  </a>
+</div>
+
+<div class="center-content">
+  A modern, on-demand RESTful API that scrapes Valorant esports data from <a href="https://www.vlr.gg/">VLR.GG</a> and serves it.
+</div>
+
+<div class="badges">
+  <a href="https://github.com/metehansenyer/vlrgg-api/actions/workflows/ci.yml">
+    <img
+      src="https://img.shields.io/github/actions/workflow/status/metehansenyer/vlrgg-api/ci.yml?branch=main&style=for-the-badge"
+      alt="GitHub Workflow Status"
+    />
+  </a>
+  <a href="https://github.com/metehansenyer/vlrgg-api">
+    <img
+      src="https://img.shields.io/github/stars/metehansenyer/vlrgg-api?style=for-the-badge"
+      alt="GitHub stars"
+    />
+  </a>
+  <a href="https://github.com/metehansenyer/vlrgg-api/blob/main/LICENSE">
+    <img
+      src="https://img.shields.io/badge/License-Apache%202.0-blue?style=for-the-badge"
+      alt="License"
+    />
+  </a>
+  <a href="https://python.org">
+    <img
+      src="https://img.shields.io/badge/Python-3.12-blue?style=for-the-badge&logo=python"
+      alt="Python Version"
+    />
+  </a>
+</div>
+
+---
+
+This project provides structured JSON data for matches, news, teams, players and events, so developers can easily build their own applications on top of Valorant data without going through the trouble of scraping.
+
+## ✨ Features
+
+- **On-Demand Scraping**: Data is fetched from vlr.gg in real time whenever an API request is made.
+- **Modern Tech Stack**: Built with Python, FastAPI and Pydantic for a solid and efficient API.
+- **Comprehensive Endpoints**: Access a wide range of data, from match results to player stats.
+- **Asynchronous Architecture**: Uses `httpx` and `asyncio` for non-blocking I/O.
+- **Easy Deployment**: Designed for smooth deployment on serverless platforms like Vercel.
+- **Tested**: Comes with a test suite that uses `pytest` to ensure reliability.
+
+## 🚀 Tech Stack
+
+- **Backend**: Python 3.12+
+- **Framework**: FastAPI
+- **HTTP Client**: `httpx`
+- **HTML Parsing**: `selectolax`
+- **Testing**: `pytest`, `pytest-asyncio`, `respx`
+- **Linting/Formatting**: `ruff`
+- **Type Checking**: `mypy`
+
+## API Endpoints
+
+The base URL for all endpoints is `/api`.
+
+| Endpoint              | Method | Description                                      |
+| --------------------- | ------ | ------------------------------------------------ |
+| `/health`             | `GET`  | Health check endpoint.                           |
+| `/news`               | `GET`  | Fetches the latest news articles.                |
+| `/matches`            | `GET`  | Fetches upcoming, live and completed matches.    |
+| `/matches/{match_id}` | `GET`  | Fetches the details of a specific match.         |
+| `/events`             | `GET`  | Fetches the list of events.                      |
+| `/events/{event_id}`  | `GET`  | Fetches the details of a specific event.         |
+| `/player/{player_id}` | `GET`  | Fetches the details of a specific player.        |
+| `/search`             | `GET`  | Searches players and teams.                      |
+
+For detailed information about query parameters and response models, please see the **Documentation** served at `/docs`.
+
+## 📦 Installation
+
+1.  **Clone the repository:**
+
+    ```bash
+    git clone https://github.com/metehansenyer/vlrgg-api.git
+    cd vlrgg-api
+    ```
+
+2.  **Create and activate a virtual environment:**
+
+    ```bash
+    python3 -m venv venv
+    source venv/bin/activate  # On Windows, use `venv\Scripts\activate`
+    ```
+
+3.  **Install the dependencies:**
+
+    ```bash
+    # Production (runtime only)
+    pip install -r requirements.txt
+
+    # Development (lint, type checking, tests)
+    pip install -r requirements.txt -r requirements-dev.txt
+    ```
+
+4.  **Configure the environment variables:**
+    ```bash
+    cp .env.example .env
+    # Edit the .env file with your preferred settings
+    ```
+
+## 🔧 Environment Variables
+
+This project uses `.env` files for configuration. See the `.env.example` file for all available options.
+
+| Variable                       | Description                                          | Default Value                                                                |
+| ------------------------------ | ---------------------------------------------------- | ---------------------------------------------------------------------------- |
+| `API_TITLE`                    | Title of the API                                     | `VLR.GG API`                                                                 |
+| `API_DESCRIPTION`              | API description text                                 | `Valorant esports data API scraped from vlr.gg`                              |
+| `API_VERSION`                  | API version                                          | `1.0.0`                                                                      |
+| `API_DEVELOPMENT`              | For the log level                                    | `1.0.0`                                                                      |
+| `HOST`                         | Server host                                          | `0.0.0.0`                                                                    |
+| `PORT`                         | Server port                                          | `8000`                                                                       |
+| `DEBUG`                        | Enable debug mode                                    | `False`                                                                      |
+| `VLR_BASE_URL`                 | Base URL for VLR.GG                                  | `https://www.vlr.gg`                                                         |
+| `HTTP_TIMEOUT`                 | Timeout for HTTP requests (seconds)                  | `10`                                                                         |
+| `REQUEST_MIN_DELAY`            | Minimum delay between outgoing requests (seconds)    | `0.5`                                                                        |
+| `REQUEST_MAX_DELAY`            | Maximum delay between outgoing requests (seconds)    | `2.0`                                                                        |
+| `MAX_CONCURRENT_REQUESTS`      | Maximum concurrent outgoing HTTP requests            | `2`                                                                          |
+| `USER_AGENT`                   | User-Agent header used for scraping                  | See the `.env.example` file                                                  |
+| `ACCEPT`                       | Accept header                                        | `text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8` |
+| `ACCEPT_LANGUAGE`              | Accept-Language header                               | `en-US,en;q=0.5`                                                             |
+| `DEFAULT_NEWS_COUNT`           | Default number of news items to return               | `10`                                                                         |
+| `MAX_NEWS_COUNT`               | Maximum number of news items that can be returned    | `50`                                                                         |
+| `SEARCH_NEWS_PAGE_LIMIT`       | Maximum number of pages to search in the news endpoint | `10`                                                                       |
+| `DEFAULT_MATCHES_COUNT`        | Default number of matches                            | `10`                                                                         |
+| `MAX_MATCHES_COUNT`            | Maximum number of matches                            | `50`                                                                         |
+| `DEFAULT_PLAYER_MATCHES_COUNT` | Default number of player matches                     | `10`                                                                         |
+| `MAX_PLAYER_MATCHES_COUNT`     | Maximum number of player matches                     | `50`                                                                         |
+| `DEFAULT_EVENTS_COUNT`         | Default number of events                             | `10`                                                                         |
+| `MAX_EVENTS_COUNT`             | Maximum number of events                             | `50`                                                                         |
+| `API_RATE_LIMIT_PER_MINUTE`    | Incoming API rate limit (per IP per minute)          | `60`                                                                         |
+| `CORS_ALLOW_ORIGINS`           | Allowed origins for CORS (comma-separated)           | `*`                                                                          |
+| `CORS_ALLOW_METHODS`           | Allowed HTTP methods (comma-separated)               | `GET`                                                                        |
+| `CORS_ALLOW_HEADERS`           | Allowed headers (comma-separated)                    | `*`                                                                          |
+| `TRUST_PROXY`                  | Trust `X-Forwarded-For` for the client IP            | `False`                                                                      |
+| `RESPECT_ROBOTS`               | Obey robots.txt for outgoing requests                | `True`                                                                       |
+| `ROBOTS_TTL_SECONDS`           | Cache TTL for robots.txt                             | `86400`                                                                      |
+| `STATIC_CACHE_SECONDS`         | Cache TTL for static assets                          | `86400`                                                                      |
+| `DOCS_CACHE_SECONDS`           | Cache TTL for the documentation HTML                 | `300`                                                                        |
+| `USE_SHARED_HTTP_SESSION`      | Shared HTTP session                                  | `False`                                                                      |
+
+## 🏃‍♂️ Running Locally
+
+To start the local development server, run:
+
+```bash
+uvicorn main:app --reload
+```
+
+The API will be available at `http://127.0.0.1:8000`.
+
+- **Home Page**: `http://127.0.0.1:8000`
+- **Documentation**: `http://127.0.0.1:8000/docs`
+
+## ✅ Testing
+
+This project uses `pytest` for testing. To run the test suite:
+
+```bash
+pytest
+```
+
+## 🚀 Deployment
+
+This API is designed to be deployed easily on serverless platforms like Vercel. The `vercel.json` file in the repository is configured for that purpose.
+
+1.  Push your code to a GitHub repository.
+2.  Create a new project on Vercel and connect it to your GitHub repository.
+3.  Vercel will automatically detect and deploy the FastAPI application.
+
+## 🤝 Contributing
+
+Contributions are welcome! If you have any suggestions or find a bug, feel free to send a pull request or open an issue.
+
+1.  Fork the repository.
+2.  Create your feature branch (`git checkout -b feature/HarikaOzellik`).
+3.  Commit your changes (`git commit -m 'Harika bir özellik ekle'`).
+4.  Push the branch (`git push origin feature/HarikaOzellik`).
+5.  Open a pull request.
+
+## 🌐 Internationalization
+
+- The site supports English and Turkish. Use the language switcher in the top navigation (EN | TR).
+- To add a new language, drop a file at `static/i18n/{lang}.json`.
+- The selected language is stored in `localStorage` and reflected through the `lang` attribute on the `<html>` tag.
+
+## ⚖️ Disclaimer
+
+This project scrapes data from [vlr.gg](https://www.vlr.gg/) and is not affiliated with or endorsed by vlr.gg or Riot Games. Please use this API responsibly and respect the original website's terms of service. The data provided is for educational and personal use only.
+
+## 📄 License
+
+This project is licensed under the Apache License, Version 2.0. See the [LICENSE](https://github.com/metehansenyer/vlrgg-api/blob/main/LICENSE) file for details.

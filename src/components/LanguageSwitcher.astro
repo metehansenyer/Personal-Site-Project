@@ -1,0 +1,49 @@
+---
+/**
+ * LanguageSwitcher
+ *
+ * `TR | EN` links to the same page in every locale. The current language is marked with
+ * `aria-current="true"`. Each link carries `lang` / `hreflang` and the language's own name as
+ * its accessible name. Plain links: works without JavaScript and does not touch the nav order
+ * (it sits outside `[data-nav-list]`).
+ */
+import { LOCALE_LABELS, LOCALE_NAMES, type Locale } from '@/lib/locales'
+import type { Alternate } from '@/lib/i18n'
+
+interface Props {
+  /** Locale of the current page. */
+  current: Locale
+  /** The same page in every locale (`getAlternates()`). */
+  alternates: Alternate[]
+  /** Accessible name of the group (site content `languageSwitcher.label`). */
+  label: string
+  class?: string
+}
+
+const { current, alternates, label, class: className } = Astro.props
+---
+
+<div role="group" aria-label={label} class:list={['flex items-center text-sm', className]}>
+  {
+    alternates.map((alt, i) => (
+      <>
+        {i > 0 && (
+          <span aria-hidden="true" class="text-(--text-color) opacity-40">
+            |
+          </span>
+        )}
+        <a
+          href={alt.path}
+          lang={alt.locale}
+          hreflang={alt.locale}
+          title={LOCALE_NAMES[alt.locale]}
+          aria-label={LOCALE_NAMES[alt.locale]}
+          aria-current={alt.locale === current ? 'true' : undefined}
+          class="rounded px-2 py-1 leading-none text-(--text-color) opacity-70 transition-opacity hover:opacity-100 aria-[current=true]:font-bold aria-[current=true]:opacity-100"
+        >
+          {LOCALE_LABELS[alt.locale]}
+        </a>
+      </>
+    ))
+  }
+</div>

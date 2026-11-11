@@ -1,0 +1,149 @@
+---
+/**
+ * Project Detail Page
+ *
+ * Renders one project of the `projects` content collection: banner, the `<h1>` (from the
+ * frontmatter `heading ?? title`), the MDX body (with the page-bound <Icon> / <Callout>
+ * components), the shared contact block and the GitHub / demo buttons. The `id` param is
+ * the entry id (file name) and stays the public URL segment.
+ *
+ * One implementation for every locale (`[...locale]`). `getProjects(locale)` returns the merged
+ * view: the translated texts and body when `project-translations/<locale>/<id>.mdx` exists.
+ * Otherwise the page still exists, shows the default-locale content (`lang` set on the
+ * article, its callout labels and contact block in that language) and a localized notice.
+ */
+import { Image, getImage } from 'astro:assets'
+import BaseLayout from '@/layouts/BaseLayout.astro'
+import Button from '@/components/Button.astro'
+import ProjectContact from '@/components/ProjectContact.astro'
+import { getSiteContent } from '@/lib/content'
+import { localeStaticPaths } from '@/lib/i18n'
+import type { Locale } from '@/lib/locales'
+import { createMdxComponents } from '@/lib/mdxComponents'
+import { getBannerAlt, getProjects, renderProject, type LocalizedProject } from '@/lib/projects'
+import { SITE_URL, documentTitle } from '@/lib/site'
+// Order matters: the overrides must come after github-markdown-css to win the cascade.
+import 'github-markdown-css/github-markdown-dark.css'
+import '@/styles/markdown-overrides.css'
+
+export async function getStaticPaths() {
+  const paths = await Promise.all(
+    localeStaticPaths().map(async ({ params, props: { locale } }) =>
+      (await getProjects(locale)).map((project) => ({
+        params: { ...params, id: project.id },
+        props: { locale, project },
+      })),
+    ),
+  )
+  return paths.flat()
+}
+
+interface Props {
+  locale: Locale
+  project: LocalizedProject
+}
+
+const { locale, project } = Astro.props
+const content = await getSiteContent(locale)
+// Texts inside the article (callout labels, contact block) follow the language of the body.
+const articleContent = project.translated ? content : await getSiteContent(project.contentLocale)
+const articleLang = project.translated ? undefined : project.contentLocale
+const { Content } = await renderProject(project)
+const { title, heading, description, banner, repoUrl, demoUrl, contactNote } = project.data
+
+const components = createMdxComponents(project.data, articleContent)
+
+// Labels of the ```IMPORTANT / WARNING / NOTE code-fence callouts (see markdown-overrides.css).
+const calloutLabels = articleContent.project.callouts
+const articleStyle = [
+  `--callout-important:${JSON.stringify(calloutLabels.important)}`,
+  `--callout-warning:${JSON.stringify(calloutLabels.warning)}`,
+  `--callout-note:${JSON.stringify(calloutLabels.note)}`,
+].join(';')
+
+const ogImage = await getImage({ src: banner, width: 1200, format: 'jpeg', quality: 80 })
+const ogImageUrl = new URL(ogImage.src, `${SITE_URL}/`).href
+---
+
+<BaseLayout
+  locale={locale}
+  title={documentTitle(title)}
+  description={description}
+  ogType="article"
+  ogImage={ogImageUrl}
+  ogImageWidth={ogImage.attributes.width}
+  ogImageHeight={ogImage.attributes.height}
+  pageTitle={title}
+>
+  <main class="mx-auto w-full max-w-[980px] px-4 py-6 sm:py-8">
+    <div class="space-y-6 sm:space-y-8">
+      <!-- Project banner -->
+      <div class="relative aspect-video overflow-hidden rounded-lg shadow-lg">
+        <Image
+          src={banner}
+          alt={getBannerAlt(project, content)}
+          widths={[640, 980, 1400, 1960]}
+          sizes="(max-width: 1024px) 100vw, 980px"
+          priority
+          class="h-full w-full object-cover sm:object-contain"
+        />
+      </div>
+
+      <!-- Project content: h1 and contact block come from data, the body from the MDX -->
+      <article class="markdown-body project-content w-full" style={articleStyle} lang={articleLang}>
+        {
+          !project.translated && (
+            <p
+              lang={locale}
+              role="note"
+              class="mb-4 rounded-md border border-(--text-color) px-3 py-2 text-sm"
+            >
+              {content.project.fallbackNotice}
+            </p>
+          )
+        }
+        <h1>{heading ?? title}</h1>
+        <Content components={components} />
+        <ProjectContact labels={articleContent.project.contact} note={contactNote} />
+      </article>
+
+      <!-- Repository / live demo links -->
+      {
+        (repoUrl || demoUrl) && (
+          <div class="mt-6 flex flex-col gap-4 sm:flex-row">
+            {repoUrl && (
+              <div class="sm:flex-1">
+                <Button
+                  href={repoUrl}
+                  width="w-full"
+                  height="h-full"
+                  fontSize="text-[1.05rem] sm:text-[1.3rem]"
+                  newTab={true}
+                  umamiEvent="github-view-click"
+                  umamiEventData={{ project: project.id }}
+                >
+                  {content.project.viewOnGithub}
+                </Button>
+              </div>
+            )}
+            {demoUrl && (
+              <div class="sm:flex-1">
+                <Button
+                  href={demoUrl}
+                  width="w-full"
+                  height="h-full"
+                  fontSize="text-[1.05rem] sm:text-[1.3rem]"
+                  newTab={true}
+                  umamiEvent="demo-view-click"
+                  umamiEventData={{ project: project.id }}
+                >
+                  {content.project.viewDemo}
+                </Button>
+              </div>
+            )}
+          </div>
+        )
+      }
+    </div>
+  </main>
+</BaseLayout>

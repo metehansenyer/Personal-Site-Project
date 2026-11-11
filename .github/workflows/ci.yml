@@ -46,6 +46,9 @@ jobs:
       - name: Build
         run: pnpm build
 
+      - name: Check internal links
+        run: pnpm check:links
+
   docker:
     name: docker (build and smoke test)
     runs-on: ubuntu-latest

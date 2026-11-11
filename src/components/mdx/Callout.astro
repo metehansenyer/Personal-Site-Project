@@ -6,17 +6,14 @@
  */
 const calloutConfig = {
   important: {
-    label: 'ⓘ ÖNEMLİ',
     borderClass: 'border-[var(--important-color)]',
     textClass: 'text-[var(--important-color)]',
   },
   warning: {
-    label: '⚠️ UYARI',
     borderClass: 'border-[var(--warning-color)]',
     textClass: 'text-[var(--warning-color)]',
   },
   note: {
-    label: 'ⓘ NOT',
     borderClass: 'border-[var(--note-color)]',
     textClass: 'text-[var(--note-color)]',
   },
@@ -24,13 +21,16 @@ const calloutConfig = {
 
 interface Props {
   type: keyof typeof calloutConfig
+  /** Label per type (`site.project.callouts`); bound per page by `lib/mdxComponents.ts`. */
+  labels: Record<keyof typeof calloutConfig, string>
 }
 
-const config = calloutConfig[Astro.props.type]
+const { type, labels } = Astro.props
+const config = calloutConfig[type]
 ---
 
 <div class={`my-4 border-l-[6px] bg-transparent py-2 pr-2 pl-4 ${config.borderClass}`}>
-  <p class={`mb-[5px] font-bold ${config.textClass}`}>{config.label}</p>
+  <p class={`mb-[5px] font-bold ${config.textClass}`}>{labels[type]}</p>
   <div>
     <slot />
   </div>

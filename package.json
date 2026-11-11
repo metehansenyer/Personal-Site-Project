@@ -18,6 +18,7 @@
     "format:check": "prettier --check . --cache",
     "test": "vitest run",
     "test:watch": "vitest",
+    "check:links": "node scripts/check-links.mjs",
     "check": "pnpm typecheck && pnpm lint && pnpm format:check"
   },
   "dependencies": {

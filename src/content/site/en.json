@@ -1,0 +1,84 @@
+{
+  "lang": "en",
+  "ogLocale": "en_US",
+  "description": "Software Engineering student and passionate software developer.",
+  "jsonLd": {
+    "jobTitle": "Software Engineering Student",
+    "affiliation": "Kocaeli University"
+  },
+  "routes": {
+    "home": { "label": "Home" },
+    "about": {
+      "label": "Who Am I?",
+      "title": "Who Am I?",
+      "metaTitle": "About Me",
+      "description": "Detailed information about my experience, skills and goals as a software engineering student."
+    },
+    "portfolio": {
+      "label": "Portfolio",
+      "title": "Portfolio",
+      "metaTitle": "Portfolio",
+      "description": "A detailed look at the projects I have built, my open source contributions and my work in software."
+    },
+    "contact": {
+      "label": "Contact",
+      "title": "Contact",
+      "metaTitle": "Contact",
+      "description": "Get in touch with me. I'm here for collaborations, project ideas or any question you may have.",
+      "homeLabel": "Get in Touch"
+    }
+  },
+  "home": {
+    "eyebrow": "METE",
+    "headline": ["HERE", "I AM"]
+  },
+  "about": {
+    "location": "Kocaeli, Türkiye",
+    "education": "KOU Software Engineering (3rd Year)",
+    "aboutMe": "Hi, I'm Mete! I'm a 20-year-old Software Engineering student living in Kocaeli, doing my best to find my place at the heart of the industry and keep growing as I go. Let me tell you a secret: I absolutely love singing and eating.",
+    "aboutTitle": "About Me",
+    "technologiesTitle": "Technologies I Use",
+    "noTechnologies": "No technologies added yet.",
+    "photoAlt": "Profile photo of {name}"
+  },
+  "contact": {
+    "heading": "Get in Touch",
+    "description": "Feel free to reach out about your projects, collaboration opportunities or any question you may have.",
+    "footer": "I'll get back to you as soon as I can."
+  },
+  "notFound": {
+    "title": "404",
+    "description": "Looks like what you're looking for isn't here..."
+  },
+  "portfolio": {
+    "empty": "No projects yet."
+  },
+  "header": {
+    "openMenu": "Open navigation",
+    "closeMenu": "Close navigation"
+  },
+  "languageSwitcher": {
+    "label": "Language"
+  },
+  "footer": {
+    "credit": "Coded with {heart} by {author}",
+    "analytics": "This site uses {umami}, which uses no cookies and collects no personal data.",
+    "analyticsLink": "Umami Analytics"
+  },
+  "project": {
+    "bannerAlt": "{title} banner",
+    "viewOnGithub": "View on GitHub",
+    "viewDemo": "Live Demo",
+    "fallbackNotice": "This page is not available in English yet; showing the Turkish original.",
+    "callouts": {
+      "important": "ⓘ IMPORTANT",
+      "warning": "⚠️ WARNING",
+      "note": "ⓘ NOTE"
+    },
+    "contact": {
+      "heading": "🌟 Contact",
+      "intro": "If this project caught your interest and you'd like to get in touch:",
+      "emailLabel": "Email:"
+    }
+  }
+}

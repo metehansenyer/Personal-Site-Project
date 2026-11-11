@@ -1,7 +1,9 @@
 /* Project content overrides on top of github-markdown-css.
    Imported AFTER github-markdown-dark.css in the project detail page so
    these rules win the cascade for table colors, heading borders, link
-   colors, code backgrounds, and callout labels. */
+   colors, code backgrounds, and callout labels. The labels of the ```IMPORTANT / WARNING /
+   NOTE code-fence callouts come from the CSS variables --callout-important / -warning / -note,
+   which the detail page sets on the article from the site content. */
 
 .markdown-body {
   box-sizing: border-box;
@@ -86,7 +88,7 @@
 }
 
 .markdown-body pre:has(code.language-IMPORTANT)::before {
-  content: 'ⓘ ÖNEMLİ';
+  content: var(--callout-important);
   display: block;
   padding-bottom: 5px;
   color: var(--important-color);
@@ -99,7 +101,7 @@
 }
 
 .markdown-body pre:has(code.language-WARNING)::before {
-  content: '⚠️ UYARI';
+  content: var(--callout-warning);
   display: block;
   padding-bottom: 5px;
   color: var(--warning-color);
@@ -112,7 +114,7 @@
 }
 
 .markdown-body pre:has(code.language-NOTE)::before {
-  content: 'ⓘ NOT';
+  content: var(--callout-note);
   display: block;
   padding-bottom: 5px;
   color: var(--note-color);

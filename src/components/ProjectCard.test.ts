@@ -9,7 +9,6 @@ function makeProject(technologies: string[]) {
     id: 'My-Repo',
     collection: 'projects',
     data: {
-      userName: 'someone',
       title: 'Demo project',
       description: 'Demo description',
       banner,
@@ -22,7 +21,7 @@ function makeProject(technologies: string[]) {
 async function render(props: Record<string, unknown> = {}, technologies = ['javascript']) {
   const container = await AstroContainer.create()
   return container.renderToString(ProjectCard, {
-    props: { project: makeProject(technologies), ...props },
+    props: { project: makeProject(technologies), bannerAlt: 'Demo alt', ...props },
   })
 }
 
@@ -31,6 +30,10 @@ const img = (html: string) => html.match(/<img[^>]*>/)?.[0] ?? ''
 describe('ProjectCard', () => {
   it('links to the project detail page by entry id', async () => {
     expect(await render()).toContain('href="/portfolio/My-Repo"')
+  })
+
+  it('uses the given banner alt text', async () => {
+    expect(img(await render())).toContain('alt="Demo alt"')
   })
 
   it('priority loads eagerly with high fetch priority', async () => {
@@ -65,5 +68,17 @@ describe('ProjectCard', () => {
     const row = html.match(/<div class="mt-3 flex[^>]*>([\s\S]*?)<\/div>/)?.[1] ?? ''
     expect(row.match(/<span/g)).toHaveLength(3)
     expect(row).not.toContain('+')
+  })
+
+  it('uses the given href (localized detail page) instead of the default', async () => {
+    const html = await render({ href: '/en/portfolio/My-Repo' })
+    expect(html).toContain('href="/en/portfolio/My-Repo"')
+    expect(html).not.toContain('href="/portfolio/My-Repo"')
+  })
+
+  it('marks the title and description with contentLang only when given', async () => {
+    expect(await render()).not.toContain('lang=')
+    const html = await render({ contentLang: 'tr' })
+    expect(html.match(/<(h2|p)\s[^>]*lang="tr"/g)).toHaveLength(2)
   })
 })

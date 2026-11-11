@@ -1,0 +1,84 @@
+{
+  "lang": "tr",
+  "ogLocale": "tr_TR",
+  "description": "Yazılım Mühendisliği öğrencisi ve tutkulu bir yazılım geliştiricisi.",
+  "jsonLd": {
+    "jobTitle": "Yazılım Mühendisliği Öğrencisi",
+    "affiliation": "Kocaeli Üniversitesi"
+  },
+  "routes": {
+    "home": { "label": "Ana Sayfa" },
+    "about": {
+      "label": "Ben Kimim?",
+      "title": "Ben Kimim?",
+      "metaTitle": "Hakkımda",
+      "description": "Yazılım mühendisliği öğrencisi olarak deneyimlerim, yeteneklerim ve hedeflerim hakkında detaylı bilgi."
+    },
+    "portfolio": {
+      "label": "Portföy",
+      "title": "Portföy",
+      "metaTitle": "Portföy",
+      "description": "Geliştirdiğim projeler, açık kaynak katkılarım ve yazılım alanındaki çalışmalarımın detaylı sunumu."
+    },
+    "contact": {
+      "label": "İletişim",
+      "title": "İletişim",
+      "metaTitle": "İletişim",
+      "description": "Benimle iletişime geçin. İş birliği, proje önerileri veya herhangi bir soru için buradayım.",
+      "homeLabel": "Bana Ulaşın"
+    }
+  },
+  "home": {
+    "eyebrow": "METE",
+    "headline": ["BUYRUN", "BENİM"]
+  },
+  "about": {
+    "location": "Kocaeli, Türkiye",
+    "education": "KOÜ YZM (3. Sınıf)",
+    "aboutMe": "Selam, ben Mete! 20 yaşında bir Yazılım Mühendisliği öğrencisiyim. Şu anda Kocaeli'de yaşıyorum ve sektörün kalbinde kendimi harmanlamak için elimden geleni yapıp kendimi geliştiriyorum. Size bir sır: Şarkı söylemeyi ve yemek yemeyi çok severim.",
+    "aboutTitle": "Hakkımda",
+    "technologiesTitle": "Kullandığım Teknolojiler",
+    "noTechnologies": "Henüz teknoloji eklenmedi.",
+    "photoAlt": "{name}'in profil fotoğrafı"
+  },
+  "contact": {
+    "heading": "İletişime Geçin",
+    "description": "Projeleriniz, işbirliği fırsatları veya herhangi bir soru için benimle iletişime geçebilirsiniz.",
+    "footer": "En kısa sürede size dönüş yapacağım."
+  },
+  "notFound": {
+    "title": "404",
+    "description": "Sanırım aradığın şey yok..."
+  },
+  "portfolio": {
+    "empty": "Henüz proje bulunmuyor."
+  },
+  "header": {
+    "openMenu": "Navigasyonu aç",
+    "closeMenu": "Navigasyonu kapat"
+  },
+  "languageSwitcher": {
+    "label": "Dil seçimi"
+  },
+  "footer": {
+    "credit": "{author} tarafından {heart} ile kodlandı",
+    "analytics": "Bu site çerez kullanmayan ve kişisel veri toplamayan {umami} kullanmaktadır.",
+    "analyticsLink": "Umami Analytics"
+  },
+  "project": {
+    "bannerAlt": "{title} banner",
+    "viewOnGithub": "GitHub'da Görüntüle",
+    "viewDemo": "Canlı Demo",
+    "fallbackNotice": "Bu sayfa henüz bu dilde mevcut değil; Türkçe aslı gösteriliyor.",
+    "callouts": {
+      "important": "ⓘ ÖNEMLİ",
+      "warning": "⚠️ UYARI",
+      "note": "ⓘ NOT"
+    },
+    "contact": {
+      "heading": "🌟 İletişim",
+      "intro": "Eğer bu proje ilginizi çektiyse ve benimle iletişime geçmek isterseniz:",
+      "emailLabel": "Email:"
+    }
+  }
+}

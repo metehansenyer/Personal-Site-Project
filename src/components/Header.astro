@@ -6,15 +6,26 @@
  * collapsible nav (toggled by the vanilla script below). Nav order is adjusted from
  * sessionStorage by `NavOrderScript.astro`.
  */
+import LanguageSwitcher from '@/components/LanguageSwitcher.astro'
 import { getNavItems } from '@/lib/navOrder'
+import type { Alternate } from '@/lib/i18n'
+import type { Locale } from '@/lib/locales'
+import { SITE_NAME } from '@/lib/site'
+import type { RouteLabels } from '@/data/routes'
 
 interface Props {
   pageTitle: string
   pathname: string
+  /** Nav link labels (site content `routes.*.label`). */
+  navLabels: RouteLabels
+  /** Menu button labels (site content `header`). */
+  labels: { openMenu: string; closeMenu: string }
+  /** Language switcher data; omitted on pages that exist in one language only (404). */
+  switcher?: { current: Locale; alternates: Alternate[]; label: string }
 }
 
-const { pageTitle, pathname } = Astro.props
-const navigation = getNavItems(pathname)
+const { pageTitle, pathname, navLabels, labels, switcher } = Astro.props
+const navigation = getNavItems(pathname, navLabels)
 
 const barBase =
   'absolute h-0.5 w-5 rounded-full bg-(--text-color) transition-all duration-300 group-hover:bg-(--nav-background-color)'
@@ -23,7 +34,10 @@ const barBase =
 <header class="sticky top-0 z-50 w-full bg-(--background-color) py-3 md:static md:py-4">
   <!-- Desktop header -->
   <div class="hidden items-center justify-between px-8 md:flex">
-    <p class="text-[2rem] text-(--text-color)">Metehan Şenyer</p>
+    <div class="flex items-center gap-6">
+      <p class="text-[2rem] text-(--text-color)">{SITE_NAME}</p>
+      {switcher && <LanguageSwitcher {...switcher} />}
+    </div>
     <p class="text-right text-[2rem] text-(--text-color)">{pageTitle}</p>
   </div>
 
@@ -31,15 +45,16 @@ const barBase =
   <div class="px-4 md:hidden">
     <div class="flex items-center justify-between gap-3">
       <p class="min-w-0 flex-1 truncate text-xl font-semibold text-(--text-color)">{pageTitle}</p>
+      {switcher && <LanguageSwitcher {...switcher} class="shrink-0" />}
       <button
         type="button"
         id="mobile-menu-button"
         class="group relative flex h-11 w-11 shrink-0 items-center justify-center rounded-full border-2 border-(--text-color) bg-(--nav-background-color) transition-colors duration-300 hover:bg-(--text-color)"
-        aria-label="Navigasyonu aç"
+        aria-label={labels.openMenu}
         aria-expanded="false"
         aria-controls="mobile-navigation"
-        data-label-open="Navigasyonu kapat"
-        data-label-closed="Navigasyonu aç"
+        data-label-open={labels.closeMenu}
+        data-label-closed={labels.openMenu}
       >
         <span
           class:list={[barBase, '-translate-y-1.5 rotate-0']}

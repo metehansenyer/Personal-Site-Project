@@ -1,19 +1,43 @@
 ---
 /**
- * 404 (Not Found) page. Content comes from notFoundContent.
+ * 404 (Not Found) page. nginx serves this one file for every missing URL, including under
+ * `/en/`, so there is a single page that shows the message in every locale: the default
+ * locale (Turkish, also used for the header and navigation) first, then the other languages
+ * below it, each paragraph with its own `lang`. No JavaScript, no language switcher.
  */
 import BaseLayout from '@/layouts/BaseLayout.astro'
-import notFoundContent from '@/data/notFoundContent'
+import { getSiteContent } from '@/lib/content'
+import { DEFAULT_LOCALE, LOCALES } from '@/lib/locales'
 import { documentTitle } from '@/lib/site'
+
+const { notFound } = await getSiteContent(DEFAULT_LOCALE)
+const messages = await Promise.all(
+  LOCALES.map(async (locale) => ({
+    locale,
+    text: (await getSiteContent(locale)).notFound.description,
+  })),
+)
 ---
 
-<BaseLayout title={documentTitle(notFoundContent.title)} pageTitle={notFoundContent.title} noindex>
+<BaseLayout title={documentTitle(notFound.title)} pageTitle={notFound.title} noindex>
   <main class="mx-auto w-full px-4 py-8">
     <div class="flex min-h-[60vh] flex-col items-center justify-center space-y-6">
-      <h1 class="text-4xl font-bold text-(--text-color) md:text-6xl">{notFoundContent.title}</h1>
-      <p class="text-center text-xl text-(--text-color) opacity-70 md:text-2xl">
-        {notFoundContent.description}
-      </p>
+      <h1 class="text-4xl font-bold text-(--text-color) md:text-6xl">{notFound.title}</h1>
+      <div class="space-y-2">
+        {
+          messages.map(({ locale, text }, i) => (
+            <p
+              lang={locale}
+              class:list={[
+                'text-center text-(--text-color)',
+                i === 0 ? 'text-xl opacity-70 md:text-2xl' : 'text-base opacity-60 md:text-lg',
+              ]}
+            >
+              {text}
+            </p>
+          ))
+        }
+      </div>
     </div>
   </main>
 </BaseLayout>

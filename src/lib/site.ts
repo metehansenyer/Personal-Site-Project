@@ -15,3 +15,6 @@ export const CONTACT_EMAIL = 'mthansnyr@gmail.com'
 
 /** Browser title for a page: `<page> | <site name>`. */
 export const documentTitle = (page: string) => `${page} | ${SITE_NAME}`
+
+/** Absolute URL of a site path (`/about` -> `https://.../about`); same form as the canonical URLs. */
+export const absoluteUrl = (path: string) => new URL(path, `${SITE_URL}/`).href

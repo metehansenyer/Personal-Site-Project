@@ -1,10 +1,13 @@
 import { describe, it, expect } from 'vitest'
 import { experimental_AstroContainer as AstroContainer } from 'astro/container'
 import Callout from './Callout.astro'
+import { loadSiteContent } from '@/test/siteContent'
+
+const labels = loadSiteContent().project.callouts
 
 async function render(type: 'important' | 'warning' | 'note', content: string) {
   const container = await AstroContainer.create()
-  return container.renderToString(Callout, { props: { type }, slots: { default: content } })
+  return container.renderToString(Callout, { props: { type, labels }, slots: { default: content } })
 }
 
 describe('Callout - type: important', () => {

@@ -1,7 +1,19 @@
 import { describe, it, expect } from 'vitest'
-import { DEFAULT_ORDER, getNavItems, normalizePath, parseStoredOrder, swapOrder } from './navOrder'
+import { loadSiteContent } from '@/test/siteContent'
+import { getRouteLabels } from './content'
+import {
+  DEFAULT_ORDER,
+  LOCALE_PREFIXES,
+  getNavItems,
+  normalizePath,
+  parseStoredOrder,
+  stripLocalePrefix,
+  swapOrder,
+} from './navOrder'
 
 const DEFAULT = ['/about', '/portfolio', '/contact']
+const labels = getRouteLabels(loadSiteContent())
+const enLabels = getRouteLabels(loadSiteContent('en'))
 
 describe('DEFAULT_ORDER', () => {
   it('lists the nav routes in routes.ts order, without the home page', () => {
@@ -120,9 +132,44 @@ describe('swapOrder', () => {
   })
 })
 
+describe('stripLocalePrefix', () => {
+  it('lists the non-default locale prefixes', () => {
+    expect(LOCALE_PREFIXES).toEqual(['/en'])
+  })
+  it('maps localized paths to the locale-independent route', () => {
+    expect(stripLocalePrefix('/en', LOCALE_PREFIXES)).toBe('/')
+    expect(stripLocalePrefix('/en/about', LOCALE_PREFIXES)).toBe('/about')
+    expect(stripLocalePrefix('/en/portfolio/polyval', LOCALE_PREFIXES)).toBe('/portfolio/polyval')
+  })
+  it('leaves other paths alone (also ones that merely start with the prefix letters)', () => {
+    expect(stripLocalePrefix('/', LOCALE_PREFIXES)).toBe('/')
+    expect(stripLocalePrefix('/about', LOCALE_PREFIXES)).toBe('/about')
+    expect(stripLocalePrefix('/english', LOCALE_PREFIXES)).toBe('/english')
+    expect(stripLocalePrefix('/portfolio/en', LOCALE_PREFIXES)).toBe('/portfolio/en')
+  })
+})
+
 describe('getNavItems', () => {
+  it('keeps every link under /en on English pages and omits the current page', () => {
+    expect(getNavItems('/en/about', enLabels)).toEqual([
+      { href: '/en', label: 'Home' },
+      { href: '/en/portfolio', label: 'Portfolio' },
+      { href: '/en/contact', label: 'Contact' },
+    ])
+    expect(getNavItems('/en/contact/', enLabels).map((i) => i.href)).toEqual([
+      '/en',
+      '/en/about',
+      '/en/portfolio',
+    ])
+    expect(getNavItems('/en', enLabels).map((i) => i.href)).toEqual([
+      '/en',
+      '/en/about',
+      '/en/portfolio',
+      '/en/contact',
+    ])
+  })
   it('puts Home first and omits the current page', () => {
-    expect(getNavItems('/about')).toEqual([
+    expect(getNavItems('/about', labels)).toEqual([
       { href: '/', label: 'Ana Sayfa' },
       { href: '/portfolio', label: 'Portföy' },
       { href: '/contact', label: 'İletişim' },
@@ -130,19 +177,23 @@ describe('getNavItems', () => {
   })
   it('omits the current page for every nav path', () => {
     for (const path of DEFAULT_ORDER) {
-      const hrefs = getNavItems(path).map((i) => i.href)
+      const hrefs = getNavItems(path, labels).map((i) => i.href)
       expect(hrefs[0]).toBe('/')
       expect(hrefs).not.toContain(path)
       expect(hrefs).toHaveLength(DEFAULT_ORDER.length)
     }
   })
   it('normalizes trailing slashes in the pathname', () => {
-    expect(getNavItems('/contact/').map((i) => i.href)).toEqual(['/', '/about', '/portfolio'])
+    expect(getNavItems('/contact/', labels).map((i) => i.href)).toEqual([
+      '/',
+      '/about',
+      '/portfolio',
+    ])
   })
   it('lists all nav pages on the home page and on non-nav pages', () => {
     const all = ['/', '/about', '/portfolio', '/contact']
-    expect(getNavItems('/').map((i) => i.href)).toEqual(all)
-    expect(getNavItems('/portfolio/polyval').map((i) => i.href)).toEqual(all)
+    expect(getNavItems('/', labels).map((i) => i.href)).toEqual(all)
+    expect(getNavItems('/portfolio/polyval', labels).map((i) => i.href)).toEqual(all)
   })
 })
 
@@ -174,6 +225,15 @@ describe('toString() serialization contract (inline script)', () => {
     expect(f('["/about","/about","/contact"]', DEFAULT)).toEqual(DEFAULT)
   })
 
+  it('stripLocalePrefix works when rebuilt in isolation', () => {
+    const f = rebuild<typeof stripLocalePrefix>(stripLocalePrefix)
+    expect(f('/en/about', ['/en'])).toBe('/about')
+    expect(f('/en', ['/en'])).toBe('/')
+    expect(f('/about', ['/en'])).toBe('/about')
+    expect(f('/english', ['/en'])).toBe('/english')
+    expect(f('/de/about', ['/en', '/de'])).toBe('/about')
+  })
+
   it('swapOrder works when rebuilt in isolation', () => {
     const f = rebuild<typeof swapOrder>(swapOrder)
     expect(f(DEFAULT, '/about/', '/contact')).toEqual(['/contact', '/portfolio', '/about'])
@@ -182,7 +242,7 @@ describe('toString() serialization contract (inline script)', () => {
   })
 
   it('the serialized sources are plain function expressions', () => {
-    for (const fn of [normalizePath, parseStoredOrder, swapOrder]) {
+    for (const fn of [normalizePath, stripLocalePrefix, parseStoredOrder, swapOrder]) {
       expect(String(fn)).toMatch(/^function\s/)
     }
   })
