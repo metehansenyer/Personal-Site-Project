@@ -10,13 +10,16 @@ async function render(props = { labels }) {
   return container.renderToString(Footer, { props })
 }
 
-const text = (html: string) =>
-  html
-    .replace(/<svg[\s\S]*?<\/svg>/g, '{heart}')
-    .replace(/<\/p>/g, ' ')
-    .replace(/<[^>]+>/g, '')
-    .replace(/\s+/g, ' ')
-    .trim()
+/** Visible text of the rendered footer (test helper, not sanitization). */
+const text = (html: string) => {
+  let out = html.replace(/<svg[\s\S]*?<\/svg>/g, '{heart}').replace(/<\/p>/g, ' ')
+  let previous
+  do {
+    previous = out
+    out = out.replace(/<[^>]+>/g, '')
+  } while (out !== previous)
+  return out.replace(/\s+/g, ' ').trim()
+}
 
 describe('Footer', () => {
   it('renders the credit and analytics sentences from the content', async () => {

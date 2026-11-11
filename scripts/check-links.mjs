@@ -62,16 +62,33 @@ function* attributes(attrString) {
 }
 
 /**
+ * Applies `pattern` -> `replacement` repeatedly until the string stops changing.
+ * @param {string} input
+ * @param {RegExp} pattern
+ * @param {string} replacement
+ */
+export function replaceUntilStable(input, pattern, replacement) {
+  let current = input
+  let previous
+  do {
+    previous = current
+    current = current.replace(pattern, replacement)
+  } while (current !== previous)
+  return current
+}
+
+/**
  * Extracts the references of an HTML document: every `href` / `src` / `srcset` URL and the
  * set of ids (`id`, `<a name>`). Script and style bodies and comments are ignored.
  * @param {string} html
  * @returns {{ refs: { tag: string, attr: string, url: string }[], ids: Set<string> }}
  */
 export function extractRefs(html) {
-  const stripped = html
-    .replace(/<!--[\s\S]*?-->/g, '')
-    .replace(/(<script\b[^>]*>)[\s\S]*?(<\/script>)/gi, '$1$2')
-    .replace(/(<style\b[^>]*>)[\s\S]*?(<\/style>)/gi, '$1$2')
+  // Not sanitization (the result is only scanned for attributes, never output), but repeat
+  // each removal until nothing changes so nested / overlapping constructs cannot survive.
+  let stripped = replaceUntilStable(html, /<!--[\s\S]*?-->/g, '')
+  stripped = replaceUntilStable(stripped, /(<script\b[^>]*>)[\s\S]*?(<\/script\b[^>]*>)/gi, '$1$2')
+  stripped = replaceUntilStable(stripped, /(<style\b[^>]*>)[\s\S]*?(<\/style\b[^>]*>)/gi, '$1$2')
   const refs = []
   const ids = new Set()
   for (const [, tag, attrString] of stripped.matchAll(TAG)) {
