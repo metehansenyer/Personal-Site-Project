@@ -18,7 +18,6 @@
 
 @theme inline {
   --color-background: var(--background-color);
-  --color-foreground: var(--text-color);
 }
 
 /* Global CSS Variables
@@ -33,7 +32,6 @@
   --table-border-color-muted: #3d444d;
   --text-color: #d1d5db;
   --text-color-white: #ffffff;
-  --text-color-red: #ff0000;
   --text-color-blue: #4493f8;
   --important-color: #8957e5;
   --warning-color: #d29922;
@@ -42,48 +40,36 @@
   /* Layout Variables */
   --border-radius-large: 150px;
   --border-radius-medium: 35px;
-  --border-radius-small: 15px;
-  --container-width: 80%;
-  --padding-standard: 2rem;
 
   /* Font */
   --font-inter: 'Inter Variable', 'Inter', ui-sans-serif, system-ui, sans-serif;
 }
 
 @layer base {
-  /* Reset default styles and apply base styles */
-  * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
+  /* Links never underline by default (margin/padding/box-sizing resets come from Tailwind preflight) */
+  a {
     text-decoration: none;
-    color: var(--text-color);
   }
 
-  /* Remove focus outlines for better visual consistency */
-  *:focus {
-    outline: none;
+  /* Visible keyboard focus only; plain mouse focus shows no outline */
+  :focus-visible {
+    outline: 2px solid var(--text-color-white);
+    outline-offset: 2px;
   }
 
-  *:focus-visible {
-    outline: none;
-  }
-
-  /* Base HTML and body styles */
+  /* Base HTML and body styles. The document (viewport) scrolls; `overflow-x: clip` guards
+     against horizontal overflow without turning body into a scroll container. */
   html,
   body {
     width: 100%;
-    height: 100%;
-    min-height: 100%;
-    overflow-x: hidden;
     background-color: var(--background-color);
     font-family: var(--font-inter);
     font-size: 100%;
-    -webkit-touch-callout: none;
-    -webkit-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
-    user-select: none;
+  }
+
+  body {
+    overflow-x: clip;
+    color: var(--text-color);
   }
 
   img,
@@ -107,7 +93,26 @@
 
 /* Apply fade-in animation to main content */
 main {
-  animation: fadeIn 1s ease-in;
+  animation: fadeIn 0.3s ease-in;
+}
+
+/* Reduced motion: no fade-in, no pulsing, no scale-on-hover, no transitions */
+@media (prefers-reduced-motion: reduce) {
+  main,
+  .animate-pulse {
+    animation: none;
+  }
+
+  *,
+  ::before,
+  ::after {
+    transition-duration: 0.01ms !important;
+  }
+
+  [class*='hover:scale-']:hover,
+  .group\/tech:hover [class*='group-hover/tech:scale-'] {
+    scale: none !important;
+  }
 }
 
 /* Responsive Design Adjustments
@@ -116,7 +121,6 @@ main {
   :root {
     --border-radius-large: 48px;
     --border-radius-medium: 24px;
-    --padding-standard: 1rem;
   }
 }
 
