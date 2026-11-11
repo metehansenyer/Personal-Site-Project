@@ -115,3 +115,13 @@ Findings worth remembering:
 - [x] Markdown and Vercel icons are visible on the dark background (light `fill` in the local SVGs)
 - [x] Accessibility: focus outlines and `user-select` fixed in earlier commits
 - [x] Portfolio banners: first card `priority`, cards 2-3 eager, the rest lazy; overflow tech tags also reveal on keyboard focus (`group-focus-within`)
+
+## Content management
+
+- [x] Project schema (`lib/projectSchema.ts`, strict): `userName` replaced by optional `repoUrl`; added `demoUrl`, `heading`, `tools`, `draft`, `order`, `updatedDate`, `bannerAlt`, `contactNote`; the file name is only the URL segment now
+- [x] `lib/projects.ts`: `getProjects()` (sorted by `order`, then release date; drafts only in dev) used by the portfolio page, the detail page paths and the sitemap (`lastmod` = `updatedDate ?? releaseDate`)
+- [x] Detail page (`portfolio/[id].astro`, URLs unchanged) renders the `<h1>` from `heading ?? title`, the technology icons (`<Icon />` bound per page: `technologies` + `tools`), the shared `ProjectContact` block and GitHub / demo buttons from data; the 9 MDX files lost their `# h1`, icon slug lists and contact sections
+- [x] Fixed the broken `LICENSE` links in `vlrgg-api.mdx` (now the GitHub licence URL)
+- [x] `scripts/check-links.mjs` (`pnpm check:links`, run in CI after the build): resolves internal links, images, fragments and sitemap URLs like nginx and fails on broken ones
+- [x] Page texts moved from `aboutContent.ts` / `contactContent.ts` / `notFoundContent.ts`, `routes.ts`, the pages and the components into the strict `site` collection (`src/content/site/tr.json`, `getSiteContent(locale)`); a second locale is now a new JSON file plus the locale code in `lib/locales.ts`
+- [x] Tests for `getProjects`, the project and site schemas, `<Icon />` defaults, the footer / contact block and the link checker; rendered Turkish output of the 5 non-project pages is identical to before

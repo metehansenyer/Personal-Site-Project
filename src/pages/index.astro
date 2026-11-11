@@ -7,13 +7,17 @@
 import BaseLayout from '@/layouts/BaseLayout.astro'
 import Button from '@/components/Button.astro'
 import { getRoute, type SiteRoute } from '@/data/routes'
+import { getSiteContent } from '@/lib/content'
 
-// Two-row layout for visual balance; hrefs and labels come from routes.ts
+const content = await getSiteContent()
+
+// Two-row layout for visual balance; hrefs come from routes.ts, labels from the site content
 const rows: SiteRoute['path'][][] = [['/about', '/portfolio'], ['/contact']]
 const navigationButtons = rows.map((row) =>
   row.map((path) => {
     const route = getRoute(path)
-    return { href: route.path, text: route.homeLabel ?? route.label }
+    const text = content.routes[route.key]
+    return { href: route.path, text: 'homeLabel' in text ? text.homeLabel : text.label }
   }),
 )
 ---
@@ -27,14 +31,19 @@ const navigationButtons = rows.map((row) =>
       <span
         class="block text-sm leading-7 tracking-[0.2em] text-(--text-color) sm:text-[1.25rem] md:text-[1.5rem] md:leading-[3.5rem] md:tracking-normal"
       >
-        METE
+        {content.home.eyebrow}
       </span>
       <span
         class="block text-[clamp(3.8rem,15vw,4.75rem)] leading-[0.95] tracking-[-0.04em] text-(--text-color) md:text-[7.5rem] md:leading-[7.5rem] md:tracking-normal"
       >
-        BUYRUN
-        <br />
-        BENİM
+        {
+          content.home.headline.map((line, i) => (
+            <>
+              {i > 0 && <br />}
+              {line}
+            </>
+          ))
+        }
       </span>
     </h1>
 

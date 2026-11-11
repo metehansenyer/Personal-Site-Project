@@ -24,6 +24,8 @@ import icons from '@/data/icons'
 
 interface Props {
   project: CollectionEntry<'projects'>
+  /** Banner alt text (`getBannerAlt()` in `lib/projects.ts`). */
+  bannerAlt: string
   /**
    * Banner loading policy. `priority`: eager, sync decode and `fetchpriority="high"` (the LCP
    * candidate). `eager`: loads right away at default priority (probably above the fold on wider
@@ -32,7 +34,7 @@ interface Props {
   loading?: 'priority' | 'eager' | 'lazy'
 }
 
-const { project, loading = 'lazy' } = Astro.props
+const { project, bannerAlt, loading = 'lazy' } = Astro.props
 const { title, description, banner, technologies } = project.data
 
 const tagClass = 'bg-background inline-block rounded-full px-3 py-1 text-sm'
@@ -48,7 +50,7 @@ const mobileTagClass =
       <div class="relative h-44 shrink-0 sm:h-32 md:h-48">
         <Image
           src={banner}
-          alt={`${title} banner`}
+          alt={bannerAlt}
           widths={[400, 640, 800, 1200]}
           sizes="(max-width: 639px) 90vw, (max-width: 1023px) 42vw, 27vw"
           class="absolute inset-0 h-full w-full object-cover"

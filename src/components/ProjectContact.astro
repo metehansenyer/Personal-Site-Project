@@ -1,0 +1,45 @@
+---
+/**
+ * ProjectContact
+ *
+ * Closing contact block of a project detail page (what the project MDX files used to repeat).
+ * Renders plain markdown-style elements and must sit inside the page's `.markdown-body`
+ * article so it looks like the rest of the project content. Email comes from
+ * `CONTACT_EMAIL`, the LinkedIn link from `socialLinks`, the texts from the site content.
+ */
+import { socialLinks } from '@/data/socialLinks'
+import { CONTACT_EMAIL } from '@/lib/site'
+import type { SiteContent } from '@/lib/siteSchema'
+
+interface Props {
+  labels: SiteContent['project']['contact']
+  /** Project-specific closing sentence (frontmatter `contactNote`). */
+  note?: string
+}
+
+const { labels, note } = Astro.props
+
+const linkedIn = socialLinks.find((link) => link.name === 'LinkedIn')
+// "https://www.linkedin.com/in/metehansenyer/" -> "@metehansenyer"
+const handle = linkedIn ? `@${linkedIn.url.split('/').filter(Boolean).pop()}` : ''
+---
+
+<h2>{labels.heading}</h2>
+<p>{labels.intro}</p>
+<ul>
+  <li>
+    <strong>{labels.emailLabel}</strong>{' '}
+    <a href={`mailto:${CONTACT_EMAIL}`}>{CONTACT_EMAIL}</a>
+  </li>
+  {
+    linkedIn && (
+      <li>
+        <strong>{linkedIn.name}:</strong>{' '}
+        <a href={linkedIn.url} rel="noopener noreferrer" target="_blank">
+          {handle}
+        </a>
+      </li>
+    )
+  }
+</ul>
+{note && <p>{note}</p>}

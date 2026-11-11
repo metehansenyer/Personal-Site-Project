@@ -7,7 +7,7 @@ set -euo pipefail
 BASE="${1:-http://127.0.0.1:3000}"
 BASE="${BASE%/}"
 
-# Text of the 404 page (src/data/notFoundContent.ts); update it here if that copy changes.
+# Text of the 404 page (`notFound.description` in src/content/site/tr.json); update it here if that copy changes.
 NOT_FOUND_TEXT="aradığın şey yok"
 
 fail() {

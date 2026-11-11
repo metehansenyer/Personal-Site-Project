@@ -3,34 +3,65 @@
  * Footer
  *
  * Attribution and analytics notice. The layout does not render it on the home page.
+ * The sentences come from the site content (`footer`) as templates with `{token}` slots for
+ * the author link, the heart icon and the Umami link, so word order can differ per language.
  */
 import { faHeart } from '@fortawesome/free-solid-svg-icons'
 import FaIcon from '@/components/FaIcon.astro'
+import { splitTemplate } from '@/lib/format'
+import { SITE_NAME } from '@/lib/site'
+import type { SiteContent } from '@/lib/siteSchema'
+
+interface Props {
+  labels: SiteContent['footer']
+}
+
+const { labels } = Astro.props
+const credit = splitTemplate(labels.credit)
+const analytics = splitTemplate(labels.analytics)
 ---
 
 <footer class="w-full px-4 py-4 text-center">
   <p class="text-sm text-(--text-color) opacity-70 sm:text-base">
-    <a
-      href="https://github.com/metehansenyer"
-      target="_blank"
-      rel="noopener noreferrer"
-      class="transition-colors hover:text-(--text-color-white)"
-    >
-      Metehan Şenyer
-    </a>{' '}
-    tarafından <FaIcon icon={faHeart} class="mx-1 animate-pulse text-red-500" />{' '}
-    ile kodlandı
+    {
+      credit.map((part) =>
+        'text' in part ? (
+          part.text
+        ) : part.token === 'author' ? (
+          <a
+            href="https://github.com/metehansenyer"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="transition-colors hover:text-(--text-color-white)"
+          >
+            {SITE_NAME}
+          </a>
+        ) : part.token === 'heart' ? (
+          <FaIcon icon={faHeart} class="mx-1 animate-pulse text-red-500" />
+        ) : (
+          `{${part.token}}`
+        ),
+      )
+    }
   </p>
   <p class="mt-1 text-xs text-(--text-color) opacity-40">
-    Bu site çerez kullanmayan ve kişisel veri toplamayan{' '}
-    <a
-      href="https://umami.is"
-      target="_blank"
-      rel="noopener noreferrer"
-      class="underline underline-offset-2 transition-opacity hover:opacity-70"
-    >
-      Umami Analytics
-    </a>{' '}
-    kullanmaktadır.
+    {
+      analytics.map((part) =>
+        'text' in part ? (
+          part.text
+        ) : part.token === 'umami' ? (
+          <a
+            href="https://umami.is"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="underline underline-offset-2 transition-opacity hover:opacity-70"
+          >
+            {labels.analyticsLink}
+          </a>
+        ) : (
+          `{${part.token}}`
+        ),
+      )
+    }
   </p>
 </footer>

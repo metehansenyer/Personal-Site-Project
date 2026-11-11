@@ -8,13 +8,16 @@
  */
 import Button from '@/components/Button.astro'
 import { getNavItems } from '@/lib/navOrder'
+import type { RouteLabels } from '@/data/routes'
 
 interface Props {
   pathname: string
+  /** Nav link labels (site content `routes.*.label`). */
+  navLabels: RouteLabels
 }
 
-const { pathname } = Astro.props
-const navigation = getNavItems(pathname)
+const { pathname, navLabels } = Astro.props
+const navigation = getNavItems(pathname, navLabels)
 ---
 
 <nav class="bg-background z-50 hidden w-full pt-1 md:block">

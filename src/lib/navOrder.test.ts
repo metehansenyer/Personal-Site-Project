@@ -1,7 +1,10 @@
 import { describe, it, expect } from 'vitest'
+import { loadSiteContent } from '@/test/siteContent'
+import { getRouteLabels } from './content'
 import { DEFAULT_ORDER, getNavItems, normalizePath, parseStoredOrder, swapOrder } from './navOrder'
 
 const DEFAULT = ['/about', '/portfolio', '/contact']
+const labels = getRouteLabels(loadSiteContent())
 
 describe('DEFAULT_ORDER', () => {
   it('lists the nav routes in routes.ts order, without the home page', () => {
@@ -122,7 +125,7 @@ describe('swapOrder', () => {
 
 describe('getNavItems', () => {
   it('puts Home first and omits the current page', () => {
-    expect(getNavItems('/about')).toEqual([
+    expect(getNavItems('/about', labels)).toEqual([
       { href: '/', label: 'Ana Sayfa' },
       { href: '/portfolio', label: 'Portföy' },
       { href: '/contact', label: 'İletişim' },
@@ -130,19 +133,23 @@ describe('getNavItems', () => {
   })
   it('omits the current page for every nav path', () => {
     for (const path of DEFAULT_ORDER) {
-      const hrefs = getNavItems(path).map((i) => i.href)
+      const hrefs = getNavItems(path, labels).map((i) => i.href)
       expect(hrefs[0]).toBe('/')
       expect(hrefs).not.toContain(path)
       expect(hrefs).toHaveLength(DEFAULT_ORDER.length)
     }
   })
   it('normalizes trailing slashes in the pathname', () => {
-    expect(getNavItems('/contact/').map((i) => i.href)).toEqual(['/', '/about', '/portfolio'])
+    expect(getNavItems('/contact/', labels).map((i) => i.href)).toEqual([
+      '/',
+      '/about',
+      '/portfolio',
+    ])
   })
   it('lists all nav pages on the home page and on non-nav pages', () => {
     const all = ['/', '/about', '/portfolio', '/contact']
-    expect(getNavItems('/').map((i) => i.href)).toEqual(all)
-    expect(getNavItems('/portfolio/polyval').map((i) => i.href)).toEqual(all)
+    expect(getNavItems('/', labels).map((i) => i.href)).toEqual(all)
+    expect(getNavItems('/portfolio/polyval', labels).map((i) => i.href)).toEqual(all)
   })
 })
 

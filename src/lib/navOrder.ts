@@ -12,7 +12,7 @@
  * references to module-level values, imports or each other - everything comes in via
  * parameters. Keep them to plain ES syntax (no TS-only runtime helpers).
  */
-import { routes, type SiteRoute } from '../data/routes'
+import { routes, type RouteLabels, type SiteRoute } from '../data/routes'
 
 export type NavPath = Exclude<SiteRoute['path'], '/'>
 
@@ -84,17 +84,16 @@ export type NavItem = { href: string; label: string }
 
 /**
  * Server-side nav list: Home first, then the nav routes in the default order without the
- * current page. The client script reorders the DOM from the stored order.
+ * current page. `labels` (from the site content) supplies the link texts. The client script
+ * reorders the DOM from the stored order.
  */
-export function getNavItems(pathname: string): NavItem[] {
+export function getNavItems(pathname: string, labels: RouteLabels): NavItem[] {
   const current = normalizePath(pathname)
-  const byPath = new Map(routes.map((r) => [r.path as string, r]))
-  const home = byPath.get('/')!
   return [
-    { href: home.path, label: home.label },
+    { href: '/', label: labels['/'] },
     ...DEFAULT_ORDER.filter((p) => p !== current).map((p) => ({
       href: p as string,
-      label: byPath.get(p)!.label,
+      label: labels[p],
     })),
   ]
 }

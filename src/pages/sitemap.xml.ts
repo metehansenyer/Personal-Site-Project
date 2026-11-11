@@ -1,14 +1,13 @@
 /**
  * Sitemap endpoint (static, built to /sitemap.xml).
  *
- * Static routes come from `src/data/routes.ts`, project pages from the `projects`
- * content collection. `changefreq` / `priority` are omitted on purpose (ignored by Google).
- * `lastmod` is only set for projects, using the release date as a lower bound of the real
- * modification date (the content has no `updatedDate` field); static routes have none.
+ * Static routes come from `src/data/routes.ts`, project pages from `getProjects()`.
+ * `changefreq` / `priority` are omitted on purpose (ignored by Google). `lastmod` is only set
+ * for projects: `updatedDate ?? releaseDate`; static routes have none.
  */
 import type { APIRoute } from 'astro'
-import { getCollection } from 'astro:content'
 import { routes } from '@/data/routes'
+import { getProjects, lastModified } from '@/lib/projects'
 import { SITE_URL } from '@/lib/site'
 
 interface Entry {
@@ -29,13 +28,11 @@ export const GET: APIRoute = async () => {
     url: route.path === '/' ? SITE_URL : `${SITE_URL}${route.path}`,
   }))
 
-  // Newest first (deterministic; collection order depends on the file system).
-  const projects = (await getCollection('projects')).sort(
-    (a, b) => b.data.releaseDate.getTime() - a.data.releaseDate.getTime(),
-  )
+  // Same list and order as the portfolio page (drafts excluded in production builds).
+  const projects = await getProjects()
   const projectEntries: Entry[] = projects.map((project) => ({
     url: `${SITE_URL}/portfolio/${project.id}`,
-    lastModified: project.data.releaseDate,
+    lastModified: lastModified(project),
   }))
 
   const body = [...staticEntries, ...projectEntries]

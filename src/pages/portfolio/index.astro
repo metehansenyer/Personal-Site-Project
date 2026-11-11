@@ -2,30 +2,28 @@
 /**
  * Portfolio Page
  *
- * Grid of project cards (1 column on mobile, 2 on tablet, 3 on desktop), sorted by
- * release date (newest first). Shows a message when there are no projects.
+ * Grid of project cards (1 column on mobile, 2 on tablet, 3 on desktop) in `getProjects()`
+ * order (`order`, then release date newest first). Shows a message when there are no projects.
  */
-import { getCollection } from 'astro:content'
 import BaseLayout from '@/layouts/BaseLayout.astro'
 import ProjectCard from '@/components/ProjectCard.astro'
-import { getRoute } from '@/data/routes'
+import { getSiteContent } from '@/lib/content'
+import { getBannerAlt, getProjects } from '@/lib/projects'
 import { documentTitle } from '@/lib/site'
 
-const projects = (await getCollection('projects')).sort(
-  (a, b) => b.data.releaseDate.getTime() - a.data.releaseDate.getTime(),
-)
+const content = await getSiteContent()
+const projects = await getProjects()
 
-const route = getRoute('/portfolio')
-const title = documentTitle(route.title)
-const description =
-  'Geliştirdiğim projeler, açık kaynak katkılarım ve yazılım alanındaki çalışmalarımın detaylı sunumu.'
+const route = content.routes.portfolio
+const title = documentTitle(route.metaTitle)
+const description = route.description
 ---
 
 <BaseLayout title={title} description={description} ogType="website" pageTitle={route.title}>
   {
     projects.length === 0 ? (
       <div class="mx-auto w-full max-w-[90%] px-4 py-8 text-center sm:max-w-[85%] md:max-w-[80%]">
-        <p class="text-(--text-color) opacity-70">Henüz proje bulunmuyor.</p>
+        <p class="text-(--text-color) opacity-70">{content.portfolio.empty}</p>
       </div>
     ) : (
       <main class="mx-auto w-full max-w-[90%] px-4 py-8 sm:max-w-[85%] md:max-w-[80%] md:px-0">
@@ -34,6 +32,7 @@ const description =
           {projects.map((project, index) => (
             <ProjectCard
               project={project}
+              bannerAlt={getBannerAlt(project, content)}
               loading={index === 0 ? 'priority' : index < 3 ? 'eager' : 'lazy'}
             />
           ))}

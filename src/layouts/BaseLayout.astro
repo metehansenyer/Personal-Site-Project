@@ -12,6 +12,8 @@ import Navbar from '@/components/Navbar.astro'
 import Footer from '@/components/Footer.astro'
 import NavOrderScript from '@/components/NavOrderScript.astro'
 import { SITE_URL, SITE_NAME } from '@/lib/site'
+import { getRouteLabels, getSiteContent } from '@/lib/content'
+import { DEFAULT_LOCALE, type Locale } from '@/lib/locales'
 import { socialLinks } from '@/data/socialLinks'
 import defaultOgImage from '@/assets/img/home_page.png'
 
@@ -23,6 +25,8 @@ interface Props {
   ogImage?: string
   ogImageWidth?: number
   ogImageHeight?: number
+  /** Locale of the page texts (default: Turkish). */
+  locale?: Locale
   /** Text shown in the header. */
   pageTitle?: string
   /** Whether Header, Navbar and Footer render. The home page passes false. */
@@ -35,7 +39,8 @@ interface Props {
 
 const {
   title = SITE_NAME,
-  description = 'Yazılım Mühendisliği öğrencisi ve tutkulu bir yazılım geliştiricisi.',
+  description,
+  locale = DEFAULT_LOCALE,
   ogType = 'website',
   ogImage,
   ogImageWidth,
@@ -45,6 +50,9 @@ const {
   noindex = false,
   jsonLd: withJsonLd = false,
 } = Astro.props
+
+const content = await getSiteContent(locale)
+const metaDescription = description ?? content.description
 
 // Strip the trailing slash the static build adds (/about/ -> /about) so nav matching,
 // canonical and og:url stay identical to the old URLs.
@@ -62,34 +70,36 @@ if (!ogImage) {
   }
 }
 
+const navLabels = getRouteLabels(content)
+
 const jsonLd = JSON.stringify({
   '@context': 'https://schema.org',
   '@type': 'Person',
   name: SITE_NAME,
   url: SITE_URL,
-  jobTitle: 'Yazılım Mühendisliği Öğrencisi',
-  affiliation: { '@type': 'CollegeOrUniversity', name: 'Kocaeli Üniversitesi' },
+  jobTitle: content.jsonLd.jobTitle,
+  affiliation: { '@type': 'CollegeOrUniversity', name: content.jsonLd.affiliation },
   sameAs: socialLinks.map((link) => link.url),
 })
 ---
 
 <!doctype html>
-<html lang="tr">
+<html lang={content.lang}>
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>{title}</title>
-    <meta name="description" content={description} />
+    <meta name="description" content={metaDescription} />
     <meta name="author" content={SITE_NAME} />
     {noindex && <meta name="robots" content="noindex" />}
     {!noindex && <link rel="canonical" href={canonicalUrl} />}
     <link rel="icon" href="/favicon.ico" />
 
     <meta property="og:title" content={title} />
-    <meta property="og:description" content={description} />
+    <meta property="og:description" content={metaDescription} />
     {!noindex && <meta property="og:url" content={canonicalUrl} />}
     <meta property="og:site_name" content={SITE_NAME} />
-    <meta property="og:locale" content="tr_TR" />
+    <meta property="og:locale" content={content.ogLocale} />
     <meta property="og:type" content={ogType} />
     <meta property="og:image" content={image.url} />
     {image.width && <meta property="og:image:width" content={String(image.width)} />}
@@ -97,7 +107,7 @@ const jsonLd = JSON.stringify({
 
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content={title} />
-    <meta name="twitter:description" content={description} />
+    <meta name="twitter:description" content={metaDescription} />
     <meta name="twitter:image" content={image.url} />
 
     <!-- JSON-LD structured data -->
@@ -108,8 +118,13 @@ const jsonLd = JSON.stringify({
     {
       showChrome && (
         <>
-          <Header pageTitle={pageTitle} pathname={pathname} />
-          <Navbar pathname={pathname} />
+          <Header
+            pageTitle={pageTitle}
+            pathname={pathname}
+            navLabels={navLabels}
+            labels={content.header}
+          />
+          <Navbar pathname={pathname} navLabels={navLabels} />
         </>
       )
     }
@@ -121,7 +136,7 @@ const jsonLd = JSON.stringify({
     <div class="flex flex-1 flex-col">
       <slot />
     </div>
-    {showChrome && <Footer />}
+    {showChrome && <Footer labels={content.footer} />}
     {
       import.meta.env.PROD && (
         <script

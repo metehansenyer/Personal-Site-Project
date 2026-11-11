@@ -1,18 +1,20 @@
 ---
 /**
- * 404 (Not Found) page. Content comes from notFoundContent.
+ * 404 (Not Found) page. Texts come from the site content (`notFound`).
  */
 import BaseLayout from '@/layouts/BaseLayout.astro'
-import notFoundContent from '@/data/notFoundContent'
+import { getSiteContent } from '@/lib/content'
 import { documentTitle } from '@/lib/site'
+
+const { notFound } = await getSiteContent()
 ---
 
-<BaseLayout title={documentTitle(notFoundContent.title)} pageTitle={notFoundContent.title} noindex>
+<BaseLayout title={documentTitle(notFound.title)} pageTitle={notFound.title} noindex>
   <main class="mx-auto w-full px-4 py-8">
     <div class="flex min-h-[60vh] flex-col items-center justify-center space-y-6">
-      <h1 class="text-4xl font-bold text-(--text-color) md:text-6xl">{notFoundContent.title}</h1>
+      <h1 class="text-4xl font-bold text-(--text-color) md:text-6xl">{notFound.title}</h1>
       <p class="text-center text-xl text-(--text-color) opacity-70 md:text-2xl">
-        {notFoundContent.description}
+        {notFound.description}
       </p>
     </div>
   </main>

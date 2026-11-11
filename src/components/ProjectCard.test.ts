@@ -9,7 +9,6 @@ function makeProject(technologies: string[]) {
     id: 'My-Repo',
     collection: 'projects',
     data: {
-      userName: 'someone',
       title: 'Demo project',
       description: 'Demo description',
       banner,
@@ -22,7 +21,7 @@ function makeProject(technologies: string[]) {
 async function render(props: Record<string, unknown> = {}, technologies = ['javascript']) {
   const container = await AstroContainer.create()
   return container.renderToString(ProjectCard, {
-    props: { project: makeProject(technologies), ...props },
+    props: { project: makeProject(technologies), bannerAlt: 'Demo alt', ...props },
   })
 }
 
@@ -31,6 +30,10 @@ const img = (html: string) => html.match(/<img[^>]*>/)?.[0] ?? ''
 describe('ProjectCard', () => {
   it('links to the project detail page by entry id', async () => {
     expect(await render()).toContain('href="/portfolio/My-Repo"')
+  })
+
+  it('uses the given banner alt text', async () => {
+    expect(img(await render())).toContain('alt="Demo alt"')
   })
 
   it('priority loads eagerly with high fetch priority', async () => {

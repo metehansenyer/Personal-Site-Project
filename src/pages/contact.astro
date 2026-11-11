@@ -1,18 +1,19 @@
 ---
 /**
- * Contact page: email and LinkedIn, content from contactContent / socialLinks.
+ * Contact page: email and LinkedIn; texts from the site content, links from socialLinks.
  */
 import BaseLayout from '@/layouts/BaseLayout.astro'
 import FaIcon from '@/components/FaIcon.astro'
 import { socialLinks } from '@/data/socialLinks'
-import { contactContent } from '@/data/contactContent'
-import { getRoute } from '@/data/routes'
+import { getSiteContent } from '@/lib/content'
 import { CONTACT_EMAIL, documentTitle } from '@/lib/site'
 
-const title = documentTitle('İletişim')
-const description =
-  'Benimle iletişime geçin. İş birliği, proje önerileri veya herhangi bir soru için buradayım.'
-const pageTitle = getRoute('/contact').title
+const content = await getSiteContent()
+const text = content.contact
+const route = content.routes.contact
+const title = documentTitle(route.metaTitle)
+const description = route.description
+const pageTitle = route.title
 
 const linkedIn = socialLinks.find((link) => link.name === 'LinkedIn')
 ---
@@ -25,8 +26,8 @@ const linkedIn = socialLinks.find((link) => link.name === 'LinkedIn')
         class="space-y-6 rounded-(--border-radius-medium) bg-(--nav-background-color) p-5 text-center shadow-lg md:p-6"
       >
         <!-- Title and Description -->
-        <h1 class="text-2xl font-bold text-(--text-color) md:text-3xl">{contactContent.title}</h1>
-        <p class="text-base text-(--text-color) md:text-lg">{contactContent.description}</p>
+        <h1 class="text-2xl font-bold text-(--text-color) md:text-3xl">{text.heading}</h1>
+        <p class="text-base text-(--text-color) md:text-lg">{text.description}</p>
 
         <!-- Contact Links -->
         <div
@@ -63,7 +64,7 @@ const linkedIn = socialLinks.find((link) => link.name === 'LinkedIn')
         </div>
 
         <!-- Footer Message -->
-        <p class="text-sm text-(--text-color)">{contactContent.footerText}</p>
+        <p class="text-sm text-(--text-color)">{text.footer}</p>
       </div>
     </div>
   </main>

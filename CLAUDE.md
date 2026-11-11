@@ -13,10 +13,11 @@ pnpm lint         # ESLint check (lint:fix to auto-fix)
 pnpm format       # Prettier write (format:check is read-only)
 pnpm check        # typecheck + lint (incl. jsx-a11y) + format:check (what CI runs first)
 pnpm test         # Vitest, one run (test:watch for watch mode)
+pnpm check:links  # internal link checker over dist/ (run after pnpm build)
 ```
 
 Package manager: **pnpm** (v12, see `packageManager` in `package.json`). Do not use npm or yarn. Node 22+.
-CI (`.github/workflows/ci.yml`) has two jobs: `verify` runs `pnpm check`, `pnpm test`, `pnpm build`; `docker` builds the image, starts it and runs `scripts/smoke-test.sh` against it. A newer run on the same ref cancels the older one for pull requests only. Locally: `docker build -t site . && docker run -d -p 3000:3000 --name site site && bash scripts/smoke-test.sh` (then `docker rm -f site`).
+CI (`.github/workflows/ci.yml`) has two jobs: `verify` runs `pnpm check`, `pnpm test`, `pnpm build`, `pnpm check:links`; `docker` builds the image, starts it and runs `scripts/smoke-test.sh` against it. A newer run on the same ref cancels the older one for pull requests only. Locally: `docker build -t site . && docker run -d -p 3000:3000 --name site site && bash scripts/smoke-test.sh` (then `docker rm -f site`).
 
 ## Astro 7 is newer than most training data
 
@@ -32,15 +33,15 @@ Static site: `output: 'static'`, pure Astro components, **no UI framework** (no 
 
 ### Routing (`src/pages/`)
 
-File-based: `index.astro` (`/`), `about.astro`, `contact.astro`, `404.astro`, `portfolio/index.astro`, `portfolio/[repoName].astro` (one page per content-collection entry via `getStaticPaths`), `sitemap.xml.ts` (endpoint; static routes from `src/data/routes.ts` plus one URL per project; no changefreq/priority, `lastmod` only for projects = release date), `robots.txt.ts` (endpoint; Sitemap line built from `SITE_URL`). `public/favicon.ico` is a static asset. 14 pages are built in total.
+File-based: `index.astro` (`/`), `about.astro`, `contact.astro`, `404.astro`, `portfolio/index.astro`, `portfolio/[id].astro` (one page per project via `getStaticPaths`; `id` is the entry id = file name, so URLs are `/portfolio/<file name>`), `sitemap.xml.ts` (endpoint; static routes from `src/data/routes.ts` plus one URL per project from `getProjects()`; no changefreq/priority, `lastmod` only for projects = `updatedDate ?? releaseDate`), `robots.txt.ts` (endpoint; Sitemap line built from `SITE_URL`). `public/favicon.ico` is a static asset. 14 pages are built in total.
 
 ### Layout (`src/layouts/BaseLayout.astro`)
 
-Wraps every page: `<head>` SEO (title, description, canonical, Open Graph, Twitter, JSON-LD), global CSS, production-only Umami script, and the site chrome. Props (all optional): `title`, `description`, `ogType`, `ogImage` (absolute URL; default is `src/assets/img/home_page.png` via `getImage`, PNG 1200 wide) with `ogImageWidth` / `ogImageHeight`, `pageTitle` (text in the Header), `showChrome` (default `true`; the home page passes `false` to hide Header/Navbar/Footer), `noindex` (robots noindex, no canonical / `og:url`; used by 404), `jsonLd` (emit the Person JSON-LD; home and about only). Twitter tags are always emitted (`summary_large_image`). Canonical / `og:url` have no trailing slash (the pathname is stripped). Page titles are built with `documentTitle(page)` from `lib/site.ts` (`<page> | Metehan Şenyer`).
+Wraps every page: `<head>` SEO (title, description, canonical, Open Graph, Twitter, JSON-LD), global CSS, production-only Umami script, and the site chrome. Props (all optional): `title`, `description` (default: `description` of the site content), `locale` (default `tr`; selects the site content, `<html lang>`, `og:locale`, JSON-LD texts), `ogType`, `ogImage` (absolute URL; default is `src/assets/img/home_page.png` via `getImage`, PNG 1200 wide) with `ogImageWidth` / `ogImageHeight`, `pageTitle` (text in the Header), `showChrome` (default `true`; the home page passes `false` to hide Header/Navbar/Footer), `noindex` (robots noindex, no canonical / `og:url`; used by 404), `jsonLd` (emit the Person JSON-LD; home and about only). The layout loads the site content once and hands the strings to Header / Navbar / Footer as props. Twitter tags are always emitted (`summary_large_image`). Canonical / `og:url` have no trailing slash (the pathname is stripped). Page titles are built with `documentTitle(page)` from `lib/site.ts` (`<page> | Metehan Şenyer`).
 
 ### Components (`src/components/`)
 
-`Header` (desktop title row + mobile hamburger menu, toggled by a vanilla script via `aria-expanded` and swapping each element's `data-closed` / `data-open` class lists), `Navbar`, `Footer`, `FaIcon` (inline SVG for a Font Awesome Free icon definition: `<FaIcon icon={faHeart} class="..." flip />`; 1em high, `currentColor`, `aria-hidden`), `Button` (link-button with `href`, `width`, `height`, `fontSize`, `newTab`, `umamiEvent`, `umamiEventData` -> `data-umami-event*` attributes), `ProjectCard` (one measuring script for all cards decides how many tech tags fit; hover slide is CSS-only), `NavOrderScript`, and `mdx/Icon`, `mdx/Callout`.
+`Header` (takes `navLabels` and `labels` props; desktop title row + mobile hamburger menu, toggled by a vanilla script via `aria-expanded` and swapping each element's `data-closed` / `data-open` class lists), `Navbar` (`navLabels` prop), `Footer` (`labels` prop; sentences are `{token}` templates), `ProjectContact` (shared closing contact block of a project page), `FaIcon` (inline SVG for a Font Awesome Free icon definition: `<FaIcon icon={faHeart} class="..." flip />`; 1em high, `currentColor`, `aria-hidden`), `Button` (link-button with `href`, `width`, `height`, `fontSize`, `newTab`, `umamiEvent`, `umamiEventData` -> `data-umami-event*` attributes), `ProjectCard` (takes a `bannerAlt` prop; one measuring script for all cards decides how many tech tags fit; hover slide is CSS-only), `NavOrderScript`, and `mdx/Icon`, `mdx/Callout`. Components never read the content collection themselves; pages and the layout fetch the strings and pass them down, so components render in Container API tests without Astro's content store.
 
 ### Nav order (`src/lib/navOrder.ts` + `src/components/NavOrderScript.astro`)
 
@@ -50,27 +51,45 @@ The three nav pages (`/about`, `/portfolio`, `/contact`) keep a user-specific or
 
 ### Data layer (`src/data/`, `src/lib/`)
 
-Static TypeScript: `routes.ts` (nav labels, titles, optional `homeLabel`, `getRoute(path)` helper that throws on unknown paths; single source of truth, also used by the home buttons and sitemap), `icons.ts` (technology icon registry keyed by slug, e.g. `typescript`, `astro`; `generateAboutTechnologies()` for the About page; exports `IconSlug`), `aboutContent.ts`, `contactContent.ts`, `socialLinks.ts`, `notFoundContent.ts`. `src/lib/site.ts` exports `SITE_URL` / `SITE_NAME` / `CONTACT_EMAIL` / `documentTitle` (`SITE_URL` is `import.meta.env.SITE`, i.e. `astro.config.ts` `site`, overridable with the `SITE_URL` env var at build time, default `https://who.metehansenyer.dev`; it throws if `site` is unset).
+Static TypeScript for language-independent data: `routes.ts` (paths, `key`, `showInNav`, `getRoute(path)` that throws on unknown paths, `RouteLabels` type; single source of truth, also used by the home buttons and sitemap), `icons.ts` (technology icon registry keyed by slug, e.g. `typescript`, `astro`; `generateAboutTechnologies()`; exports `IconSlug`), `profile.ts` (`aboutTechnologies`, the About page slug list), `socialLinks.ts`. `src/lib/site.ts` exports `SITE_URL` / `SITE_NAME` / `CONTACT_EMAIL` / `documentTitle` (`SITE_URL` is `import.meta.env.SITE`, i.e. `astro.config.ts` `site`, overridable with the `SITE_URL` env var at build time, default `https://who.metehansenyer.dev`; it throws if `site` is unset).
+
+`src/lib/`: `content.ts` (`getSiteContent(locale = 'tr')`, the typed accessor of the `site` collection, and `getRouteLabels()`), `siteSchema.ts` (strict zod schema of the site texts), `projectSchema.ts` (strict zod schema of the project frontmatter), `projects.ts` (`getProjects()`, `sortProjects`, `lastModified`, `getBannerAlt`), `mdxComponents.ts` (`createMdxComponents()`, see below), `format.ts` (`format()` fills `{name}` placeholders, `splitTemplate()` splits at tokens), `locales.ts` (`LOCALES`, `DEFAULT_LOCALE`).
+
+`scripts/check-links.mjs` (`pnpm check:links`) walks `dist/**/*.html`, resolves every internal `href` / `src` / `srcset` the way nginx serves it (`$uri`, `$uri/index.html`, `$uri.html`), checks `#fragment`s against ids on the target page and the sitemap URLs, and exits 1 listing page + broken link. Run it after `pnpm build`; its logic is unit tested in `scripts/check-links.test.ts`.
+
+### Site texts (`src/content/site/<locale>.json`)
+
+Every user-visible string that is not project content (page meta titles/descriptions, nav labels, About / Contact / 404 / home texts, Header / Footer / Callout / button labels, aria-labels, JSON-LD job title, `<html lang>`, `og:locale`, the shared project contact block) lives in the `site` data collection: one JSON file per locale, validated by `lib/siteSchema.ts` (`z.strictObject`, so an unknown or missing key fails the build). Only `tr.json` exists today. Strings with `{name}` placeholders are filled with `format()` (e.g. `project.bannerAlt` = `{title} banner`); `footer.*` sentences are split with `splitTemplate()` so markup can sit at the tokens. **Do not hard-code visible text in components or pages: add a key to the schema and to every locale file.** Names that are not translated (`SITE_NAME`, `CONTACT_EMAIL`, social link names) stay in `lib/site.ts` / `socialLinks.ts`. Adding a locale = add its code to `lib/locales.ts` and a `src/content/site/<code>.json` (`lib/content.test.ts` fails when a listed locale has no file), plus that locale's project files and routes; the content layer itself needs no restructuring.
+
+Tests cannot use the content store (it is empty under Vitest): `src/test/siteContent.ts` loads and validates the real JSON file (`loadSiteContent()`) and exports `astroContentMock` for `vi.mock('astro:content', ...)` in tests that render `BaseLayout`.
 
 ### Content collection (`src/content.config.ts`, `src/content/projects/*.mdx`)
 
-One `.mdx` per portfolio project. The entry id is the exact, case-sensitive file name without extension; it is both the URL segment (`/portfolio/<id>`) and the GitHub repo name. Frontmatter is validated at build time with zod:
+One `.mdx` per portfolio project. The entry id is the exact, case-sensitive file name without extension and is the URL segment (`/portfolio/<id>`); it is **not** assumed to be the repo name (see `repoUrl`). Frontmatter is validated at build time by `lib/projectSchema.ts` (strict: an unknown or misspelled key fails the build):
 
-| Field          | Type                                                              |
-| -------------- | ----------------------------------------------------------------- |
-| `userName`     | string, GitHub owner of the repo                                  |
-| `title`        | string                                                            |
-| `description`  | string                                                            |
-| `banner`       | image (`image()`; relative path into `src/assets/img/`)           |
-| `technologies` | array of icon slugs (enum built from the keys of `data/icons.ts`) |
-| `releaseDate`  | date (coerced; used for sorting and sitemap `lastmod`)            |
+| Field          | Type                                                                                                    |
+| -------------- | ------------------------------------------------------------------------------------------------------- |
+| `title`        | string; card title, browser title, header text, and the `<h1>` unless `heading` is set                  |
+| `heading`      | optional string; longer `<h1>` of the detail page (falls back to `title`)                               |
+| `description`  | string; meta description and card text                                                                  |
+| `banner`       | image (`image()`; relative path into `src/assets/img/`)                                                 |
+| `bannerAlt`    | optional string; default alt is `site.project.bannerAlt` (`<title> banner`)                             |
+| `technologies` | array of icon slugs (enum built from the keys of `data/icons.ts`); card tags and first detail icons     |
+| `tools`        | array of icon slugs, default `[]`; further icons on the detail page, after `technologies`               |
+| `releaseDate`  | date (coerced; sorting and sitemap `lastmod` fallback)                                                  |
+| `updatedDate`  | optional date; sitemap `lastmod` = `updatedDate ?? releaseDate`                                         |
+| `order`        | optional number; projects with `order` sort first (ascending), the rest by `releaseDate` descending     |
+| `draft`        | boolean, default `false`; drafts are left out of production builds (grid, pages, sitemap), shown in dev |
+| `repoUrl`      | optional URL; the GitHub button renders only when set                                                   |
+| `demoUrl`      | optional URL; adds a live demo button (`demo-view-click` umami event)                                   |
+| `contactNote`  | optional string; project-specific closing sentence shown under the shared contact block                 |
 
-An unknown icon slug or missing field fails the build, so there is no separate content validation script.
+Always get the project list from `getProjects()` (`lib/projects.ts`: sorted, drafts filtered) instead of `getCollection('projects')`.
 
-The detail page renders the MDX body inside `.markdown-body` (`github-markdown-css` dark theme, then `src/styles/markdown-overrides.css`, which must come after it) and passes `components={{ Icon, Callout }}`, so MDX files use them without importing:
+The detail page (`pages/portfolio/[id].astro`) renders, inside one `.markdown-body` article (`github-markdown-css` dark theme, then `src/styles/markdown-overrides.css`, which must come after it): the `<h1>` (`heading ?? title`), the MDX body, then the shared `ProjectContact` block (heading, intro, email from `CONTACT_EMAIL`, LinkedIn from `socialLinks`, optional `contactNote`). So **MDX bodies contain no `# h1`, no contact section and no repeated icon list**. The GitHub and demo buttons sit below the article. The page passes `components={createMdxComponents(project.data, content)}`, so MDX files use these without importing:
 
-- `<Icon slugs={['typescript', 'astro']} />` renders linked technology icons (`mdx/Icon.astro`; unknown slugs are skipped with a `console.warn`; plain `<img>` of the self-hosted files).
-- `<Callout type="important" | "warning" | "note">...</Callout>` renders a highlighted block with a coloured left border and a Turkish label (`mdx/Callout.astro`).
+- `<Icon />` renders the page's project icons: `technologies` then `tools` (de-duplicated). `<Icon slugs={['typescript', 'astro']} />` with explicit slugs still works (`mdx/Icon.astro`; unknown slugs are skipped with a `console.warn`; plain `<img>` of the self-hosted files). The default is bound per page in `lib/mdxComponents.ts` with `createComponent` / `renderComponent` from `astro/compiler-runtime`; `Icon.astro` itself defaults to an empty list.
+- `<Callout type="important" | "warning" | "note">...</Callout>` renders a highlighted block with a coloured left border; the label comes from the site content (bound per page the same way). The labels of the `IMPORTANT` / `WARNING` / `NOTE` code-fence callouts come from the CSS variables `--callout-*` that the page sets on the article.
 
 Prettier ignores `src/content/**/*.mdx` on purpose (its MDX formatter can mangle JSX).
 
@@ -82,7 +101,7 @@ Images in `src/assets/img/` go through `astro:assets` (`<Image>`, `getImage`, op
 
 ### Tests
 
-Vitest (`vitest.config.mts` uses Astro's `getViteConfig`, so `.astro` files and the `@/` alias work). Tests are `src/**/*.test.ts`: `lib/navOrder.test.ts` (pure logic + the toString contract), `lib/endpoints.test.ts` (robots/sitemap, `astro:content` mocked), and `components/**` / `layouts/BaseLayout.test.ts` tests that render components with the Container API (Header a11y wiring, ProjectCard loading modes and tag row, BaseLayout SEO/JSON-LD/scripts; `vi.stubEnv('PROD', true)` switches on the production-only Umami script):
+Vitest (`vitest.config.mts` uses Astro's `getViteConfig`, so `.astro` files and the `@/` alias work). Tests are `src/**/*.test.ts` and `scripts/**/*.test.ts`: `lib/navOrder.test.ts` (pure logic + the toString contract), `lib/endpoints.test.ts` (robots/sitemap incl. draft filter and `updatedDate`, `astro:content` mocked), `lib/projects.test.ts` (ordering, drafts), `lib/projectSchema.test.ts` (strict frontmatter), `lib/content.test.ts` (site content per locale), `lib/mdxComponents.test.ts` (`<Icon />` defaults), `scripts/check-links.test.ts` (link resolution), and `components/**` / `layouts/BaseLayout.test.ts` tests that render components with the Container API (Header a11y wiring, ProjectCard loading modes and tag row, BaseLayout SEO/JSON-LD/scripts; `vi.stubEnv('PROD', true)` switches on the production-only Umami script):
 
 ```ts
 import { experimental_AstroContainer as AstroContainer } from 'astro/container'
@@ -104,9 +123,9 @@ Hosting: self-hosted on **Dokploy** as an _Application_ (not Compose; there is n
 ## Adding a project
 
 1. Add a banner image to `src/assets/img/`.
-2. Create `src/content/projects/<repoName>.mdx` (file name = repo name, case-sensitive) with the frontmatter above; copy an existing file as a reference. Banner path is relative, e.g. `../../assets/img/<file>.png`.
-3. Run `pnpm build` (validates the frontmatter). The project then appears on `/portfolio`, gets `/portfolio/<repoName>`, and is added to the sitemap.
+2. Create `src/content/projects/<id>.mdx` (the file name is the URL segment, case-sensitive) with the frontmatter above; copy an existing file as a reference. Set `repoUrl` (and `demoUrl`) explicitly; the file name is not used as the repo name. Banner path is relative, e.g. `../../assets/img/<file>.png`. List the icons once in `technologies` / `tools` and write `<Icon />` in the body; do not add an h1 or a contact section (both come from the page). Use `draft: true` while a project is unfinished.
+3. Run `pnpm build` (validates the frontmatter) and `pnpm check:links`. The project then appears on `/portfolio`, gets `/portfolio/<id>`, and is added to the sitemap.
 
 ## Adding a technology icon
 
-Save the logo (prefer SVG, from devicon (MIT) or simpleicons (CC0); PNG only when no SVG exists) as `public/icons/tech/<slug>.<ext>` and add an entry to the `icons` object in `src/data/icons.ts` with `name` (also used as the img alt text), `url`, `imgSrc: '/icons/tech/<slug>.<ext>'`. Slugs that share a logo may point at the same file. The key is the slug used in MDX frontmatter `technologies`, in `<Icon slugs={[...]} />`, and in `aboutContent.ts`. Pick an image that is visible on the dark (`#1f2937` / `#374151`) background; for a black logo, add a light `fill` (e.g. `#d1d5db`) to the local SVG (as done for `markdown.svg` and `vercel.svg`). Do not hotlink remote images.
+Save the logo (prefer SVG, from devicon (MIT) or simpleicons (CC0); PNG only when no SVG exists) as `public/icons/tech/<slug>.<ext>` and add an entry to the `icons` object in `src/data/icons.ts` with `name` (also used as the img alt text), `url`, `imgSrc: '/icons/tech/<slug>.<ext>'`. Slugs that share a logo may point at the same file. The key is the slug used in MDX frontmatter `technologies`, in `<Icon slugs={[...]} />`, and in `data/profile.ts` (About page list). Pick an image that is visible on the dark (`#1f2937` / `#374151`) background; for a black logo, add a light `fill` (e.g. `#d1d5db`) to the local SVG (as done for `markdown.svg` and `vercel.svg`). Do not hotlink remote images.

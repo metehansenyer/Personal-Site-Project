@@ -2,6 +2,11 @@ import { describe, it, expect, vi, afterEach } from 'vitest'
 import { experimental_AstroContainer as AstroContainer } from 'astro/container'
 import BaseLayout from './BaseLayout.astro'
 import { socialLinks } from '@/data/socialLinks'
+import { loadSiteContent } from '@/test/siteContent'
+
+vi.mock('astro:content', async () => (await import('@/test/siteContent')).astroContentMock)
+
+const content = loadSiteContent()
 
 async function render(props: Record<string, unknown> = {}, route = '/about/') {
   const container = await AstroContainer.create()
@@ -38,6 +43,20 @@ describe('BaseLayout', () => {
     const data = JSON.parse(json!)
     expect(data['@type']).toBe('Person')
     expect(data.sameAs).toEqual(socialLinks.map((l) => l.url))
+  })
+
+  it('takes lang, og:locale, the default description and the JSON-LD job title from the content', async () => {
+    const html = await render({ jsonLd: true })
+    expect(html).toContain(`<html lang="${content.lang}">`)
+    expect(html).toContain(`<meta property="og:locale" content="${content.ogLocale}">`)
+    expect(html).toContain(`<meta name="description" content="${content.description}">`)
+    expect(html).toContain(JSON.stringify(content.jsonLd.jobTitle).slice(1, -1))
+  })
+
+  it('uses an explicit description instead of the default', async () => {
+    const html = await render({ description: 'Custom text' })
+    expect(html).toContain('<meta name="description" content="Custom text">')
+    expect(html).not.toContain(content.description)
   })
 
   it('loads no third-party script other than Umami (production)', async () => {
