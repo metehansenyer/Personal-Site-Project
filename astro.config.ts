@@ -29,9 +29,6 @@ export default defineConfig({
     }),
   },
   integrations: [mdx()],
-  image: {
-    domains: ['raw.githubusercontent.com', 'cdn.jsdelivr.net'],
-  },
   vite: {
     plugins: [tailwindcss()],
   },

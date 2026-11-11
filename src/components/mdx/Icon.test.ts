@@ -14,7 +14,7 @@ describe('Icon - known slugs', () => {
     const html = await render(['typescript'])
     expect(html).toContain(icons.typescript.url)
     expect(html).toContain(icons.typescript.imgSrc)
-    expect(html).toContain(icons.typescript.alt)
+    expect(html).toContain(`alt="${icons.typescript.name}"`)
   })
 
   it('renders multiple icons for multiple known slugs', async () => {

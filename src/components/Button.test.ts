@@ -23,9 +23,14 @@ describe('Button', () => {
   })
 
   it('opens in a new tab only when newTab is set', async () => {
-    expect(await render({ newTab: true })).toContain('target="_blank"')
-    expect(await render()).not.toContain('target=')
-    expect(await render({ newTab: false })).not.toContain('target=')
+    const html = await render({ newTab: true })
+    expect(html).toContain('target="_blank"')
+    expect(html).toContain('rel="noopener noreferrer"')
+    for (const props of [{}, { newTab: false }]) {
+      const other = await render(props)
+      expect(other).not.toContain('target=')
+      expect(other).not.toContain('rel=')
+    }
   })
 
   it('renders umami event and event-data attributes', async () => {

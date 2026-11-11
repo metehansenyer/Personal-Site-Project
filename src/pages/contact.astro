@@ -5,12 +5,13 @@
 import BaseLayout from '@/layouts/BaseLayout.astro'
 import { socialLinks } from '@/data/socialLinks'
 import { contactContent } from '@/data/contactContent'
-import { routes } from '@/data/routes'
+import { getRoute } from '@/data/routes'
+import { CONTACT_EMAIL, documentTitle } from '@/lib/site'
 
-const title = 'İletişim | Metehan Şenyer'
+const title = documentTitle('İletişim')
 const description =
   'Benimle iletişime geçin. İş birliği, proje önerileri veya herhangi bir soru için buradayım.'
-const pageTitle = routes.find((r) => r.path === '/contact')!.title
+const pageTitle = getRoute('/contact').title
 
 const linkedIn = socialLinks.find((link) => link.name === 'LinkedIn')
 ---
@@ -32,11 +33,11 @@ const linkedIn = socialLinks.find((link) => link.name === 'LinkedIn')
         >
           <!-- Email Link -->
           <a
-            href={`mailto:${contactContent.email}`}
+            href={`mailto:${CONTACT_EMAIL}`}
             class="break-all text-(--text-color) transition-colors duration-300 hover:text-(--text-color-white)"
             data-umami-event="email-click"
           >
-            {contactContent.email}
+            {CONTACT_EMAIL}
           </a>
           <!-- LinkedIn Link - Only shown if LinkedIn profile exists -->
           {

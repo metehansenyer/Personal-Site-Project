@@ -32,11 +32,11 @@ Static site: `output: 'static'`, pure Astro components, **no UI framework** (no 
 
 ### Routing (`src/pages/`)
 
-File-based: `index.astro` (`/`), `about.astro`, `contact.astro`, `404.astro`, `portfolio/index.astro`, `portfolio/[repoName].astro` (one page per content-collection entry via `getStaticPaths`), `sitemap.xml.ts` (endpoint; static routes from `src/data/routes.ts` plus one URL per project). `public/robots.txt` and `public/favicon.ico` are static assets. 14 pages are built in total.
+File-based: `index.astro` (`/`), `about.astro`, `contact.astro`, `404.astro`, `portfolio/index.astro`, `portfolio/[repoName].astro` (one page per content-collection entry via `getStaticPaths`), `sitemap.xml.ts` (endpoint; static routes from `src/data/routes.ts` plus one URL per project; no changefreq/priority, `lastmod` only for projects = release date), `robots.txt.ts` (endpoint; Sitemap line built from `SITE_URL`). `public/favicon.ico` is a static asset. 14 pages are built in total.
 
 ### Layout (`src/layouts/BaseLayout.astro`)
 
-Wraps every page: `<head>` SEO (title, description, canonical, Open Graph, Twitter, JSON-LD), Font Awesome kit script, global CSS, production-only Umami script, and the site chrome. Props (all optional): `title`, `description`, `ogType`, `ogImage` (absolute URL), `twitterCard` (`summary` | `summary_large_image`), `pageTitle` (text in the Header), `showChrome` (default `true`; the home page passes `false` to hide Header/Navbar/Footer). Canonical / `og:url` have no trailing slash (the pathname is stripped).
+Wraps every page: `<head>` SEO (title, description, canonical, Open Graph, Twitter, JSON-LD), Font Awesome kit script, global CSS, production-only Umami script, and the site chrome. Props (all optional): `title`, `description`, `ogType`, `ogImage` (absolute URL; default is `src/assets/img/home_page.png` via `getImage`, PNG 1200 wide) with `ogImageWidth` / `ogImageHeight`, `pageTitle` (text in the Header), `showChrome` (default `true`; the home page passes `false` to hide Header/Navbar/Footer), `noindex` (robots noindex, no canonical / `og:url`; used by 404), `jsonLd` (emit the Person JSON-LD; home and about only). Twitter tags are always emitted (`summary_large_image`). Canonical / `og:url` have no trailing slash (the pathname is stripped). Page titles are built with `documentTitle(page)` from `lib/site.ts` (`<page> | Metehan Şenyer`).
 
 ### Components (`src/components/`)
 
@@ -50,7 +50,7 @@ The three nav pages (`/about`, `/portfolio`, `/contact`) keep a user-specific or
 
 ### Data layer (`src/data/`, `src/lib/`)
 
-Static TypeScript: `routes.ts` (nav labels, titles, sitemap metadata; single source of truth), `icons.ts` (technology icon registry keyed by slug, e.g. `typescript`, `astro`; `generateAboutTechnologies()` for the About page; exports `IconSlug`), `aboutContent.ts`, `contactContent.ts`, `socialLinks.ts`, `notFoundContent.ts`. `src/lib/site.ts` exports `SITE_URL` / `SITE_NAME` (`SITE_URL` comes from `astro.config.ts` `site`, overridable with the `SITE_URL` env var at build time, default `https://who.metehansenyer.dev`).
+Static TypeScript: `routes.ts` (nav labels, titles, optional `homeLabel`, `getRoute(path)` helper that throws on unknown paths; single source of truth, also used by the home buttons and sitemap), `icons.ts` (technology icon registry keyed by slug, e.g. `typescript`, `astro`; `generateAboutTechnologies()` for the About page; exports `IconSlug`), `aboutContent.ts`, `contactContent.ts`, `socialLinks.ts`, `notFoundContent.ts`. `src/lib/site.ts` exports `SITE_URL` / `SITE_NAME` / `CONTACT_EMAIL` / `documentTitle` (`SITE_URL` is `import.meta.env.SITE`, i.e. `astro.config.ts` `site`, overridable with the `SITE_URL` env var at build time, default `https://who.metehansenyer.dev`; it throws if `site` is unset).
 
 ### Content collection (`src/content.config.ts`, `src/content/projects/*.mdx`)
 
@@ -78,7 +78,7 @@ Prettier ignores `src/content/**/*.mdx` on purpose (its MDX formatter can mangle
 
 Tailwind CSS v4 through `@tailwindcss/vite` (configured in `astro.config.ts`; no `tailwind.config.*`). `src/styles/global.css` holds `@import 'tailwindcss'`, the self-hosted Inter font (`@fontsource-variable/inter`) and the CSS variables (`--background-color`, `--text-color`, `--nav-background-color`, ...) used as `bg-(--nav-background-color)` etc. Prettier sorts Tailwind classes in `.astro` files with `prettier-plugin-tailwindcss`; this only works with `prettier-plugin-astro` **0.14.x** (pinned `~0.14.1`; 1.x has a different AST the Tailwind plugin does not understand, and Dependabot ignores `>= 1.0.0`). Do not bump it until the Tailwind plugin supports 1.x. Classes inside `data-open` / `data-closed` attributes and JS strings are not sorted; they are applied by script via `classList`.
 
-Images in `src/assets/img/` go through `astro:assets` (`<Image>`, `getImage`, optimized at build with sharp). Technology icons are remote SVGs from jsDelivr (and simpleicons for Astro) in plain `<img>` tags; `image.domains` in `astro.config.ts` only matters for `astro:assets` remote images.
+Images in `src/assets/img/` go through `astro:assets` (`<Image>`, `getImage`, optimized at build with sharp). Technology icons are remote SVGs from jsDelivr (and simpleicons for Astro) in plain `<img>` tags. No remote image goes through `astro:assets`, so `image.domains` is not configured; add it if that changes.
 
 ### Tests
 
@@ -109,4 +109,4 @@ Hosting: self-hosted on **Dokploy** as an _Application_ (not Compose; there is n
 
 ## Adding a technology icon
 
-Add an entry to the `icons` object in `src/data/icons.ts` with `name`, `url`, `imgSrc`, `alt`. The key is the slug used in MDX frontmatter `technologies`, in `<Icon slugs={[...]} />`, and in `aboutContent.ts`. Pick an image that is visible on the dark (`#1f2937` / `#374151`) background and returns an SVG over HTTP.
+Add an entry to the `icons` object in `src/data/icons.ts` with `name` (also used as the img alt text), `url`, `imgSrc`. The key is the slug used in MDX frontmatter `technologies`, in `<Icon slugs={[...]} />`, and in `aboutContent.ts`. Pick an image that is visible on the dark (`#1f2937` / `#374151`) background and returns an SVG over HTTP.

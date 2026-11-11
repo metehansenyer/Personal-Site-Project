@@ -6,18 +6,19 @@
  */
 import BaseLayout from '@/layouts/BaseLayout.astro'
 import Button from '@/components/Button.astro'
+import { getRoute, type SiteRoute } from '@/data/routes'
 
-// Navigation button configuration, organized in a two-row layout for visual balance
-const navigationButtons = [
-  [
-    { href: '/about', text: 'Ben Kimim?' },
-    { href: '/portfolio', text: 'Portföy' },
-  ],
-  [{ href: '/contact', text: 'Bana Ulaşın' }],
-]
+// Two-row layout for visual balance; hrefs and labels come from routes.ts
+const rows: SiteRoute['path'][][] = [['/about', '/portfolio'], ['/contact']]
+const navigationButtons = rows.map((row) =>
+  row.map((path) => {
+    const route = getRoute(path)
+    return { href: route.path, text: route.homeLabel ?? route.label }
+  }),
+)
 ---
 
-<BaseLayout showChrome={false}>
+<BaseLayout showChrome={false} jsonLd>
   <main
     class="mx-auto flex min-h-svh w-full max-w-[90%] flex-col justify-center overflow-hidden sm:max-w-[80%] md:min-h-screen"
   >

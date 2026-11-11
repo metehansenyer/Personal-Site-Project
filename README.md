@@ -123,7 +123,7 @@ docker build -t personal-site .
 docker run --rm -p 3000:3000 personal-site
 ```
 
-Tarayıcıda [http://localhost:3000](http://localhost:3000) adresini açın. Kanonik site adresi `SITE_URL` build argümanıyla değiştirilebilir (`--build-arg SITE_URL=https://ornek.com`); verilmezse `https://who.metehansenyer.dev` kullanılır. Sağlık kontrolü için `/healthz` adresi `ok` döndürür.
+Tarayıcıda [http://localhost:3000](http://localhost:3000) adresini açın. Kanonik site adresi (canonical, sitemap.xml ve robots.txt dahil) `SITE_URL` build argümanıyla değiştirilebilir (`--build-arg SITE_URL=https://ornek.com`); verilmezse `https://who.metehansenyer.dev` kullanılır. Sağlık kontrolü için `/healthz` adresi `ok` döndürür.
 
 Yayın ortamında site, Dokploy ile kendi sunucumda barındırılır: Docker imajı deponun `Dockerfile` dosyasından üretilir ve Dokploy tarafından yayınlanır.
 
@@ -171,7 +171,7 @@ Web sitesinin içeriği `src` altındaki TypeScript ve MDX dosyaları aracılı�
 
 ### Yeni teknoloji ikonu ekleme
 
-`src/data/icons.ts` içindeki `icons` nesnesine `name`, `url`, `imgSrc` ve `alt` alanlarıyla yeni bir kayıt ekleyin. Anahtar, hem proje frontmatter'ındaki `technologies` listesinde hem de `<Icon slugs={[...]} />` içinde kullanılan kısa addır.
+`src/data/icons.ts` içindeki `icons` nesnesine `name` (aynı zamanda img alt metni olarak kullanılır), `url` ve `imgSrc` alanlarıyla yeni bir kayıt ekleyin. Anahtar, hem proje frontmatter'ındaki `technologies` listesinde hem de `<Icon slugs={[...]} />` içinde kullanılan kısa addır.
 
 ## Canlı Demo
 
