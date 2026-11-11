@@ -153,7 +153,7 @@ Recipe for `src/content/project-translations/en/<id>.mdx` (reference: `KOU-Not-B
 4. Natural English, same tone, not word by word. "KOU Not Bilgi Sistemi" is the project's name and stays.
 5. `pnpm build` (validates the frontmatter and fails for an orphan), then open `/en/portfolio/<id>`: no fallback notice, `<html lang="en">`, no `lang="tr"` on the article. `pnpm check:links` must pass.
 
-Existing files: `src/content/project-translations/en/KOU-Not-Bilgi-Sistemi-CLI.mdx`. Missing translations are fine: the page falls back to Turkish with a notice.
+All nine current projects have an English translation in `src/content/project-translations/en/`. A missing translation is fine: the page falls back to Turkish with a notice.
 
 ## Adding a technology icon
 
