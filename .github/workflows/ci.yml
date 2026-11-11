@@ -11,10 +11,12 @@ on:
 permissions:
   contents: read
 
-# A newer run on the same ref cancels the older one for pull requests; runs on main finish.
+# Only the newest commit is tested: a newer run for the same pull request, or a newer push to
+# main, cancels the older run. Runs left over for a closed pull request are cancelled by
+# cancel-stale-runs.yml.
 concurrency:
-  group: ci-${{ github.ref }}
-  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+  group: ci-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
 
 jobs:
   verify:
