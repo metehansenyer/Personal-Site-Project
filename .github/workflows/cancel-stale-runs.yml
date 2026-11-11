@@ -1,0 +1,45 @@
+name: Cancel stale runs
+
+# When a pull request is merged or closed, cancel every workflow run that is still queued or
+# running for its last commit (CI, CodeQL, ...). Those runs test code that is no longer current;
+# the push to main starts its own run for the merged result. Runs on the default branch are never
+# touched.
+
+on:
+  pull_request:
+    types: [closed]
+
+permissions:
+  actions: write
+
+jobs:
+  cancel:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Cancel unfinished runs of the closed pull request
+        env:
+          GH_TOKEN: ${{ github.token }}
+          HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+          DEFAULT_BRANCH: ${{ github.event.repository.default_branch }}
+          THIS_RUN: ${{ github.run_id }}
+        run: |
+          set -euo pipefail
+          ids=$(gh api "repos/$GITHUB_REPOSITORY/actions/runs?head_sha=$HEAD_SHA&per_page=100" |
+            jq -r --arg default "$DEFAULT_BRANCH" --arg self "$THIS_RUN" '
+              .workflow_runs[]
+              | select(.status != "completed")
+              | select((.id | tostring) != $self)
+              | select(.head_branch != $default)
+              | .id')
+          if [ -z "$ids" ]; then
+            echo "No unfinished runs for $HEAD_SHA"
+            exit 0
+          fi
+          for id in $ids; do
+            # A run can finish, or not be cancellable yet, between listing and cancelling.
+            if gh api -X POST "repos/$GITHUB_REPOSITORY/actions/runs/$id/cancel" >/dev/null 2>&1; then
+              echo "Cancelled run $id"
+            else
+              echo "Could not cancel run $id (already finished or not cancellable)"
+            fi
+          done

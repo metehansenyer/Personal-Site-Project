@@ -17,7 +17,7 @@ pnpm check:links  # internal link checker over dist/ (run after pnpm build)
 ```
 
 Package manager: **pnpm** (v12, see `packageManager` in `package.json`). Do not use npm or yarn. Node 22+.
-CI (`.github/workflows/ci.yml`) has two jobs: `verify` runs `pnpm check`, `pnpm test`, `pnpm build`, `pnpm check:links`; `docker` builds the image, starts it and runs `scripts/smoke-test.sh` against it. A newer run on the same ref cancels the older one for pull requests only. Locally: `docker build -t site . && docker run -d -p 3000:3000 --name site site && bash scripts/smoke-test.sh` (then `docker rm -f site`).
+CI (`.github/workflows/ci.yml`) has two jobs: `verify` runs `pnpm check`, `pnpm test`, `pnpm build`, `pnpm check:links`; `docker` builds the image, starts it and runs `scripts/smoke-test.sh` against it. Only the newest commit is tested: a newer run for the same pull request, or a newer push to `main`, cancels the older run, and `.github/workflows/cancel-stale-runs.yml` cancels runs still queued or running for a pull request once it is merged or closed. Locally: `docker build -t site . && docker run -d -p 3000:3000 --name site site && bash scripts/smoke-test.sh` (then `docker rm -f site`).
 
 ## Astro 7 is newer than most training data
 
