@@ -8,6 +8,7 @@ BASE="${1:-http://127.0.0.1:3000}"
 BASE="${BASE%/}"
 
 # Text of the 404 page (`notFound.description` in src/content/site/tr.json); update it here if that copy changes.
+# The same page (Turkish first, English below) is served for every missing URL, also under /en/.
 NOT_FOUND_TEXT="aradığın şey yok"
 
 fail() {
@@ -66,6 +67,19 @@ for p in /about /portfolio /contact; do
   expect_header "$p" content-type "text/html"
 done
 pass "/about, /portfolio, /contact -> 200 without redirect"
+
+for p in /en /en/about /en/portfolio /en/contact; do
+  request "$p"
+  expect_status "$p (no redirect expected)" 200
+  expect_header "$p" content-type "text/html"
+  [[ "$BODY" == *'<html lang="en">'* ]] || fail "$p: not an English page (<html lang=\"en\"> missing)"
+done
+pass "/en, /en/about, /en/portfolio, /en/contact -> 200 without redirect, lang=en"
+
+request /en/does-not-exist
+expect_status /en/does-not-exist 404
+[[ "$BODY" == *"$NOT_FOUND_TEXT"* ]] || fail "/en/does-not-exist: body lacks the 404 page text '$NOT_FOUND_TEXT'"
+pass "/en/does-not-exist -> 404 with the 404 page"
 
 request /does-not-exist
 expect_status /does-not-exist 404

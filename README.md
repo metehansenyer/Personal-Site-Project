@@ -15,6 +15,7 @@ Bu proje, projelerimi ve yeteneklerimi sergilemek amacıyla modern web teknoloji
     - [Docker](#docker)
   - [İçerik Yönetimi](#i̇çerik-yönetimi)
     - [Yeni proje ekleme](#yeni-proje-ekleme)
+    - [Projeyi İngilizceye çevirme](#projeyi-i̇ngilizceye-çevirme)
     - [Yeni teknoloji ikonu ekleme](#yeni-teknoloji-ikonu-ekleme)
   - [Canlı Demo](#canlı-demo)
   - [Lisans](#lisans)
@@ -50,6 +51,7 @@ Bu proje, projelerimi ve yeteneklerimi sergilemek amacıyla modern web teknoloji
   "Proje Vitrini": "Projelerimi açıklamaları, kullanılan teknolojileri, depo ve canlı demo bağlantılarıyla birlikte sergilemek için ayrılmış bir portfolio bölümü.",
   "Hakkımda Sayfası": "Kendimi, yeteneklerimi ve geçmişimi tanıttığım bir bölüm.",
   "İletişim Sayfası": "Bana ulaşabileceğiniz yollar.",
+  "Türkçe ve İngilizce": "Site iki dilli: Türkçe varsayılan dildir ve eski adreslerde (`/`, `/about`, ...) durur, İngilizce `/en` altındadır. Her sayfada dil değiştirici ve hreflang etiketleri vardır; yönlendirme yoktur.",
   "Teknoloji Entegrasyonu": "Her proje için frontmatter'daki teknoloji listesinden oluşturulan teknoloji ikonları.",
   "SEO Optimize Edilmiş": "Arama motoru görünürlüğünü artırmak için uygulanan SEO en iyi uygulamaları.",
   "Karanlık Mod": "Düşük ışıklı ortamlarda rahat gezinme için görsel olarak çekici bir karanlık tema."
@@ -137,8 +139,9 @@ Yayın ortamında site, Dokploy ile kendi sunucumda barındırılır: Docker ima
 
 Web sitesinin içeriği `src` altındaki JSON, TypeScript ve MDX dosyaları aracılığıyla yönetilir. Bu, temel bileşenlere dokunmadan kolay güncellemelere olanak tanır.
 
-- **Sayfa metinleri** (Hakkımda, İletişim, 404, ana sayfa, menü ve buton yazıları, meta başlık/açıklamaları): `src/content/site/<dil>.json` (şu an `tr.json`). Dosya zod şemasıyla (`src/lib/siteSchema.ts`) doğrulanır; bilinmeyen veya eksik bir anahtar build'i durdurur. Yeni bir dil eklemek için `src/lib/locales.ts` dosyasına dil kodunu ve yeni bir `<dil>.json` dosyasını ekleyin.
-- **Projeler:** `src/content/projects/*.mdx`
+- **Sayfa metinleri** (Hakkımda, İletişim, 404, ana sayfa, menü ve buton yazıları, meta başlık/açıklamaları): `src/content/site/<dil>.json` (`tr.json` ve `en.json`). Dosyalar zod şemasıyla (`src/lib/siteSchema.ts`) doğrulanır; bilinmeyen veya eksik bir anahtar build'i durdurur. Bir metni eklerken/değiştirirken şemayı ve **iki** JSON dosyasını birlikte güncelleyin (`{yer_tutucular}` aynı kalmalıdır; testler anahtar ve yer tutucu eşitliğini denetler). Yeni bir dil eklemek için `src/lib/locales.ts` dosyasına dil kodunu ve yeni bir `<dil>.json` dosyasını ekleyin; sayfalar, sitemap ve dil değiştirici dil listesini otomatik izler.
+- **Projeler:** `src/content/projects/*.mdx` (Türkçe, tüm alanlar). İngilizce çeviriler: `src/content/project-translations/en/<dosya-adı>.mdx`
+- **Dil adresleri:** Türkçe `/`, `/about`, `/portfolio`, `/contact`, `/portfolio/<id>`; İngilizce `/en`, `/en/about`, `/en/portfolio`, `/en/contact`, `/en/portfolio/<id>`. Sayfalar `src/pages/[...locale]/` altında tek kez yazılmıştır.
 - **Hakkımda sayfasındaki teknolojiler:** `src/data/profile.ts`
 - **Teknoloji İkonları:** `src/data/icons.ts`
 - **Sosyal Medya Bağlantıları:** `src/data/socialLinks.ts`
@@ -186,6 +189,24 @@ Web sitesinin içeriği `src` altındaki JSON, TypeScript ve MDX dosyaları arac
 ```
 
 `<Icon />` projenin `technologies` ve `tools` listesini gösterir; `slugs` verilirse yalnızca o liste gösterilir. `Callout` türleri: `important`, `warning`, `note`. İçerikteki bağlantılar tam adres olmalıdır (GitHub README'sine özgü göreli bağlantılar, örneğin `LICENSE`, sitede kırılır; `pnpm check:links` bunları yakalar).
+
+### Projeyi İngilizceye çevirme
+
+Çevirisi olmayan bir proje `/en/portfolio/<id>` adresinde yine yayınlanır: Türkçe içerik, sayfanın başında "bu sayfa henüz İngilizce değil" notuyla gösterilir. Çeviri eklemek için `src/content/project-translations/en/<dosya-adı>.mdx` oluşturun (dosya adı, `src/content/projects/` altındakiyle birebir aynı olmalı; karşılığı olmayan çeviri build'i durdurur):
+
+```mdx
+---
+title: 'Project Title' # zorunlu
+description: 'Short description.' # zorunlu
+heading: 'Longer page heading' # isteğe bağlı, Türkçe dosyada varsa
+bannerAlt: 'Banner description' # isteğe bağlı
+contactNote: 'Closing sentence.' # isteğe bağlı, Türkçe dosyada varsa
+---
+
+Çevrilmiş MDX gövdesi (bileşenler, kod blokları, komutlar, bağlantılar ve yapı aynen kalır).
+```
+
+Çeviri dosyasına yalnızca bu metin alanları yazılır; banner, teknolojiler, tarihler, `repoUrl` vb. her zaman Türkçe (asıl) dosyadan gelir ve fazladan bir alan build'i durdurur. Ayrıntılı tarif için `CLAUDE.md` dosyasındaki "Translating a project" bölümüne ve örnek olarak `KOU-Not-Bilgi-Sistemi-CLI.mdx` çevirisine bakın.
 
 ### Yeni teknoloji ikonu ekleme
 

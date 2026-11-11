@@ -2,18 +2,23 @@ import { describe, it, expect } from 'vitest'
 import { experimental_AstroContainer as AstroContainer } from 'astro/container'
 import Header from './Header.astro'
 import { getRouteLabels } from '@/lib/content'
+import { getAlternates } from '@/lib/i18n'
 import { loadSiteContent } from '@/test/siteContent'
 
 const content = loadSiteContent()
 
-async function render(pathname = '/about') {
+async function render(pathname = '/about', locale: 'tr' | 'en' = 'tr', withSwitcher = false) {
+  const c = loadSiteContent(locale)
   const container = await AstroContainer.create()
   return container.renderToString(Header, {
     props: {
       pageTitle: 'Hakkımda',
       pathname,
-      navLabels: getRouteLabels(content),
-      labels: content.header,
+      navLabels: getRouteLabels(c),
+      labels: c.header,
+      switcher: withSwitcher
+        ? { current: locale, alternates: getAlternates(pathname), label: c.languageSwitcher.label }
+        : undefined,
     },
   })
 }
@@ -51,5 +56,20 @@ describe('Header', () => {
     const html = await render('/about')
     const hrefs = [...html.matchAll(/<a href="([^"]+)"/g)].map((m) => m[1])
     expect(hrefs).toEqual(['/', '/portfolio', '/contact'])
+  })
+
+  it('keeps the nav links in the English locale under /en', async () => {
+    const html = await render('/en/about', 'en')
+    const hrefs = [...html.matchAll(/<a href="([^"]+)"/g)].map((m) => m[1])
+    expect(hrefs).toEqual(['/en', '/en/portfolio', '/en/contact'])
+    expect(html).toContain('aria-label="Open navigation"')
+    expect(html).toContain('Portfolio')
+  })
+
+  it('renders the language switcher in the desktop and the mobile header when given', async () => {
+    const html = await render('/en/about', 'en', true)
+    expect(html.match(/role="group"/g)).toHaveLength(2)
+    expect(html.match(/hreflang="tr" title="Türkçe"/g)).toHaveLength(2)
+    expect(await render('/about')).not.toContain('role="group"')
   })
 })

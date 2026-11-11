@@ -4,22 +4,39 @@
  *
  * Grid of project cards (1 column on mobile, 2 on tablet, 3 on desktop) in `getProjects()`
  * order (`order`, then release date newest first). Shows a message when there are no projects.
+ * One implementation for every locale (`[...locale]`); cards of untranslated projects show the
+ * default-locale texts (marked with their `lang`) and link to the same-locale detail page.
  */
 import BaseLayout from '@/layouts/BaseLayout.astro'
 import ProjectCard from '@/components/ProjectCard.astro'
 import { getSiteContent } from '@/lib/content'
+import { localeStaticPaths, localizePath } from '@/lib/i18n'
+import type { Locale } from '@/lib/locales'
 import { getBannerAlt, getProjects } from '@/lib/projects'
 import { documentTitle } from '@/lib/site'
 
-const content = await getSiteContent()
-const projects = await getProjects()
+export const getStaticPaths = localeStaticPaths
+
+interface Props {
+  locale: Locale
+}
+
+const { locale } = Astro.props
+const content = await getSiteContent(locale)
+const projects = await getProjects(locale)
 
 const route = content.routes.portfolio
 const title = documentTitle(route.metaTitle)
 const description = route.description
 ---
 
-<BaseLayout title={title} description={description} ogType="website" pageTitle={route.title}>
+<BaseLayout
+  locale={locale}
+  title={title}
+  description={description}
+  ogType="website"
+  pageTitle={route.title}
+>
   {
     projects.length === 0 ? (
       <div class="mx-auto w-full max-w-[90%] px-4 py-8 text-center sm:max-w-[85%] md:max-w-[80%]">
@@ -32,7 +49,9 @@ const description = route.description
           {projects.map((project, index) => (
             <ProjectCard
               project={project}
+              href={localizePath(`/portfolio/${project.id}`, locale)}
               bannerAlt={getBannerAlt(project, content)}
+              contentLang={project.translated ? undefined : project.contentLocale}
               loading={index === 0 ? 'priority' : index < 3 ? 'eager' : 'lazy'}
             />
           ))}

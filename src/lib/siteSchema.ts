@@ -69,6 +69,10 @@ export const siteSchema = z.strictObject({
     openMenu: text,
     closeMenu: text,
   }),
+  languageSwitcher: z.strictObject({
+    /** Accessible name of the language switcher group (`aria-label`). */
+    label: text,
+  }),
   footer: z.strictObject({
     /** Tokens: `{author}` (link) and `{heart}` (icon). */
     credit: text,
@@ -81,6 +85,8 @@ export const siteSchema = z.strictObject({
     bannerAlt: text,
     viewOnGithub: text,
     viewDemo: text,
+    /** Shown at the top of a project page whose text exists only in the default locale. */
+    fallbackNotice: text,
     callouts: z.strictObject({
       important: text,
       warning: text,

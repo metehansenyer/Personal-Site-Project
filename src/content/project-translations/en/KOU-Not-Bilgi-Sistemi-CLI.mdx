@@ -1,0 +1,80 @@
+---
+title: "Scraping Project: Kocaeli University Grade Information System"
+heading: "KOU Not Bilgi Sistemi: A CLI Scraper Built with Selenium"
+description: "A tool that automatically pulls grades from the Kocaeli University student information system and keeps them available offline. Data collection makes later access instant, even without a connection."
+contactNote: "I'm always up for a chat about automation and software projects!"
+---
+
+Hi, I'm **Metehan Şenyer**. This project is a Command Line Interface (CLI) tool that automatically pulls grades from the Kocaeli University student information system and makes them available offline.
+
+## 🚀 About the Project
+
+**KOU Not Bilgi Sistemi CLI** is a hobby project built with Selenium and Python that lets students get to their grades quickly, without an internet connection. After the first login it stores the session information, so later logins skip the reCAPTCHA check and your data is available within seconds. I built this tool to put my data collection and automation skills to the test.
+
+## 🌟 Features
+
+|            Feature            |                                         Description                                          |
+| :---------------------------: | :------------------------------------------------------------------------------------------: |
+| **Automatic Data Collection** |       Collects the grade data of every semester and stores it as JSON for offline use.       |
+| **Secure Session Management** |        Logs back in using cookie-based sessions, without ever storing your password.         |
+|     **Ultra-Fast Access**     |         Because the data is stored locally, later runs get to it in under 1 second.          |
+|       **Data Refresh**        | Pulls the latest data from the server with a single menu command and updates the local copy. |
+|  **Rich Console Interface**   |          Offers a friendly, colorful interface built with Python's `rich` library.           |
+|  **Cross-Platform Support**   |                         Works smoothly on Windows, macOS and Linux.                          |
+
+## 🛠️ Tools Used
+
+<Icon />
+
+- **Python**: The main programming language of the project.
+- **Selenium**: Used for web automation and for pulling data from the KOU student information system.
+- **Rich**: Chosen for building friendly, good-looking console interfaces.
+- **BeautifulSoup**: Used (alongside Selenium) for parsing HTML content.
+- **VS Code & GitHub**: The development environment and the version control system.
+
+## 💾 Download and Run
+
+To run the project in your local environment, you can follow these steps:
+
+1.  **Clone the repository:**
+
+    ```bash
+    git clone https://github.com/metehansenyer/KOU-Not-Bilgi-Sistemi-CLI.git
+    cd KOU-Not-Bilgi-Sistemi-CLI
+    ```
+
+2.  **Create and activate a virtual environment:**
+
+    ```bash
+    python -m venv venv
+    # Windows
+    venv\Scripts\activate
+    # macOS / Linux
+    source venv/bin/activate
+    ```
+
+3.  **Install the required packages:**
+
+    ```bash
+    pip install -r requirements.txt
+    ```
+
+4.  **Run the program:**
+    ```bash
+    python start.py
+    ```
+
+## 🖥️ Usage
+
+- **First run**: After you start the program, you are asked to enter your student number and password and to solve the reCAPTCHA. After that, all of your data is collected (~2-5 min).
+- **Later runs**: You only need to enter your student number. Your data loads in under 1 second.
+- **Menu options**:
+  1.  View the current semester's grades
+  2.  Pick a past semester and view its grades
+  3.  Refresh the data from the server
+  4.  Exit
+
+<Callout type="important">
+  This tool is for educational purposes and is not an official application of Kocaeli University.
+  Use it at your own responsibility.
+</Callout>

@@ -125,3 +125,13 @@ Findings worth remembering:
 - [x] `scripts/check-links.mjs` (`pnpm check:links`, run in CI after the build): resolves internal links, images, fragments and sitemap URLs like nginx and fails on broken ones
 - [x] Page texts moved from `aboutContent.ts` / `contactContent.ts` / `notFoundContent.ts`, `routes.ts`, the pages and the components into the strict `site` collection (`src/content/site/tr.json`, `getSiteContent(locale)`); a second locale is now a new JSON file plus the locale code in `lib/locales.ts`
 - [x] Tests for `getProjects`, the project and site schemas, `<Icon />` defaults, the footer / contact block and the link checker; rendered Turkish output of the 5 non-project pages is identical to before
+
+## English version
+
+- [x] English as a second locale: Turkish stays at the existing un-prefixed URLs (no redirects), English lives under `/en` (`/en`, `/en/about`, `/en/portfolio`, `/en/contact`, `/en/portfolio/<id>`); static output only, Astro's `i18n` config intentionally not enabled
+- [x] Pages moved to `src/pages/[...locale]/` (one implementation per page, `getStaticPaths` per locale); URL helpers in `lib/i18n.ts` (`localizePath`, `stripLocale`, `getAlternates`, ...) with tests; 27 pages built (13 + 13 + 404)
+- [x] `src/content/site/en.json` (full English texts, same strict schema; new keys `languageSwitcher.label`, `project.fallbackNotice`); parity tests for keys and `{placeholders}`; proposed English home headline "METE / HERE / I AM"
+- [x] `projectTranslations` collection (`src/content/project-translations/<locale>/<id>.mdx`, strict frontmatter with only `title`, `description`, `heading`, `bannerAlt`, `contactNote`); `getProjects(locale)` returns merged views with a `translated` flag; an orphan translation fails the build; untranslated projects fall back to the Turkish content with a localized notice and `lang="tr"`; reference translation `KOU-Not-Bilgi-Sistemi-CLI`
+- [x] `LanguageSwitcher` (Header desktop + mobile, corner on the home page), `hreflang` / `x-default` / `og:locale:alternate` on every indexable page, own-locale canonical, bilingual single 404 page, sitemap with `xhtml:link` alternates for both locales
+- [x] Nav order shared across languages (locale-independent stored paths, new serialized `stripLocalePrefix` under the toString contract); smoke test asserts `/en`, `/en/about` and `/en/does-not-exist`; `docker/nginx.conf` needed no change
+- [x] CLAUDE.md (Languages, translation recipe, UI text workflow) and README updated

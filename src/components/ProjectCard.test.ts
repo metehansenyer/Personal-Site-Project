@@ -69,4 +69,16 @@ describe('ProjectCard', () => {
     expect(row.match(/<span/g)).toHaveLength(3)
     expect(row).not.toContain('+')
   })
+
+  it('uses the given href (localized detail page) instead of the default', async () => {
+    const html = await render({ href: '/en/portfolio/My-Repo' })
+    expect(html).toContain('href="/en/portfolio/My-Repo"')
+    expect(html).not.toContain('href="/portfolio/My-Repo"')
+  })
+
+  it('marks the title and description with contentLang only when given', async () => {
+    expect(await render()).not.toContain('lang=')
+    const html = await render({ contentLang: 'tr' })
+    expect(html.match(/<(h2|p)\s[^>]*lang="tr"/g)).toHaveLength(2)
+  })
 })

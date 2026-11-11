@@ -57,6 +57,9 @@
     "openMenu": "Navigasyonu aç",
     "closeMenu": "Navigasyonu kapat"
   },
+  "languageSwitcher": {
+    "label": "Dil seçimi"
+  },
   "footer": {
     "credit": "{author} tarafından {heart} ile kodlandı",
     "analytics": "Bu site çerez kullanmayan ve kişisel veri toplamayan {umami} kullanmaktadır.",
@@ -66,6 +69,7 @@
     "bannerAlt": "{title} banner",
     "viewOnGithub": "GitHub'da Görüntüle",
     "viewDemo": "Canlı Demo",
+    "fallbackNotice": "Bu sayfa henüz bu dilde mevcut değil; Türkçe aslı gösteriliyor.",
     "callouts": {
       "important": "ⓘ ÖNEMLİ",
       "warning": "⚠️ UYARI",

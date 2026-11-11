@@ -19,11 +19,19 @@
  * animation itself is pure CSS (Tailwind `group-hover` / `group-focus-within` + `group-data-*` variants).
  */
 import { Image } from 'astro:assets'
-import type { CollectionEntry } from 'astro:content'
+import type { Project } from '@/lib/projects'
 import icons from '@/data/icons'
 
 interface Props {
-  project: CollectionEntry<'projects'>
+  /** Any project view: only `data.title`, `description`, `banner` and `technologies` are used. */
+  project: {
+    id: string
+    data: Pick<Project['data'], 'title' | 'description' | 'banner' | 'technologies'>
+  }
+  /** URL of the detail page in the page's locale (`localizePath()`); default `/portfolio/<id>`. */
+  href?: string
+  /** `lang` of the title and description when they are not in the page language (fallback). */
+  contentLang?: string
   /** Banner alt text (`getBannerAlt()` in `lib/projects.ts`). */
   bannerAlt: string
   /**
@@ -34,7 +42,13 @@ interface Props {
   loading?: 'priority' | 'eager' | 'lazy'
 }
 
-const { project, bannerAlt, loading = 'lazy' } = Astro.props
+const {
+  project,
+  href = `/portfolio/${project.id}`,
+  contentLang,
+  bannerAlt,
+  loading = 'lazy',
+} = Astro.props
 const { title, description, banner, technologies } = project.data
 
 const tagClass = 'bg-background inline-block rounded-full px-3 py-1 text-sm'
@@ -43,7 +57,7 @@ const mobileTagClass =
 ---
 
 <div class="group/card block h-auto sm:h-[320px] md:h-[450px]" data-tag-card>
-  <a href={`/portfolio/${project.id}`} class="block h-full">
+  <a href={href} class="block h-full">
     <article
       class="flex h-full cursor-pointer flex-col overflow-hidden rounded-lg bg-(--nav-background-color) shadow-lg transition-transform hover:scale-[1.02]"
     >
@@ -62,12 +76,14 @@ const mobileTagClass =
       <div class="flex flex-1 flex-col p-4 sm:p-4 md:h-[calc(450px-12rem)] md:p-6">
         <div class="min-h-0 flex-1">
           <h2
+            lang={contentLang}
             class="mb-2 line-clamp-2 overflow-hidden text-base font-bold text-ellipsis text-(--text-color) sm:text-lg md:mb-4 md:h-14 md:text-2xl"
           >
             {title}
           </h2>
 
           <p
+            lang={contentLang}
             class="mb-3 line-clamp-3 text-xs text-(--text-color) opacity-90 sm:text-sm md:mb-4 md:line-clamp-4 md:text-base"
           >
             {description}

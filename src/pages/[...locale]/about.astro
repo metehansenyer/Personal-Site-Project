@@ -2,6 +2,7 @@
 /**
  * About page: profile photo/contact info and the details section (bio + technologies).
  * Texts come from the site content, links from socialLinks, icons from the icon registry.
+ * One implementation for every locale (`[...locale]`, see `lib/i18n.ts`).
  */
 import { Image } from 'astro:assets'
 import { faEnvelope, faGraduationCap, faLocationDot } from '@fortawesome/free-solid-svg-icons'
@@ -12,10 +13,19 @@ import { socialLinks } from '@/data/socialLinks'
 import { aboutTechnologies } from '@/data/profile'
 import { generateAboutTechnologies } from '@/data/icons'
 import { getSiteContent } from '@/lib/content'
+import { localeStaticPaths } from '@/lib/i18n'
+import type { Locale } from '@/lib/locales'
 import { format } from '@/lib/format'
 import { CONTACT_EMAIL, SITE_NAME, documentTitle } from '@/lib/site'
 
-const content = await getSiteContent()
+export const getStaticPaths = localeStaticPaths
+
+interface Props {
+  locale: Locale
+}
+
+const { locale } = Astro.props
+const content = await getSiteContent(locale)
 const text = content.about
 const route = content.routes.about
 const title = documentTitle(route.metaTitle)
@@ -24,7 +34,14 @@ const pageTitle = route.title
 const technologies = generateAboutTechnologies(aboutTechnologies)
 ---
 
-<BaseLayout title={title} description={description} ogType="profile" pageTitle={pageTitle} jsonLd>
+<BaseLayout
+  locale={locale}
+  title={title}
+  description={description}
+  ogType="profile"
+  pageTitle={pageTitle}
+  jsonLd
+>
   <main
     class="mx-auto flex w-full max-w-[92%] flex-1 flex-col items-center gap-8 px-2 py-8 sm:max-w-[85%] md:mt-10 md:max-w-[80%] md:flex-row md:gap-4 md:px-0 md:py-0"
   >

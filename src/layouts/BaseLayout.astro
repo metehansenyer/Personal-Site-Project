@@ -11,9 +11,11 @@ import Header from '@/components/Header.astro'
 import Navbar from '@/components/Navbar.astro'
 import Footer from '@/components/Footer.astro'
 import NavOrderScript from '@/components/NavOrderScript.astro'
-import { SITE_URL, SITE_NAME } from '@/lib/site'
+import LanguageSwitcher from '@/components/LanguageSwitcher.astro'
+import { SITE_URL, SITE_NAME, absoluteUrl } from '@/lib/site'
+import { getAlternates } from '@/lib/i18n'
 import { getRouteLabels, getSiteContent } from '@/lib/content'
-import { DEFAULT_LOCALE, type Locale } from '@/lib/locales'
+import { DEFAULT_LOCALE, LOCALES, type Locale } from '@/lib/locales'
 import { socialLinks } from '@/data/socialLinks'
 import defaultOgImage from '@/assets/img/home_page.png'
 
@@ -25,7 +27,10 @@ interface Props {
   ogImage?: string
   ogImageWidth?: number
   ogImageHeight?: number
-  /** Locale of the page texts (default: Turkish). */
+  /**
+   * Locale of the page texts (default: Turkish). The pages pass it explicitly; the URL decides
+   * which alternates (`hreflang`) and language switcher links are emitted.
+   */
   locale?: Locale
   /** Text shown in the header. */
   pageTitle?: string
@@ -72,6 +77,17 @@ if (!ogImage) {
 
 const navLabels = getRouteLabels(content)
 
+// The same page in every locale (every indexable page exists in all of them; the 404 page
+// is one shared page and has no alternates and no switcher).
+const alternates = noindex ? [] : getAlternates(pathname)
+const otherLocales = LOCALES.filter((l) => l !== locale)
+const alternateOgLocales = noindex
+  ? []
+  : await Promise.all(otherLocales.map(async (l) => (await getSiteContent(l)).ogLocale))
+const switcher = noindex
+  ? undefined
+  : { current: locale, alternates, label: content.languageSwitcher.label }
+
 const jsonLd = JSON.stringify({
   '@context': 'https://schema.org',
   '@type': 'Person',
@@ -93,6 +109,20 @@ const jsonLd = JSON.stringify({
     <meta name="author" content={SITE_NAME} />
     {noindex && <meta name="robots" content="noindex" />}
     {!noindex && <link rel="canonical" href={canonicalUrl} />}
+    {
+      alternates.map((alt) => (
+        <link rel="alternate" hreflang={alt.locale} href={absoluteUrl(alt.path)} />
+      ))
+    }
+    {
+      alternates.length > 0 && (
+        <link
+          rel="alternate"
+          hreflang="x-default"
+          href={absoluteUrl(alternates.find((a) => a.locale === DEFAULT_LOCALE)!.path)}
+        />
+      )
+    }
     <link rel="icon" href="/favicon.ico" />
 
     <meta property="og:title" content={title} />
@@ -100,6 +130,7 @@ const jsonLd = JSON.stringify({
     {!noindex && <meta property="og:url" content={canonicalUrl} />}
     <meta property="og:site_name" content={SITE_NAME} />
     <meta property="og:locale" content={content.ogLocale} />
+    {alternateOgLocales.map((l) => <meta property="og:locale:alternate" content={l} />)}
     <meta property="og:type" content={ogType} />
     <meta property="og:image" content={image.url} />
     {image.width && <meta property="og:image:width" content={String(image.width)} />}
@@ -123,9 +154,15 @@ const jsonLd = JSON.stringify({
             pathname={pathname}
             navLabels={navLabels}
             labels={content.header}
+            switcher={switcher}
           />
           <Navbar pathname={pathname} navLabels={navLabels} />
         </>
+      )
+    }
+    {
+      !showChrome && switcher && (
+        <LanguageSwitcher {...switcher} class="absolute top-3 right-3 z-10 md:top-5 md:right-8" />
       )
     }
     {

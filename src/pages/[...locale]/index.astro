@@ -3,13 +3,23 @@
  * Home Page
  *
  * Landing page of the portfolio: minimalist centered layout with navigation buttons.
+ * One implementation for every locale (`[...locale]`, see `lib/i18n.ts`).
  */
 import BaseLayout from '@/layouts/BaseLayout.astro'
 import Button from '@/components/Button.astro'
 import { getRoute, type SiteRoute } from '@/data/routes'
 import { getSiteContent } from '@/lib/content'
+import { localeStaticPaths, localizePath } from '@/lib/i18n'
+import type { Locale } from '@/lib/locales'
 
-const content = await getSiteContent()
+export const getStaticPaths = localeStaticPaths
+
+interface Props {
+  locale: Locale
+}
+
+const { locale } = Astro.props
+const content = await getSiteContent(locale)
 
 // Two-row layout for visual balance; hrefs come from routes.ts, labels from the site content
 const rows: SiteRoute['path'][][] = [['/about', '/portfolio'], ['/contact']]
@@ -17,12 +27,15 @@ const navigationButtons = rows.map((row) =>
   row.map((path) => {
     const route = getRoute(path)
     const text = content.routes[route.key]
-    return { href: route.path, text: 'homeLabel' in text ? text.homeLabel : text.label }
+    return {
+      href: localizePath(route.path, locale),
+      text: 'homeLabel' in text ? text.homeLabel : text.label,
+    }
   }),
 )
 ---
 
-<BaseLayout showChrome={false} jsonLd>
+<BaseLayout locale={locale} showChrome={false} jsonLd>
   <main
     class="mx-auto flex min-h-svh w-full max-w-[90%] flex-col justify-center overflow-hidden sm:max-w-[80%] md:min-h-screen"
   >

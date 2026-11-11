@@ -6,13 +6,19 @@
  * another, those two entries swap places, so the button that was clicked is replaced in
  * place by the page the user came from.
  *
- * IMPORTANT: `normalizePath`, `parseStoredOrder` and `swapOrder` are also serialized with
+ * The stored order and the recorded paths are locale-independent (`/about`, never `/en/about`),
+ * so one order is shared by every language; `stripLocalePrefix` maps the current URL and the
+ * link hrefs to those paths.
+ *
+ * IMPORTANT: `normalizePath`, `stripLocalePrefix`, `parseStoredOrder` and `swapOrder` are also serialized with
  * `Function.prototype.toString()` into a blocking inline script (see
  * `src/components/NavOrderScript.astro`). They must therefore stay SELF-CONTAINED: no
  * references to module-level values, imports or each other - everything comes in via
  * parameters. Keep them to plain ES syntax (no TS-only runtime helpers).
  */
 import { routes, type RouteLabels, type SiteRoute } from '../data/routes'
+import { DEFAULT_LOCALE, LOCALES } from './locales'
+import { getLocaleFromPath, localizePath } from './i18n'
 
 export type NavPath = Exclude<SiteRoute['path'], '/'>
 
@@ -28,6 +34,24 @@ export const DEFAULT_ORDER: readonly NavPath[] = routes
 export function normalizePath(path: string): string {
   const trimmed = path.replace(/\/+$/, '')
   return trimmed === '' ? '/' : trimmed
+}
+
+/** Path prefixes of the non-default locales (`['/en']`), passed to `stripLocalePrefix`. */
+export const LOCALE_PREFIXES: readonly string[] = LOCALES.filter((l) => l !== DEFAULT_LOCALE).map(
+  (l) => `/${l}`,
+)
+
+/**
+ * Maps a localized path to its locale-independent route: `/en/about` -> `/about`, `/en` -> `/`.
+ * `path` must already be trailing-slash normalized; other paths are returned unchanged.
+ */
+export function stripLocalePrefix(path: string, prefixes: readonly string[]): string {
+  for (let i = 0; i < prefixes.length; i++) {
+    const prefix = prefixes[i]
+    if (path === prefix) return '/'
+    if (path.indexOf(prefix + '/') === 0) return path.slice(prefix.length)
+  }
+  return path
 }
 
 /**
@@ -84,15 +108,16 @@ export type NavItem = { href: string; label: string }
 
 /**
  * Server-side nav list: Home first, then the nav routes in the default order without the
- * current page. `labels` (from the site content) supplies the link texts. The client script
+ * current page; hrefs are in the locale of `pathname` (`/en/about` -> `/en`, `/en/portfolio`, ...). `labels` (from the site content) supplies the link texts. The client script
  * reorders the DOM from the stored order.
  */
 export function getNavItems(pathname: string, labels: RouteLabels): NavItem[] {
-  const current = normalizePath(pathname)
+  const current = stripLocalePrefix(normalizePath(pathname), LOCALE_PREFIXES)
+  const locale = getLocaleFromPath(pathname)
   return [
-    { href: '/', label: labels['/'] },
+    { href: localizePath('/', locale), label: labels['/'] },
     ...DEFAULT_ORDER.filter((p) => p !== current).map((p) => ({
-      href: p as string,
+      href: localizePath(p, locale),
       label: labels[p],
     })),
   ]
